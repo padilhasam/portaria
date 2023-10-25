@@ -1,0 +1,8 @@
+.df-input[type='password'],
+.df-input[type='text'],
+.df-input[type='email']{
+    background: var(--input-color) !important;
+    color: #FFF !important;
+    border: none;
+    padding: 11px 12px 11px 14px;
+}

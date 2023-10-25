@@ -1,0 +1,21 @@
+.container-fluid{
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: cover !important;
+}
+
+.logo{
+    width: 100px;
+}
+
+.form{
+    background: #1F2C40;
+    border: 2px solid var(--primary-color);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+}
+
+#saudacao{
+    color: var(--text-blue);
+}
