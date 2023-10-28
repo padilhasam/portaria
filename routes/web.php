@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\{
     // DashboardController,
-    LoginController
+    LoginController,
+    MoradorController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,7 @@ Route::controller(LoginController::class)->group(function(){
     Route::get('/login', 'index')->name('login.index');
     Route::get('/logout', 'destroy')->name('login.destroy');
     Route::post('/login', 'store')->name('login.store');
+});
+Route::controller(MoradorController::class)->group(function(){
+    Route::get('/cadastro/morador', 'create')->name('morador.create');
 });
