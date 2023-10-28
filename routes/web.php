@@ -3,7 +3,8 @@
 use App\Http\Controllers\{
     // DashboardController,
     LoginController,
-    MoradorController
+    MoradorController,
+    VisitanteController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,7 @@ Route::controller(LoginController::class)->group(function(){
 });
 Route::controller(MoradorController::class)->group(function(){
     Route::get('/cadastro/morador', 'create')->name('morador.create');
+});
+Route::controller(VisitanteController::class)->group(function(){
+    Route::get('/cadastro/visitante', 'create')->name('visitante.create');
 });

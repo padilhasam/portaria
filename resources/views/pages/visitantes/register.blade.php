@@ -1,4 +1,4 @@
-<form>
+form>
     @csrf
     <div class="form-group">
         <label for="cod_morador">Código: </label>
