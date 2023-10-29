@@ -18,7 +18,7 @@
     <body class="antialiased">
         <div class="app">
             @if (auth()->check())
-                @yield('content_dashboard')
+                @yield('dashboard')
             @else
                 @yield('content_login')
             @endif

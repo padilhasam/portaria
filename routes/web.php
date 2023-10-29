@@ -22,8 +22,8 @@ Route::controller(LoginController::class)->group(function(){
     Route::post('/login', 'store')->name('login.store');
 });
 Route::controller(MoradorController::class)->group(function(){
-    Route::get('/cadastro/morador', 'create')->name('morador.create');
+    Route::get('/cadastro/morador', 'create')->name('create.morador');
 });
 Route::controller(VisitanteController::class)->group(function(){
-    Route::get('/cadastro/visitante', 'create')->name('visitante.create');
+    Route::get('/cadastro/visitante', 'create')->name('create.visitante');
 });

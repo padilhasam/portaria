@@ -27,7 +27,7 @@ class LoginController extends Controller
 
         Auth::loginUsingId($user->id);
 
-        return redirect()->route('vehicle.index')->withErrors(['success' => 'Logado']);
+        return redirect()->route('create.morador')->withErrors(['success' => 'Logado']);
     }
 
     public function destroy(){
