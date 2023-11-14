@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{
     LoginController,
+    ImovelController,
     MoradorController,
     VisitanteController,
     VeiculoController
@@ -14,10 +15,16 @@ Route::controller(LoginController::class)->group(function(){
     Route::post('/login', 'store')->name('login.store');
 });
 
+Route::controller(ImovelController::class)->group(function(){
+    Route::get('/imovel', 'index')->name('index.imovel');
+    Route::get('/imovel/create', 'create')->name('create.imovel');
+    Route::post('/imovel/store', 'store')->name('store.imovel');
+})->middleware(['auth'])->name('dashboard');
+
 Route::controller(MoradorController::class)->group(function(){
-    Route::get('/cadastro/morador', 'index')->name('index.morador');
-    Route::get('/cadastro/morador/create', 'create')->name('create.morador');
-    Route::post('/cadastro/morador/store', 'store')->name('store.morador');
+    Route::get('/morador', 'index')->name('index.morador');
+    Route::get('/morador/create', 'create')->name('create.morador');
+    Route::post('/morador/store', 'store')->name('store.morador');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(VisitanteController::class)->group(function(){
@@ -30,4 +37,5 @@ Route::controller(VeiculoController::class)->group(function(){
     Route::get('/cadastro/veiculo', 'index')->name('index.veiculo');
     Route::get('/cadastro/veiculo/create', 'create')->name('create.veiculo');
     Route::get('/cadastro/veiculo/store', 'store')->name('store.veiculo');
+
 })->middleware(['auth'])->name('dashboard');

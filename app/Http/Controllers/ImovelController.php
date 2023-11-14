@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Morador;
+use App\Models\Imovel;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
-class MoradorController extends Controller
+class ImovelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('pages.moradores.index');
+
+        $imovel = Imovel::all();
+        dd($imovel);
+        return view("pages.imovel.index");
     }
 
     /**
@@ -21,7 +25,7 @@ class MoradorController extends Controller
      */
     public function create()
     {
-        return view("pages.moradores.register");
+        return view('pages.imovel.register');
     }
 
     /**
@@ -29,22 +33,12 @@ class MoradorController extends Controller
      */
     public function store(Request $request)
     {
-        $store = Morador::created([
-            'name' => $request->name,
-            'cpf' => $request->cpf,
-            'data_nasc' => $request->birthdate,
-            'telefone' => $request->telefone,
-            'email' => $request->email
-        ]);
+        Imovel::create($request->validate([
+            'bloco' => 'string|max:2',
+            'numero' => 'string|max:4'
+        ]));
 
-        
-        if($store){
-            return redirect(route('index.morador'));
-        }
-        
-        dd($request);
-        dd("erro");
-
+        return redirect(route('create.imovel'));
     }
 
     /**

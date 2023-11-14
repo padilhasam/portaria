@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @if (auth()->check())
-    <?php header('Location: ' . route('vehicle.index')) ?>
+    <?php header('Location: ' . route('create.imovel')) ?>
 @else
 
     @section('content_login')
@@ -22,7 +22,7 @@
                         
                         <div class="form-group">
                             <label class="text-white">Usuário</label>
-                            <input type="email" class="form-control df-input" name="email" value="jcsjeffrey@gmail.com" required>
+                            <input type="email" class="form-control df-input" name="email" value="jeferson_death@yahoo.com.br" required>
                             @error('email')
                                 <p class="alert alert-secondary" role="alert">{{ $message }}</p>
                             @enderror
@@ -30,7 +30,7 @@
 
                         <div class="form-group mt-2 mb-2">
                             <label class="text-white">Senha</label>
-                            <input type="password" class="form-control df-input" name="password" value="12345678" required>
+                            <input type="password" class="form-control df-input" name="password" value="samuca06" required>
                             @error('password')
                                 <p class="alert alert-secondary" role="alert">{{ $message }}</p>
                             @enderror

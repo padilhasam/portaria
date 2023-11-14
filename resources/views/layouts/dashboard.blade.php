@@ -8,15 +8,11 @@
                 <img src={{Vite::asset('/resources/images/logo.png')}} alt="Guardião Patrimonial" class="p-4 w-100">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 w-100">
                     <li class="mb-2">
-                        <button class="btn border-0 text-white w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            Cadastros
-                        </button>
-                        <div class="collapse p-2" id="collapseExample">
-                            @if (auth()->check())
-                                <a href={{ route('create.morador') }} class="btn text-white p-0 m-0 w-100 mb-1">Cadastro morador</a>
-                                <a href={{ route('create.visitante') }} class="btn text-white p-0 m-0 w-100 mb-1">Cadastro visitante</a>
-                            @endif
-                        </div>
+                        @if (auth()->check())
+                            <a href={{ route('index.imovel') }} class="btn text-white p-0 m-0 w-100 mb-1">Imóveis</a>
+                            <a href={{ route('index.morador') }} class="btn text-white p-0 m-0 w-100 mb-1">Moradores</a>
+                            <a href={{ route('index.visitante') }} class="btn text-white p-0 m-0 w-100 mb-1">Visitantes</a>
+                        @endif
                     </li>
                     <li class="mb-2">
                         @if (auth()->check())
