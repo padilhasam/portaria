@@ -12,14 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('servico', function (Blueprint $table) {
-            $table->id();
-            $table->integer('id_visitante');
-            $table->string('funcionario');
-            $table->string('empresa_executante');
-            $table->string('tipo');
-            $table->timestamp('data');
-            $table->timestamp('entrada');
-            $table->timestamp('saida');
+            $table->id('id_servico');
+            $table->string('tipo_servico')->nullable(false); //manunteção, dedetização, abastedimento gás
+            $table->timestamp('data')->nullable(false);
+            $table->timestamp('hora_entrada')->nullable(false);
+            $table->timestamp('hora_saida')->nullable(false);
             $table->timestamps();
         });
     }

@@ -12,21 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('funcionario', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('cpf');
-            $table->string('birthdate');
-            $table->string('telefone');
+            $table->id('id_funcionario');
+            $table->string('nome')->nullable(false);
+            $table->string('documento')->nullable(false);
+            $table->date('birthdate')->nullable(false);
+            $table->string('celular')->nullable(false);
             $table->string('email');
-            $table->string('cep');
-            $table->string('logradouro');
-            $table->string('numero');
-            $table->string('bairro');
-            $table->string('cidade');
-            $table->string('ocupacao');
-            $table->string('tipo');
-            $table->string('num_cracha');
-            $table->string('image');
+            $table->string('funcao')->nullable(false);
+            $table->string('status')->nullable(false); //Ativo ou Inativo
+            $table->string('image')->nullable(false);
+            $table->string('observacao');
             $table->timestamps();
         });
     }

@@ -12,12 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('morador', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('cpf');
+            $table->id('id_morador');
+            $table->string('nome')->nullable(false);
+            $table->string('rg')->nullable(false);
+            $table->string('cpf')->nullable(false);
             $table->string('birthdate');
-            $table->string('telefone');
-            $table->string('email');
+            $table->string('tel_fixo');
+            $table->string('celular')->nullable(false);
+            $table->string('email')->nullable(false);
+            $table->string('tipo_morador')->nullable(false); //Aluguel ou Própria
             $table->string('image');
             $table->timestamps();
         });

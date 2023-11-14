@@ -12,16 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('acesso', function (Blueprint $table) {
-            $table->id();
-            $table->integer('morador');
+            $table->id('id_acesso');
+            $table->integer('id_visitante'); // id_visitante e também id_prestador ???????
+            $table->string('nome')->nullable(false);
+            $table->string('documento')->nullable(false);
             $table->string('tipo_acesso');
-            $table->string('nome');
-            $table->string('cpf');
-            $table->datetime('data_entrada');
-            $table->datetime('tipo_saida');
-            $table->string('nome_porteiro_entrada');
-            $table->string('nome_porteiro_saida');
-            $table->string('status_acesso');
+            $table->datetime('data_acesso')->nullable(false);
+            $table->time('hora_entrada')->nullable(false);
+            $table->time('hora_saida')->nullable(false);
+            $table->string('nome_porteiro_entrada')->nullable(false);
+            $table->string('nome_porteiro_saida')->nullable(false);
+            $table->string('status_acesso')->nullable(false); //Ativo, Inativo, Liberado, Bloqueado
             $table->timestamps();
         });
     }

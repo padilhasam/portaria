@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('imovel', function (Blueprint $table) {
-            $table->id_imovel();
-            $table->string('bloco');
-            $table->string('numero');
+        Schema::create('apartamento', function (Blueprint $table) {
+            $table->id('id_apartamento');
+            $table->string('numero')->nullable(false);
+            $table->string('bloco')->nullable(false);
+            $table->string('vaga')->nullable(false); //Número da vaga do estacionamento
+            $table->string('status_vaga')->nullable(false); //Ocupada, Livre, Emprestada, Alugada
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('imovel');
+        Schema::dropIfExists('apartamento');
     }
 };

@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('prestador', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_prestador');
+            $table->string('nome')->nullable(false);
+            $table->string('documento')->nullable(false);
+            $table->string('celular')->nullable(false);
+            $table->string('email');
+            $table->string('empresa')->nullable(false); //razão social
+            $table->string('tipo_servico')->nullable(false); //manunteção, dedetização, abastedimento gás
+            $table->string('image')->nullable(false);
+            $table->string('observacao');
+            $table->timestamps();
         });
     }
 
