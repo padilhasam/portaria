@@ -3,7 +3,7 @@
 @section('page_dashboard')
 
 <div class="container">
-    <h3 class="mb-4">Cadastro de visitantes</h3>
+    <h3 class="mb-4">Cadastro de Visitantes</h3>
     <form>
         @csrf
         <div class="form-group">

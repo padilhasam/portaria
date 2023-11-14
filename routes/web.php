@@ -3,7 +3,8 @@
 use App\Http\Controllers\{
     LoginController,
     MoradorController,
-    VisitanteController
+    VisitanteController,
+    VeiculoController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +24,10 @@ Route::controller(VisitanteController::class)->group(function(){
     Route::get('/cadastro/visitante', 'index')->name('index.visitante');
     Route::get('/cadastro/visitante/create', 'create')->name('create.visitante');
     Route::get('/cadastro/visitante/store', 'store')->name('store.visitante');
+})->middleware(['auth'])->name('dashboard');
+
+Route::controller(VeiculoController::class)->group(function(){
+    Route::get('/cadastro/veiculo', 'index')->name('index.veiculo');
+    Route::get('/cadastro/veiculo/create', 'create')->name('create.veiculo');
+    Route::get('/cadastro/veiculo/store', 'store')->name('store.veiculo');
 })->middleware(['auth'])->name('dashboard');
