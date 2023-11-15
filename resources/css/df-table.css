@@ -1,0 +1,7 @@
+table.table{
+    border: 1px solid #DDD;
+}
+
+table.table thead th{
+    background: #EEE;
+}

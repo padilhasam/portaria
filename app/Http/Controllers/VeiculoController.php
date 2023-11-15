@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Veiculo;
 use Illuminate\Http\Request;
 
 class VeiculoController extends Controller
@@ -12,7 +13,8 @@ class VeiculoController extends Controller
      */
     public function index()
     {
-        return view('pages.veiculos.index');
+        $veiculos = Veiculo::all();
+        return view('pages.veiculos.index', compact('veiculos'));
     }
 
     /**

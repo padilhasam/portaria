@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Visitante;
 use Illuminate\Http\Request;
 
 class VisitanteController extends Controller
@@ -12,7 +13,9 @@ class VisitanteController extends Controller
      */
     public function index()
     {
-        return view("pages.visitantes.index");
+
+        $visitantes = Visitante::all();
+        return view("pages.visitantes.index", compact('visitantes'));
     }
 
     /**

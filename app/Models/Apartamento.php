@@ -5,16 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Imovel extends Model
+class Apartamento extends Model
 {
     use HasFactory;
-
-        /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'imovel';
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +16,9 @@ class Imovel extends Model
      */
     protected $fillable = [
         'bloco',
-        'numero'
+        'numero',
+        'vaga',
+        'status_vaga'
     ];
     
 

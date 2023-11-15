@@ -4,7 +4,7 @@
 
 <header class="header-content">
     <div class="d-flex justify-content-between align-items-center">
-        <h3>Moradores</h3>
+        <h3>Veículos</h3>
         <a href="{{route('create.morador')}}" class="btn btn-primary">Cadastrar</a>
     </div>
 </header>
@@ -13,35 +13,30 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">RG</th>
-                    <th scope="col">CPF</th>
-                    <th scope="col">Aniversário</th>
-                    <th scope="col">Telefone Fixo</th>
-                    <th scope="col">Celular</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Tipo Morador</th>
-                    <th scope="col">Foto</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Placa</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Modelo</th>
+                    <th scope="col">Cor</th>
+                    <th scope="col">Observação</th>
                     <th scope="col">Data Criação</th>
                     <th scope="col">Data Alteração</th>
+                    <th scope="col">Opções</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($moradores as $morador)
+                @forelse ($veiculos as $veiculo)
                     <tr>
-                        <th scope="row">{{$morador->id}}</th>
-                        <td>{{$morador->nome}}</td>
-                        <td>{{$morador->rg}}</td>
-                        <td>{{$morador->cpf}}</td>
-                        <td>{{$morador->birthdate}}</td>
-                        <td>{{$morador->tel_fixo}}</td>
-                        <td>{{$morador->celular}}</td>
-                        <td>{{$morador->email}}</td>
-                        <td>{{$morador->tipo_morador}}</td>
-                        <td>{{$morador->image}}</td>
-                        <td>{{$morador->created_at}}</td>
-                        <td>{{$morador->updated_at}}</td>
+                        <th scope="row">{{$veiculo->id}}</th>
+                        <td>{{$veiculo->placa}}</td>
+                        <td>{{$veiculo->tipo}}</td>
+                        <td>{{$veiculo->marca}}</td>
+                        <td>{{$veiculo->modelo}}</td>
+                        <td>{{$veiculo->cor}}</td>
+                        <td>{{$veiculo->observacao}}</td>
+                        <td>{{$veiculo->created_at}}</td>
+                        <td>{{$veiculo->updated_at}}</td>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -61,7 +56,7 @@
                         </td>
                     </tr>
                 @empty
-                    <p>Nenhum morador cadastrado</p>
+                    <p>Nenhum veículo criado</p>
                 @endforelse
             </tbody>
         </table>

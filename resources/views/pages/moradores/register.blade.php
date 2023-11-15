@@ -2,8 +2,16 @@
 
 @section('page_dashboard')
 
+@php
+    $edit = isset($apartamento) ? true : false;
+@endphp
+
+<header class="header-content">
+    <div>
+        <h3>{{ $edit ? "Alterar" : "Cadastrar" }} morador</h3>
+    </div>
+</header>
 <div class="container">
-    <h3 class="mb-4">Cadastro de moradores</h3>
     <form action="{{route('store.morador')}}" method="POST">
         @csrf
         <div class="form-group">
@@ -32,8 +40,6 @@
         </div> --}}
         <div class="mt-4">
             <button type="submit" class="btn btn-primary">Cadastrar</button>
-            <button type="submit" class="btn btn-primary">Editar</button>
-            <button type="submit" class="btn btn-primary">Excluir</button>
             <button type="reset" class="btn btn-primary">Limpar</button>
         </div>
     </form>

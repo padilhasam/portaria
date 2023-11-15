@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prestador', function (Blueprint $table) {
-            $table->id('id_prestador');
+        Schema::create('prestadores', function (Blueprint $table) {
+            $table->id();
             $table->string('nome')->nullable(false);
             $table->string('documento')->nullable(false);
             $table->string('celular')->nullable(false);

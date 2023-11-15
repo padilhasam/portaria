@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('acesso', function (Blueprint $table) {
-            $table->id('id_acesso');
+        Schema::create('acessos', function (Blueprint $table) {
+            $table->id();
             $table->integer('id_visitante'); // id_visitante e também id_prestador ???????
             $table->string('nome')->nullable(false);
             $table->string('documento')->nullable(false);

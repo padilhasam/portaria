@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('servico', function (Blueprint $table) {
-            $table->id('id_servico');
+        Schema::create('servicos', function (Blueprint $table) {
+            $table->id();
             $table->string('tipo_servico')->nullable(false); //manunteção, dedetização, abastedimento gás
             $table->timestamp('data')->nullable(false);
             $table->timestamp('hora_entrada')->nullable(false);
