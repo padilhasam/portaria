@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('apartamento', function (Blueprint $table) {
-            $table->id('id_apartamento');
+        Schema::create('apartamentos', function (Blueprint $table) {
+            $table->id();
             $table->string('numero')->nullable(false);
             $table->string('bloco')->nullable(false);
             $table->string('vaga')->nullable(false); //Número da vaga do estacionamento

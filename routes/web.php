@@ -2,8 +2,12 @@
 
 use App\Http\Controllers\{
     LoginController,
+<<<<<<< HEAD
     RegisterControler,
     ImovelController,
+=======
+    ApartamentoController,
+>>>>>>> d6606dfc5f7e8195d7b4713d5d4b78b3a3888d07
     MoradorController,
     VisitanteController,
     VeiculoController
@@ -16,6 +20,7 @@ Route::controller(LoginController::class)->group(function(){
     Route::post('/login', 'store')->name('login.store');
 });
 
+<<<<<<< HEAD
 Route::controller(RegisterController::class)->group(function(){
     Route::get('/register', 'index')->name('index.register');
     Route::get('/register/create', 'create')->name('create.register');
@@ -26,6 +31,14 @@ Route::controller(ImovelController::class)->group(function(){
     Route::get('/imovel', 'index')->name('index.imovel');
     Route::get('/imovel/create', 'create')->name('create.imovel');
     Route::post('/imovel/store', 'store')->name('store.imovel');
+=======
+Route::controller(ApartamentoController::class)->group(function(){
+    Route::get('/apartamento', 'index')->name('index.apartamento');
+    Route::get('/apartamento/create', 'create')->name('create.apartamento');
+    Route::post('/apartamento/store', 'store')->name('store.apartamento');
+    Route::get('/apartamento/edit/{id}', 'edit')->name('edit.apartamento');
+    Route::put('/apartamento/update/{id}', 'update')->name('update.apartamento');
+>>>>>>> d6606dfc5f7e8195d7b4713d5d4b78b3a3888d07
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(MoradorController::class)->group(function(){

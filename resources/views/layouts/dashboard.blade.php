@@ -9,8 +9,9 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 w-100">
                     <li class="mb-2">
                         @if (auth()->check())
-                            <a href={{ route('index.imovel') }} class="btn text-white p-0 m-0 w-100 mb-1">Imóveis</a>
+                            <a href={{ route('index.apartamento') }} class="btn text-white p-0 m-0 w-100 mb-1">Apartamentos</a>
                             <a href={{ route('index.morador') }} class="btn text-white p-0 m-0 w-100 mb-1">Moradores</a>
+                            <a href={{ route('index.veiculo') }} class="btn text-white p-0 m-0 w-100 mb-1">Veículos</a>
                             <a href={{ route('index.visitante') }} class="btn text-white p-0 m-0 w-100 mb-1">Visitantes</a>
                         @endif
                     </li>
@@ -23,7 +24,7 @@
                 </ul>
             </nav>
             
-            <div class="col-9 col-sm-10">
+            <div class="col-9 col-sm-10 m-0 p-0">
                 @yield('page_dashboard')
             </div>
         </div>

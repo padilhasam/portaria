@@ -13,7 +13,8 @@ class MoradorController extends Controller
      */
     public function index()
     {
-        return view('pages.moradores.index');
+        $moradores = Morador::all();
+        return view('pages.moradores.index', compact('moradores'));
     }
 
     /**
