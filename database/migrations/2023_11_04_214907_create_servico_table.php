@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('tipo_servico')->nullable(false); //manunteção, dedetização, abastedimento gás
             $table->timestamp('data')->nullable(false);
-            $table->timestamp('hora_entrada')->nullable(false);
-            $table->timestamp('hora_saida')->nullable(false);
+            $table->time('hora_entrada')->nullable(false);
+            $table->time('hora_saida')->nullable(false);
             $table->timestamps();
         });
     }
