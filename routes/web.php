@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     LoginController,
     RegisterControler,
+    ApartamentoController,
     MoradorController,
     VisitanteController,
     VeiculoController
@@ -21,10 +22,10 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('/register/store', 'store')->name('store.register');
 })->middleware(['auth'])->name('dashboard');
 
-Route::controller(ImovelController::class)->group(function(){
-    Route::get('/imovel', 'index')->name('index.imovel');
-    Route::get('/imovel/create', 'create')->name('create.imovel');
-    Route::post('/imovel/store', 'store')->name('store.imovel');
+Route::controller(ApartamentoController::class)->group(function(){
+    Route::get('/apartamento', 'index')->name('index.apartamento');
+    Route::get('/apartamento/create', 'create')->name('create.apartamento');
+    Route::post('/apartamento/store', 'store')->name('store.apartamento');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(MoradorController::class)->group(function(){
