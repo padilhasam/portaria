@@ -22,7 +22,7 @@
                         
                         <div class="form-group">
                             <label class="text-white">Usuário</label>
-                            <input type="email" class="form-control df-input" name="email" value="jeferson_death@yahoo.com.br" required>
+                            <input type="email" class="form-control df-input" name="email" value="" required>
                             @error('email')
                                 <p class="alert alert-secondary" role="alert">{{ $message }}</p>
                             @enderror
@@ -30,7 +30,7 @@
 
                         <div class="form-group mt-2 mb-2">
                             <label class="text-white">Senha</label>
-                            <input type="password" class="form-control df-input" name="password" value="samuca06" required>
+                            <input type="password" class="form-control df-input" name="password" value="" required>
                             @error('password')
                                 <p class="alert alert-secondary" role="alert">{{ $message }}</p>
                             @enderror
