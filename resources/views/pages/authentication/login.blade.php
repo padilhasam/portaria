@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @if (auth()->check())
-    <?php header('Location: ' . route('create.imovel')) ?>
+    <?php header('Location: ' . route('create.apartamento')) ?>
 @else
 
     @section('content_login')
