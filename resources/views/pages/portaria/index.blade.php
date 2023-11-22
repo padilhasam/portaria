@@ -4,7 +4,7 @@
 
 <header class="header-content">
     <div class="d-flex justify-content-between align-items-center">
-        <h3>Controle de Registros Portaria</h3>
+        <h3>Controle de Portaria</h3>
     </div>
 </header>
 <div class="container">
@@ -14,65 +14,63 @@
                 <form action="{{ route('store.portaria') }}" method="POST">
                     @csrf
             
-                    <div class="form-group">
-                        <label for="nome">Nome</label>
-                        <input name="nome" type="text" class="form-control" id="nome" placeholder="" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="nome">RG ou CNPJ</label>
-                        <input name="nome" type="text" class="form-control" id="nome" placeholder="" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="nome">Empresa</label>
-                        <input name="nome" type="text" class="form-control" id="nome" placeholder="" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="nome">Veículo</label>
-                        <input name="nome" type="text" class="form-control" id="nome" placeholder="" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="nome">Descrição</label>
-                        <input name="nome" type="text" class="form-control" id="nome" placeholder="" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="nome">Placa</label>
-                        <input name="nome" type="text" class="form-control" id="nome" placeholder="" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="tipo_morador">Tipo de Acesso</label>
-                        <select class="form-control" name="tipo_morador" id="tipo_morador">
-                            <option value="">Selecione...</option>
-                            <option value="visita">Visita</option>
-                            <option value="entrega">Entrega</option>
-                            <option value="mudança">Mudança</option>
-                            <option value="manutenção" >Manutenção</option>
-                            <option value="abastecimento">Abastecimento</option>
-                            <option value="limpeza">Limpeza</option>
-                            <option value="dedetização">Dedetização</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="image">Imagem</label>
-                        <input name="image" type="text" class="form-control" id="image" placeholder="" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="id_apartamento">Apartamentos</label>
-                        {{-- Busca os apartamentos da tabela apartamentos --}}
-                        <select class="form-control" name="id_apartamento" id="id_apartamento">
-                            <option value=""> Selecione... </option>    
-                            <option value="geral"> Geral </option>    
-                            @foreach ($apartamentos as $apartamento)
-                                <option value="{{ $apartamento->id }}"> Apartamento {{ $apartamento->id }} - Bloco {{ $apartamento->bloco }} </option>    
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="observacao">Observação</label>
-                        <input name="observacao" type="text" class="form-control" id="observacao" placeholder="" value="">
-                    </div>
-                    <div class="mt-4">
-                        <button type="submit" class="btn btn-primary">{{ "Registrar" }}</button>
-                        <button type="reset" class="btn btn-primary">Limpar</button>
+                    <div class="row">
+                        <div class="form-group col-8">
+                            <label for="nome">Nome</label>
+                            <input name="nome" type="text" class="form-control" id="nome" placeholder="" value="">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="foto">Foto</label>
+                            <input name="foto" type="text" class="form-control" id="foto" placeholder="" value="">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="documento">RG ou CNPJ</label>
+                            <input name="documento" type="text" class="form-control" id="documento" placeholder="" value="">
+                        </div>
+                        <div class="form-group col-8">
+                            <label for="empresa">Empresa</label>
+                            <input name="empresa" type="text" class="form-control" id="empresa" placeholder="" value="">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="veiculo">Veículo</label>
+                            <input name="veiculo" type="text" class="form-control" id="veiculo" placeholder="" value="">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="placa">Placa</label>
+                            <input name="placa" type="text" class="form-control" id="placa" placeholder="" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo_morador">Tipo de Acesso</label>
+                            <select class="form-control" name="tipo_morador" id="tipo_morador">
+                                <option value="">Selecione...</option>
+                                <option value="visita">Visita</option>
+                                <option value="entrega">Entrega</option>
+                                <option value="mudança">Mudança</option>
+                                <option value="manutenção" >Manutenção</option>
+                                <option value="abastecimento">Abastecimento</option>
+                                <option value="limpeza">Limpeza</option>
+                                <option value="dedetização">Dedetização</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_apartamento">Apartamento</label>
+                            {{-- Busca os apartamentos da tabela apartamentos --}}
+                            <select class="form-control" name="id_apartamento" id="id_apartamento">
+                                <option value=""> Selecione... </option>    
+                                <option value="geral"> Geral </option>    
+                                @foreach ($apartamentos as $apartamento)
+                                    <option value="{{ $apartamento->id }}"> Apartamento {{ $apartamento->id }} - Bloco {{ $apartamento->bloco }} </option>    
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="observacao">Observação</label>
+                            <input name="observacao" type="text" class="form-control" id="observacao" placeholder="" value="">
+                        </div>
+                        <div class="mt-4 col-12">
+                            <button type="submit" class="btn btn-primary">{{ "Registrar" }}</button>
+                            <button type="reset" class="btn btn-primary">Limpar</button>
+                        </div>
                     </div>
                 </form>
             </div>

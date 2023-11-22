@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('acessos', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_visitante'); // id_visitante e também id_prestador ???????
-            $table->string('nome')->nullable(false);
-            $table->string('documento')->nullable(false);
+            $table->string('foto')->nullable(false);
+            $table->string('nome')->nullable(true);
+            $table->string('documento')->nullable(true);
+            $table->string('tipo_morador')->nullable(true);
+            $table->string('empresa')->nullable(true);
+            $table->string('veiculo')->nullable(true);
+            $table->string('placa')->nullable(true);
             $table->string('tipo_acesso');
-            $table->datetime('data_acesso')->nullable(false);
-            $table->time('hora_entrada')->nullable(false);
-            $table->time('hora_saida')->nullable(false);
-            $table->string('nome_porteiro_entrada')->nullable(false);
-            $table->string('nome_porteiro_saida')->nullable(false);
+            $table->string('nome_porteiro_entrada')->nullable(true);
+            $table->string('nome_porteiro_saida')->nullable(true);
             $table->string('status_acesso')->nullable(false); //Ativo, Inativo, Liberado, Bloqueado
             $table->timestamps();
         });

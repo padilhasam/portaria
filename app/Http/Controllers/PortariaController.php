@@ -6,7 +6,7 @@ use App\Models\Apartamento;
 use App\Models\Morador;
 use Illuminate\Http\Request;
 
-class PortariaRegistroController extends Controller
+class PortariaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class PortariaRegistroController extends Controller
     {
         $morador = Morador::all();
         $apartamentos = Apartamento::all();
-        return view('pages.portariaregistro.index', compact('morador', 'apartamentos'));
+        return view('pages.portaria.index', compact('morador', 'apartamentos'));
     }
 
     /**

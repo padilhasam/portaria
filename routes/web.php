@@ -5,7 +5,7 @@ use App\Http\Controllers\{
     RegisterControler,
     ApartamentoController,
     MoradorController,
-    PortariaRegistroController,
+    PortariaController,
     VisitanteController,
     VeiculoController
 };
@@ -27,7 +27,7 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('/register/store', 'store')->name('store.register');
 })->middleware(['auth'])->name('dashboard');
 
-Route::controller(PortariaRegistroController::class)->group(function(){
+Route::controller(PortariaController::class)->group(function(){
     Route::get('/portaria', 'index')->name('index.portaria');
     Route::get('/portaria/create', 'create')->name('create.portaria');
     Route::post('/portaria/store', 'store')->name('store.portaria');
