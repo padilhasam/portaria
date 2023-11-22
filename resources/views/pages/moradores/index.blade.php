@@ -14,6 +14,7 @@
             <thead>
                 <tr>
                     <th scope="col">id</th>
+                    <th scope="col">Foto</th>
                     <th scope="col">Nome</th>
                     <th scope="col">RG ou CPF</th>
                     <th scope="col">Aniversário</th>
@@ -21,7 +22,6 @@
                     <th scope="col">Celular</th>
                     <th scope="col">Email</th>
                     <th scope="col">Tipo Morador</th>
-                    <th scope="col">Foto</th>
                     <th scope="col">Data Criação</th>
                     <th scope="col">Data Alteração</th>
                     <th scope="col">Ações</th>
@@ -31,6 +31,9 @@
                 @forelse ($moradores as $morador)
                     <tr>
                         <th scope="row">{{$morador->id}}</th>
+                        <td>
+                            <img src="{{$morador->image}}" alt="{{$morador->image}}" style="width: 50px; border-radius: 100px;">
+                        </td>
                         <td>{{$morador->nome}}</td>
                         <td>{{$morador->documento}}</td>
                         <td>{{$morador->birthdate}}</td>
@@ -38,7 +41,6 @@
                         <td>{{$morador->celular}}</td>
                         <td>{{$morador->email}}</td>
                         <td>{{$morador->tipo_morador}}</td>
-                        <td>{{$morador->image}}</td>
                         <td>{{$morador->created_at}}</td>
                         <td>{{$morador->updated_at}}</td>
                         <td>

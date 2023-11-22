@@ -30,7 +30,16 @@ class VeiculoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Veiculo::create($request->validate([
+            'placa' => 'string|max:7',
+            'tipo' => 'string|max:7',
+            'marca' => 'string|max:50',
+            'modelo' => 'string|max:50',
+            'cor' => 'string|max:15',
+            'observacao' => 'string|max:10'
+        ]));
+
+        return redirect(route('index.veiculo'));
     }
 
     /**
@@ -54,7 +63,17 @@ class VeiculoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Veiculo::where('id', $id)
+        ->update($request->validate([
+            'placa' => 'string|max:7',
+            'tipo' => 'string|max:7',
+            'marca' => 'string|max:10',
+            'modelo' => 'string|max:10',
+            'cor' => 'string|max:10',
+            'observacao' => 'string|max:10'
+        ]));
+
+        return redirect(route('index.veiculo'));
     }
 
     /**

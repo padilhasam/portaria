@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Apartamento;
 use App\Models\Morador;
 use Illuminate\Http\Request;
 
-class MoradorController extends Controller
+class PortariaRegistroController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $moradores = Morador::all();
-        return view('pages.moradores.index', compact('moradores'));
+        $morador = Morador::all();
+        $apartamentos = Apartamento::all();
+        return view('pages.portariaregistro.index', compact('morador', 'apartamentos'));
     }
 
     /**
@@ -23,8 +23,7 @@ class MoradorController extends Controller
      */
     public function create()
     {
-        $apartamentos = Apartamento::all();
-        return view("pages.moradores.register", compact('apartamentos'));
+        //
     }
 
     /**
@@ -60,9 +59,7 @@ class MoradorController extends Controller
      */
     public function edit(string $id)
     {
-        $morador = Morador::findOrFail($id);
-        $apartamentos = Apartamento::all();
-        return view('pages.moradores.register', compact('morador', 'apartamentos'));
+        //
     }
 
     /**
@@ -70,20 +67,7 @@ class MoradorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Morador::where('id', $id)
-        ->update($request->validate([
-            'id_apartamento' => 'integer|max:10',
-            'nome' => 'string|max:10',
-            'documento' => 'string|max:12',
-            'birthdate' => 'string|max:12',
-            'tel_fixo' => 'string|max:12',
-            'celular' => 'string|max:12',
-            'email' => 'string|max:40',
-            'tipo_morador' => 'string|max:40',
-            'image' => 'string|max:500'
-        ]));
-
-        return redirect(route('index.morador'));
+        //
     }
 
     /**

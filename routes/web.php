@@ -5,6 +5,7 @@ use App\Http\Controllers\{
     RegisterControler,
     ApartamentoController,
     MoradorController,
+    PortariaRegistroController,
     VisitanteController,
     VeiculoController
 };
@@ -26,6 +27,14 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('/register/store', 'store')->name('store.register');
 })->middleware(['auth'])->name('dashboard');
 
+Route::controller(PortariaRegistroController::class)->group(function(){
+    Route::get('/portaria', 'index')->name('index.portaria');
+    Route::get('/portaria/create', 'create')->name('create.portaria');
+    Route::post('/portaria/store', 'store')->name('store.portaria');
+    Route::get('/portaria/edit/{id}', 'edit')->name('edit.portaria');
+    Route::put('/portaria/update/{id}', 'update')->name('update.portaria');
+})->middleware(['auth'])->name('dashboard');
+
 Route::controller(ApartamentoController::class)->group(function(){
     Route::get('/apartamento', 'index')->name('index.apartamento');
     Route::get('/apartamento/create', 'create')->name('create.apartamento');
@@ -39,7 +48,7 @@ Route::controller(MoradorController::class)->group(function(){
     Route::get('/morador/create', 'create')->name('create.morador');
     Route::post('/morador/store', 'store')->name('store.morador');
     Route::get('/morador/edit/{id}', 'edit')->name('edit.morador');
-    Route::post('/morador/update/{id}', 'update')->name('update.morador');
+    Route::put('/morador/update/{id}', 'update')->name('update.morador');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(VisitanteController::class)->group(function(){
@@ -49,7 +58,9 @@ Route::controller(VisitanteController::class)->group(function(){
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(VeiculoController::class)->group(function(){
-    Route::get('/cadastro/veiculo', 'index')->name('index.veiculo');
-    Route::get('/cadastro/veiculo/create', 'create')->name('create.veiculo');
-    Route::get('/cadastro/veiculo/store', 'store')->name('store.veiculo');
+    Route::get('/veiculo', 'index')->name('index.veiculo');
+    Route::get('/veiculo/create', 'create')->name('create.veiculo');
+    Route::post('/veiculo/store', 'store')->name('store.veiculo');
+    Route::get('/veiculo/edit/{id}', 'edit')->name('edit.veiculo');
+    Route::put('/veiculo/update/{id}', 'update')->name('update.veiculo');
 })->middleware(['auth'])->name('dashboard');

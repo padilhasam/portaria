@@ -9,6 +9,11 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 w-100">
                     <li class="mb-2">
                         @if (auth()->check())
+                            <a href={{ route('index.portaria') }} class="btn text-white p-0 m-0 w-100 mb-1">Portaria Registros</a>
+                        @endif
+                    </li>
+                    <li class="mb-2">
+                        @if (auth()->check())
                             <a href={{ route('index.apartamento') }} class="btn text-white p-0 m-0 w-100 mb-1">Apartamentos</a>
                             <a href={{ route('index.morador') }} class="btn text-white p-0 m-0 w-100 mb-1">Moradores</a>
                             <a href={{ route('index.veiculo') }} class="btn text-white p-0 m-0 w-100 mb-1">Veículos</a>

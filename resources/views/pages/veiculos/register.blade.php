@@ -3,56 +3,55 @@
 @section('page_dashboard')
 
 @php
-    $edit = isset($apartamento) ? true : false;
+    $edit = isset($veiculo) ? true : false;
 @endphp
 
 <header class="header-content">
     <div>
-        <h3>{{ $edit ? "Alterar" : "Cadastrar" }} visitante</h3>
+        <h3>{{ $edit ? "Alterar" : "Cadastrar" }} veiculo</h3>
     </div>
 </header>
 <div class="container">
-    <form>
+    <form action="{{ $edit ? route('update.veiculo', ['id' => $veiculo->id]) : route('store.veiculo') }}" method="POST">
         @csrf
+        @if ($edit)
+            @method('PUT')
+        @endif
+
         <div class="form-group">
-            <label for="cod_morador">Código: </label>
-            <input type="number" class="form-control" id="cod_morador" value="1">
+            <label for="placa">Placa</label>
+            <input name="placa" type="text" class="form-control" id="placa" placeholder="" value="{{ $edit ? $veiculo->placa : "" }}">
         </div>
         <div class="form-group">
-            <label for="data_cadastro">Data de Cadastro: </label>
-            <input type="date" class="form-control" id="data_cadastro">
+            <label for="tipo">Tipo veículo</label>
+            <select class="form-control" name="tipo" id="tipo">
+                <option value="">Selecione...</option>
+                <option value="carro" {{ $edit && $veiculo->tipo == "carro" ? "selected" : "" }}>Carro</option>
+                <option value="moto" {{ $edit && $veiculo->tipo == "moto" ? "selected" : "" }}>Moto</option>
+                <option value="caminhão" {{ $edit && $veiculo->tipo == "caminhão" ? "selected" : "" }}>Caminhão</option>
+            </select>
         </div>
         <div class="form-group">
-            <label for="nome_completo">Nome Completo: </label>
-            <input type="text" class="form-control" id="nome_morador" placeholder="Digite o Nome Completo do Morador...">
+            <label for="marca">Marca</label>
+            <input name="marca" type="text" class="form-control" id="marca" placeholder="" value="{{ $edit ? $veiculo->marca : "" }}">
         </div>
         <div class="form-group">
-            <label for="cpf">CPF: </label>
-            <input type="text" class="form-control" id="cpf" placeholder="000.000.000-00">
+            <label for="modelo">Modelo</label>
+            <input name="modelo" type="text" class="form-control" id="modelo" placeholder="" value="{{ $edit ? $veiculo->modelo : "" }}">
         </div>
         <div class="form-group">
-            <label for="data_nascimento_morador">Data de Nascimento: </label>
-            <input type="date" class="form-control" id="data_nasc_morador" placeholder="Data de Nascimento">
+            <label for="cor">Cor</label>
+            <input name="cor" type="text" class="form-control" id="cor" placeholder="" value="{{ $edit ? $veiculo->cor : "" }}">
         </div>
         <div class="form-group">
-            <label for="telefone">Celular: </label>
-            <input type="tel" class="form-control" id="telefone_morador" placeholder="(00)0000-0000">
-        </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Email: </label>
-            <input type="paemail" class="form-control" id="exampleInputPassword1" placeholder="email@email.com.br">
-        </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Foto: </label>
-            <input type="file" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <label for="observacao">Observação</label>
+            <input name="observacao" type="text" class="form-control" id="observacao" placeholder="" value="{{ $edit ? $veiculo->observacao : "" }}">
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Cadastrar</button>
-            <button type="submit" class="btn btn-primary">Editar</button>
-            <button type="submit" class="btn btn-primary">Excluir</button>
+            <button type="submit" class="btn btn-primary">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
             <button type="reset" class="btn btn-primary">Limpar</button>
         </div>
     </form>
 </div>
-   
+
 @endsection

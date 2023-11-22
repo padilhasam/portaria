@@ -5,7 +5,7 @@
 <header class="header-content">
     <div class="d-flex justify-content-between align-items-center">
         <h3>Veículos</h3>
-        <a href="{{route('create.morador')}}" class="btn btn-primary">Cadastrar</a>
+        <a href="{{route('create.veiculo')}}" class="btn btn-primary">Cadastrar</a>
     </div>
 </header>
 <div class="container">
