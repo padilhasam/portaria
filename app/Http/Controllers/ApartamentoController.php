@@ -30,8 +30,9 @@ class ApartamentoController extends Controller
     public function store(Request $request)
     {
         Apartamento::create($request->validate([
-            'bloco' => 'string|max:4',
             'numero' => 'string|max:4',
+            'bloco' => 'string|max:4',
+            'ramal' => 'string|max:5',
             'vaga' => 'string|max:10',
             'status_vaga' => 'string|max:10'
         ]));

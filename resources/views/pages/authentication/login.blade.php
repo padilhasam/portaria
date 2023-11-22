@@ -43,5 +43,4 @@
         </div>
     @endsection
 @endif
-
-@vite(['resources/js/login.js'])
+@vite(['resources/js/saudacao.js'])

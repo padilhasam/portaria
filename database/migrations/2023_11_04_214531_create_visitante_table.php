@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('documento')->nullable(false);
             $table->string('telefone')->nullable(false);
             $table->string('image')->nullable(false);
-            $table->string('observacao');
+            $table->text('observacao');
             $table->timestamps();
         });
     }

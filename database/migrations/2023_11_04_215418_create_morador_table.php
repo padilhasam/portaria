@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('moradores', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_apartamento')->nullable(false);
             $table->string('nome')->nullable(false);
-            $table->string('rg')->nullable(false);
-            $table->string('cpf')->nullable(false);
+            $table->string('documento')->nullable(false);
             $table->string('birthdate');
             $table->string('tel_fixo');
             $table->string('celular')->nullable(false);

@@ -14,9 +14,10 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Número</th>
+                    <th scope="col">Nº Apartamento</th>
                     <th scope="col">Bloco</th>
-                    <th scope="col">Vaga</th>
+                    <th scope="col">Nº Vaga</th>
+                    <th scope="col">Ramal</th>
                     <th scope="col">Status da Vaga</th>
                     <th scope="col">Data Criação</th>
                     <th scope="col">Data Alteração</th>
@@ -29,6 +30,7 @@
                         <th scope="row">{{$apartamento->numero}}</th>
                         <td>{{$apartamento->bloco}}</td>
                         <td>{{$apartamento->vaga}}</td>
+                        <td>{{$apartamento->ramal}}</td>
                         <td>{{$apartamento->status_vaga}}</td>
                         <td>{{$apartamento->created_at}}</td>
                         <td>{{$apartamento->updated_at}}</td>

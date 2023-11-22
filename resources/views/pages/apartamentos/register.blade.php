@@ -19,16 +19,20 @@
         @endif
 
         <div class="form-group">
+            <label for="numero">Número Apartamento</label>
+            <input name="numero" type="text" class="form-control" id="numero" placeholder="Número do apartamento" value="{{ $edit ? $apartamento->numero : "" }}">
+        </div>
+        <div class="form-group">
             <label for="bloco">Bloco</label>
             <input name="bloco" type="text" class="form-control" id="bloco" placeholder="Digite o bloco do apartamento" value="{{ $edit ? $apartamento->bloco : "" }}">
         </div>
         <div class="form-group">
-            <label for="numero">Número</label>
-            <input name="numero" type="text" class="form-control" id="numero" placeholder="Número do apartamento" value="{{ $edit ? $apartamento->numero : "" }}">
+            <label for="vaga">Número de Vagas</label>
+            <input name="vaga" type="text" class="form-control" id="vaga" placeholder="Vagas" value="{{ $edit ? $apartamento->vaga : "" }}">
         </div>
         <div class="form-group">
-            <label for="vaga">Número de vagas</label>
-            <input name="vaga" type="text" class="form-control" id="vaga" placeholder="Vagas" value="{{ $edit ? $apartamento->vaga : "" }}">
+            <label for="ramal">Ramal</label>
+            <input name="ramal" type="text" class="form-control" id="ramal" placeholder="Ramal" value="{{ $edit ? $apartamento->ramal : "" }}">
         </div>
         <div class="form-group">
             <label for="status_vaga">Status da vaga</label>

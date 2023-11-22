@@ -10,6 +10,10 @@ use App\Http\Controllers\{
 };
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function(){
+    return view('pages.welcome');
+})->name('welcome');
+
 Route::controller(LoginController::class)->group(function(){
     Route::get('/login', 'index')->name('login.index');
     Route::get('/logout', 'destroy')->name('login.destroy');
@@ -26,12 +30,16 @@ Route::controller(ApartamentoController::class)->group(function(){
     Route::get('/apartamento', 'index')->name('index.apartamento');
     Route::get('/apartamento/create', 'create')->name('create.apartamento');
     Route::post('/apartamento/store', 'store')->name('store.apartamento');
+    Route::get('/apartamento/edit/{id}', 'edit')->name('edit.apartamento');
+    Route::put('/apartamento/update/{id}', 'update')->name('update.apartamento');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(MoradorController::class)->group(function(){
     Route::get('/morador', 'index')->name('index.morador');
     Route::get('/morador/create', 'create')->name('create.morador');
     Route::post('/morador/store', 'store')->name('store.morador');
+    Route::get('/morador/edit/{id}', 'edit')->name('edit.morador');
+    Route::post('/morador/update/{id}', 'update')->name('update.morador');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(VisitanteController::class)->group(function(){

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('numero')->nullable(false);
             $table->string('bloco')->nullable(false);
             $table->string('vaga')->nullable(false); //Número da vaga do estacionamento
+            $table->string('ramal')->nullable(false); //Número do ramal do estacionamento
             $table->string('status_vaga')->nullable(false); //Ocupada, Livre, Emprestada, Alugada
             $table->timestamps();
         });

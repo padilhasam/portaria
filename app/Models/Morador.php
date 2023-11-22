@@ -12,4 +12,22 @@ class Morador extends Model
     
     protected $table = 'moradores';
 
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'id_apartamento',
+        'nome',
+        'documento',
+        'birthdate',
+        'tel_fixo',
+        'celular',
+        'email',
+        'tipo_morador',
+        'image'
+    ];
+
 }

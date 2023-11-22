@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function index(){
+        if(auth()->check()){
+            return redirect()->route('index.apartamento');
+        }
+
         return view('pages.authentication.login');
     }
 
@@ -27,7 +31,7 @@ class LoginController extends Controller
 
         Auth::loginUsingId($user->id);
 
-        return redirect()->route('create.morador')->withErrors(['success' => 'Logado']);
+        return redirect()->route('index.apartamento')->withErrors(['success' => 'Logado']);
     }
 
     public function destroy(){

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('empresa')->nullable(false); //razão social
             $table->string('tipo_servico')->nullable(false); //manunteção, dedetização, abastedimento gás
             $table->string('image')->nullable(false);
-            $table->string('observacao');
+            $table->text('observacao');
             $table->timestamps();
         });
     }

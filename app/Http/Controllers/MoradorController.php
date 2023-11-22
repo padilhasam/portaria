@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Apartamento;
 use App\Models\Morador;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,8 @@ class MoradorController extends Controller
      */
     public function create()
     {
-        return view("pages.moradores.register");
+        $apartamentos = Apartamento::all();
+        return view("pages.moradores.register", compact('apartamentos'));
     }
 
     /**
@@ -30,22 +32,19 @@ class MoradorController extends Controller
      */
     public function store(Request $request)
     {
-        $store = Morador::created([
-            'name' => $request->name,
-            'cpf' => $request->cpf,
-            'data_nasc' => $request->birthdate,
-            'telefone' => $request->telefone,
-            'email' => $request->email
-        ]);
+        Morador::create($request->validate([
+            'id_apartamento' => 'integer|max:10',
+            'nome' => 'string|max:10',
+            'documento' => 'string|max:12',
+            'birthdate' => 'string|max:12',
+            'tel_fixo' => 'string|max:12',
+            'celular' => 'string|max:12',
+            'email' => 'string|max:40',
+            'tipo_morador' => 'string|max:40',
+            'image' => 'string|max:500'
+        ]));
 
-        
-        if($store){
-            return redirect(route('index.morador'));
-        }
-        
-        dd($request);
-        dd("erro");
-
+        return redirect(route('index.morador'));
     }
 
     /**
@@ -61,7 +60,9 @@ class MoradorController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $morador = Morador::findOrFail($id);
+        $apartamentos = Apartamento::all();
+        return view('pages.moradores.register', compact('morador', 'apartamentos'));
     }
 
     /**

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('funcao')->nullable(false);
             $table->string('status')->nullable(false); //Ativo ou Inativo
             $table->string('image')->nullable(false);
-            $table->string('observacao');
+            $table->text('observacao');
             $table->timestamps();
         });
     }

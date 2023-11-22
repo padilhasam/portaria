@@ -15,8 +15,9 @@ class Apartamento extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'bloco',
         'numero',
+        'bloco',
+        'ramal',
         'vaga',
         'status_vaga'
     ];
@@ -26,5 +27,4 @@ class Apartamento extends Model
     //     'bloco' => 'string|max:2',
     //     'numero' => 'string|max:4'
     // ];
-
 }
