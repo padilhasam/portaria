@@ -18,16 +18,17 @@ class PortariaRegistro extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'foto',
         'nome',
+        'foto',
         'documento',
-        'tipo_morador',
         'empresa',
         'veiculo',
         'placa',
+        'tipo_morador',
         'tipo_acesso',
+        'local_descricao',
+        'observacao',
         'nome_porteiro_entrada',
         'nome_porteiro_saida',
-        'status_acesso'
     ];
 }

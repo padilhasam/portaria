@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\{
     LoginController,
-    RegisterControler,
+    RegisterController,
     ApartamentoController,
     MoradorController,
     PortariaController,
@@ -22,7 +22,6 @@ Route::controller(LoginController::class)->group(function(){
 });
 
 Route::controller(RegisterController::class)->group(function(){
-    Route::get('/register', 'index')->name('index.register');
     Route::get('/register/create', 'create')->name('create.register');
     Route::post('/register/store', 'store')->name('store.register');
 })->middleware(['auth'])->name('dashboard');

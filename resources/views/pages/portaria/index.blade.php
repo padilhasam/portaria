@@ -53,9 +53,9 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="id_apartamento">Apartamento</label>
+                            <label for="local_descricao">Apartamento</label>
                             {{-- Busca os apartamentos da tabela apartamentos --}}
-                            <select class="form-control" name="id_apartamento" id="id_apartamento">
+                            <select class="form-control" name="local_descricao" id="local_descricao">
                                 <option value=""> Selecione... </option>    
                                 <option value="geral"> Geral </option>    
                                 @foreach ($apartamentos as $apartamento)

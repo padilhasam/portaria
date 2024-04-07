@@ -32,15 +32,16 @@ class PortariaController extends Controller
     public function store(Request $request)
     {
         Morador::create($request->validate([
-            'id_apartamento' => 'integer|max:10',
-            'nome' => 'string|max:10',
-            'documento' => 'string|max:12',
-            'birthdate' => 'string|max:12',
-            'tel_fixo' => 'string|max:12',
-            'celular' => 'string|max:12',
-            'email' => 'string|max:40',
+            'nome' => 'string|max:50',
+            'foto' => 'integer|max:50',
+            'documento' => 'string|max:13',
+            'empresa' => 'string|max:12',
+            'veiculo' => 'string|max:12',
+            'placa' => 'string|max:12',
             'tipo_morador' => 'string|max:40',
-            'image' => 'string|max:500'
+            'tipo_acesso' => 'string|max:40',
+            'local_descricao' => 'string|max:40',
+            'observacao' => 'string|max:500'
         ]));
 
         return redirect(route('index.morador'));

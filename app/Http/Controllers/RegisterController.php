@@ -8,19 +8,11 @@ use Illuminate\Http\Request;
 class RegisterController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('pages.register.index');
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view("pages.register.register");
+        return view("pages.authentication.register");
     }
 
     /**

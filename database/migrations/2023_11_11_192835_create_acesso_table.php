@@ -13,17 +13,18 @@ return new class extends Migration
     {
         Schema::create('acessos', function (Blueprint $table) {
             $table->id();
-            $table->string('foto')->nullable(false);
-            $table->string('nome')->nullable(true);
-            $table->string('documento')->nullable(true);
-            $table->string('tipo_morador')->nullable(true);
+            $table->string('nome')->nullable(false);
+            $table->string('foto')->nullable(true);
+            $table->string('documento')->nullable(false);
             $table->string('empresa')->nullable(true);
             $table->string('veiculo')->nullable(true);
             $table->string('placa')->nullable(true);
+            $table->string('tipo_morador')->nullable(true);
             $table->string('tipo_acesso');
+            $table->string('local_descricao');
+            $table->string('observacao');
             $table->string('nome_porteiro_entrada')->nullable(true);
             $table->string('nome_porteiro_saida')->nullable(true);
-            $table->string('status_acesso')->nullable(false); //Ativo, Inativo, Liberado, Bloqueado
             $table->timestamps();
         });
     }
