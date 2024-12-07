@@ -26,5 +26,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678'),
             'user_verified' => true
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'Klisman Gabriel',
+            'email' => 'klisgabriel@gmail.com',
+            'password' => Hash::make('klisman2024'),
+            'user_verified' => true
+        ]);
     }
 }
