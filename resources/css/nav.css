@@ -1,7 +1,13 @@
 .lateral-nav{
     background: #1F2C40;
+    display: flex;
+    flex-direction: column;
 }
 
 .lateral-nav .collapse{
     background: #1A2536;
+}
+
+.logout-item{
+    margin-top: auto;
 }

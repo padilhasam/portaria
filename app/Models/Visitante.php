@@ -11,4 +11,6 @@ class Visitante extends Model
 
     
     protected $table = 'visitantes';
+
+    
 }

@@ -20,6 +20,8 @@
                             <a href={{ route('index.visitante') }} class="btn text-white p-0 m-0 w-100 mb-1">Visitantes</a>
                         @endif
                     </li>
+                </ul>
+                <ul class = "navbar-nav ms-auto mb-2 mb-lg-0 w-100 logout-item">
                     <li class="mb-2">
                         @if (auth()->check())
                             {{ session()->get('success') }}
