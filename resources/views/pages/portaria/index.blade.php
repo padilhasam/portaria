@@ -4,7 +4,7 @@
 
 <header class="header-content">
     <div class="d-flex justify-content-between align-items-center">
-        <h3>Controle de Portaria</h3>
+        <h3>Controle de Acessos</h3>
     </div>
 </header>
 <div class="container">
@@ -19,23 +19,19 @@
                             <label for="nome">Nome</label>
                             <input name="nome" type="text" class="form-control" id="nome" placeholder="" value="">
                         </div>
-                        <div class="form-group col-4">
-                            <label for="foto">Foto</label>
-                            <input name="foto" type="text" class="form-control" id="foto" placeholder="" value="">
-                        </div>
-                        <div class="form-group col-4">
+                        <div class="form-group col-2">
                             <label for="documento">RG ou CNPJ</label>
                             <input name="documento" type="text" class="form-control" id="documento" placeholder="" value="">
                         </div>
-                        <div class="form-group col-8">
+                        <div class="form-group col-6">
                             <label for="empresa">Empresa</label>
                             <input name="empresa" type="text" class="form-control" id="empresa" placeholder="" value="">
                         </div>
-                        <div class="form-group col-6">
+                        <div class="form-group col-2">
                             <label for="veiculo">Veículo</label>
                             <input name="veiculo" type="text" class="form-control" id="veiculo" placeholder="" value="">
                         </div>
-                        <div class="form-group col-6">
+                        <div class="form-group col-2">
                             <label for="placa">Placa</label>
                             <input name="placa" type="text" class="form-control" id="placa" placeholder="" value="">
                         </div>
@@ -66,6 +62,11 @@
                         <div class="form-group">
                             <label for="observacao">Observação</label>
                             <input name="observacao" type="text" class="form-control" id="observacao" placeholder="" value="">
+                        </div>
+                        <div class="form-group col-4">
+                                <label for="img">Selecionar documentos:</label>
+                                <input type="file" id="img" name="img" accept="image/*">
+                                <input type="submit">
                         </div>
                         <div class="mt-4 col-12">
                             <button type="submit" class="btn btn-primary">{{ "Registrar" }}</button>
