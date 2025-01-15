@@ -12,10 +12,10 @@
     margin-top: auto;
 }
 
-.menu-item > .btn{
-    text-align: left;
-}
-
 .menu-item{
     padding-left: 10%;
+}
+
+.menu-item > .btn{
+    text-align: left;
 }
