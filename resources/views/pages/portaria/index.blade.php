@@ -62,6 +62,7 @@
                                 <option value="abastecimento">Abastecimento</option>
                                 <option value="limpeza">Limpeza</option>
                                 <option value="dedetização">Dedetização</option>
+                                <option value="dedetização">TESTE</option>
                             </select>
                         </div>
                         <div class="form-group">
