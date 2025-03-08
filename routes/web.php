@@ -6,6 +6,8 @@ use App\Http\Controllers\{
     ApartamentoController,
     MoradorController,
     PortariaController,
+    UserController,
+    UsuarioController,
     VisitanteController,
     VeiculoController
 };
@@ -21,9 +23,12 @@ Route::controller(LoginController::class)->group(function(){
     Route::post('/login', 'store')->name('login.store');
 });
 
-Route::controller(RegisterController::class)->group(function(){
-    Route::get('/register/create', 'create')->name('create.register');
-    Route::post('/register/store', 'store')->name('store.register');
+Route::controller(UsuarioController::class)->group(function(){
+    Route::get('/usuario', 'index')->name('index.usuario');
+    Route::get('/usuario/create', 'create')->name('create.usuario');
+    Route::post('/usuario/store', 'store')->name('store.usuario');
+    Route::get('/usuario/edit/{id}', 'edit')->name('edit.usuario');
+    Route::put('/usuario/update/{id}', 'update')->name('update.usuario');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(PortariaController::class)->group(function(){

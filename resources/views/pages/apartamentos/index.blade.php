@@ -5,7 +5,7 @@
 <x-modal-remove-item/>
 <header class="header-content">
     <div class="d-flex justify-content-between align-items-center">
-        <h3>Apartamentos</h3>
+        <h3>Cadastro de Apartamentos</h3>
         <a href="{{route('create.apartamento')}}" class="btn btn-primary">Cadastrar</a>
     </div>
 </header>

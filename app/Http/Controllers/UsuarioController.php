@@ -3,16 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class RegisterController extends Controller
+class UsuarioController extends Controller
 {
+    
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $usuarios = User::all();
+        return view('pages.usuarios.index', compact('usuarios'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view("pages.authentication.register");
+        return view("pages.usuarios.register");
     }
 
     /**

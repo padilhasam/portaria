@@ -37,7 +37,6 @@
                         </div>
                         
                         <button type="submit" class="btn btn-primary mt-4 w-100 p-2">Entrar</button>
-                        <a href={{route('create.register')}} class="text-center w-100 d-block mt-3 mb-3 text-white">Cadastrar-se</a>
                     </form>
                 </div>
             </div>

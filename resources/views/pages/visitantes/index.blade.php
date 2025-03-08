@@ -4,7 +4,7 @@
 
 <header class="header-content">
     <div class="d-flex justify-content-between align-items-center">
-        <h3>Visitantes</h3>
+        <h3>Cadastro de Terceiros</h3>
         <a href="{{route('create.morador')}}" class="btn btn-primary">Cadastrar</a>
     </div>
 </header>

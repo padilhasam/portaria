@@ -4,7 +4,7 @@
 
 <header class="header-content">
     <div class="d-flex justify-content-between align-items-center">
-        <h3>Controle de Acessos</h3>
+        <h3>Relatório de Registros</h3>
     </div>
 </header>
 <div class="container">
