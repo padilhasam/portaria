@@ -3,16 +3,16 @@
 @section('page_dashboard')
 
 @php
-    $edit = isset($visitante) ? true : false;
+    $edit = isset($registro) ? true : false;
 @endphp
 
 <header class="header-content">
     <div>
-        <h3>{{ $edit ? "Alterar" : "Cadastrar" }} Visitantes</h3>
+        <h3>{{ $edit ? "Encerrar" : "Liberar" }} Acessos</h3>
     </div>
 </header>
 <div class="container">
-    <form action="{{ $edit ? route('update.visitante', ['id' => $visitante->id]) : route('store.visitante') }}" method="POST">
+    <form action="{{ $edit ? route('update.registro', ['id' => $registro->id]) : route('store.registro') }}" method="POST">
         @csrf
         @if ($edit)
             @method('PUT')

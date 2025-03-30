@@ -2,11 +2,9 @@
 
 use App\Http\Controllers\{
     LoginController,
-    RegisterController,
     ApartamentoController,
     MoradorController,
-    PortariaController,
-    UserController,
+    RegistroController,
     UsuarioController,
     VisitanteController,
     VeiculoController
@@ -31,12 +29,12 @@ Route::controller(UsuarioController::class)->group(function(){
     Route::put('/usuario/update/{id}', 'update')->name('update.usuario');
 })->middleware(['auth'])->name('dashboard');
 
-Route::controller(PortariaController::class)->group(function(){
-    Route::get('/portaria', 'index')->name('index.portaria');
-    Route::get('/portaria/create', 'create')->name('create.portaria');
-    Route::post('/portaria/store', 'store')->name('store.portaria');
-    Route::get('/portaria/edit/{id}', 'edit')->name('edit.portaria');
-    Route::put('/portaria/update/{id}', 'update')->name('update.portaria');
+Route::controller(RegistroController::class)->group(function(){
+    Route::get('/registro', 'index')->name('index.registro');
+    Route::get('/registro/create', 'create')->name('create.registro');
+    Route::post('/registro/store', 'store')->name('store.registro');
+    Route::get('/registro/edit/{id}', 'edit')->name('edit.registro');
+    Route::put('/registro/update/{id}', 'update')->name('update.registro');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(ApartamentoController::class)->group(function(){

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @if (auth()->check())
-    <?php header('Location: ' . route('create.apartamento')) ?>
+    <?php header('Location: ' . route('create.registro')) ?>
 @else
 
     @section('content_login')
@@ -11,10 +11,10 @@
                     <form action={{route('login.store')}} method="POST" class="form col-12 col-sm- col-md-6 col-lg-4">
                         @csrf
                         
-                        <img src={{ Vite::asset('resources/images/logo.png') }} class="logo mx-auto d-block mb-3 w-50">
+                        <img src={{ Vite::asset('resources/images/logo.png') }} class="logo mx-auto d-block mb-3 w-75">
                         
                         <h2 class="text-center mb-0 mt-4" id="saudacao"></h2>
-                        <p class="text-white text-center mb-4">Faça login para acessar sua conta.</p>
+                        <p class="text-white text-center mb-4">Para acessar, faça seu login.</p>
 
                         @error('error')
                             <p class="alert alert-secondary" role="alert">{{ $message }}</p>

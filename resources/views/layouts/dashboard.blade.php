@@ -9,12 +9,13 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 w-100">
                     <li class="mb-2 menu-item">
                         @if (auth()->check())
-                            <a href={{ route('index.portaria') }} class="btn text-white p-0 m-0 w-100 mb-1">{{ svg('hugeicons-square-lock-check-02') }} Portaria Registros</a>
+                            <a href={{ route('index.registro') }} class="btn text-white p-0 m-0 w-100 mb-1">{{ svg('hugeicons-folder-security') }} Acessos</a>
                             <a href={{ route('index.usuario') }} class="btn text-white p-0 m-0 w-100 mb-1">{{ svg('hugeicons-user-shield-02') }} Usuários</a>
                             <a href={{ route('index.apartamento') }} class="btn text-white p-0 m-0 w-100 mb-1">{{ svg('hugeicons-house-01') }} Apartamentos</a>
                             <a href={{ route('index.morador') }} class="btn text-white p-0 m-0 w-100 mb-1">{{ svg('hugeicons-user-multiple') }} Moradores</a> <!--{{ svg('hugeicons-user-account') }}-->
                             <a href={{ route('index.veiculo') }} class="btn text-white p-0 m-0 w-100 mb-1">{{ svg('hugeicons-car-01') }} Veículos</a>
                             <a href={{ route('index.visitante') }} class="btn text-white p-0 m-0 w-100 mb-1">{{ svg('hugeicons-validation-approval') }} Visitantes</a>
+                            <a href="#" class="btn text-white p-0 m-0 w-100 mb-1">{{ svg('hugeicons-note-01') }} Relatórios</a>
                         @endif
                     </li>
                 </ul>

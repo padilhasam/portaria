@@ -8,7 +8,7 @@
 
 <header class="header-content">
     <div>
-        <h3>{{ $edit ? "Alterar" : "Cadastrar" }} usuários</h3>
+        <h3>{{ $edit ? "Alterar" : "Cadastrar" }} Usuários</h3>
     </div>
 </header>
 <div class="container">
@@ -40,11 +40,18 @@
         </div>
         <div class="form-group">
             <label for="acesso_tipo">Tipo de Acesso</label>
+
+            <!-- TROCAR POR CHECK BOX -->
+
+            
+
             <select class="form-control" name="acesso_tipo" id="acesso_tipo">
                 <option value="liberado" {{ $edit && $usuario->acesso_tipo == "liberado" ? "selected" : "" }}>Liberado</option>
                 <option value="bloqueado" {{ $edit && $usuario->acesso_tipo == "ocupada" ? "selected" : "" }}>Bloqueado</option>
                 <option value="ferias" {{ $edit && $usuario->acesso_tipo == "ferias" ? "selected" : "" }}>Férias</option>
             </select>
+
+
         </div>
         <div class="mt-4">
             <button type="submit" class="btn btn-primary">{{ $edit ? "Alterar" : "Cadastrar" }}</button>

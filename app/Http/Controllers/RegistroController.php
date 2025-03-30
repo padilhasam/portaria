@@ -2,28 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Apartamento;
-use App\Models\Morador;
+use App\Http\Controllers\Controller;
+use App\Models\Registro;
 use Illuminate\Http\Request;
 
-class PortariaController extends Controller
+class RegistroController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $morador = Morador::all();
-        $apartamentos = Apartamento::all();
-        return view('pages.portaria.index', compact('morador', 'apartamentos'));
+        $registros = Registro::all();
+        return view('pages.registros.index', compact('registros'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return view("pages.registros.register");
     }
 
     /**
@@ -31,20 +30,19 @@ class PortariaController extends Controller
      */
     public function store(Request $request)
     {
-        Morador::create($request->validate([
+        Registro::create($request->validate([
             'nome' => 'string|max:50',
-            'foto' => 'integer|max:50',
             'documento' => 'string|max:13',
             'empresa' => 'string|max:12',
             'veiculo' => 'string|max:12',
             'placa' => 'string|max:12',
-            'tipo_morador' => 'string|max:40',
+            'foto' => 'integer|max:50',
             'tipo_acesso' => 'string|max:40',
             'local_descricao' => 'string|max:40',
             'observacao' => 'string|max:500'
         ]));
 
-        return redirect(route('index.morador'));
+        return redirect(route('index.registro'));
     }
 
     /**
