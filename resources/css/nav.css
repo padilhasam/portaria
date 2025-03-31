@@ -15,7 +15,13 @@
 .menu-item{
     padding-left: 10%;
 }
-
+.navbar-nav .mb-2 .btn{
+    color:#FFFFFF;
+ }
+ .navbar-nav .mb-2 .btn:hover{
+    color: #8e9eb4;
+ }
 .menu-item > .btn{
     text-align: left;
+    color: #FFFFFF;
 }

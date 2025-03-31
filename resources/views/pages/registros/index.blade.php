@@ -5,7 +5,7 @@
 <header class="header-content">
     <div class="d-flex justify-content-between align-items-center">
         <h3>Registros de Acessos</h3>
-        <a href="{{route('create.registro')}}" class="btn btn-primary">Cadastrar</a>
+        <a href="{{route('create.registro')}}" class="btn text-white btn-primary">Cadastrar</a>
     </div>
 </header>
 <div class="container">
@@ -17,9 +17,9 @@
                         <th scope="col">Nome</th>
                         <th scope="col">Identificação</th>
                         <th scope="col">Tipo</th>
+                        <th scope="col">Observação</th>
                         <th scope="col">Entrada</th>
                         <th scope="col">Saída</th>
-                        <th scope="col">Observação</th> 
                     </tr>
                 </thead>
             <tbody>
@@ -29,9 +29,9 @@
                         <td>{{$registro->nome}}</td>
                         <td>{{$registro->identificacao}}</td>
                         <td>{{$registro->tipo}}</td>
+                        <td>{{$registro->observacao}}</td>
                         <td>{{$registro->entrada}}</td>
                         <td>{{$registro->saida}}</td>
-                        <td>{{$registro->observacao}}</td>
                         <td>{{$registro->created_at}}</td>
                         <td>{{$registro->updated_at}}</td>
                         <td>
@@ -48,6 +48,9 @@
                                     <li>
                                         <a class="dropdown-item" href="#">Remover</a>
                                     </li>
+                                    <li>
+                                        <button class="dropdown-item" id="toggleButton">Ligar</button>
+                                    </li>
                                 </ul>
                             </div>
                         </td>
@@ -59,5 +62,15 @@
         </table>
     </div>
 </div>
+
+<script>
+    document.getElementById("toggleButton").addEventListener("click", function() {
+        if (this.textContent === "Ligar") {
+            this.textContent = "Desligar";
+        } else {
+            this.textContent = "Ligar";
+        }
+    });
+</script>
 
 @endsection

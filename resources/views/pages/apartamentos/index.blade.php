@@ -6,7 +6,7 @@
 <header class="header-content">
     <div class="d-flex justify-content-between align-items-center">
         <h3>Cadastro de Apartamentos</h3>
-        <a href="{{route('create.apartamento')}}" class="btn btn-primary">Cadastrar</a>
+        <a href="{{route('create.apartamento')}}" class="btn text-white btn-primary">Cadastrar</a>
     </div>
 </header>
 <div class="container">

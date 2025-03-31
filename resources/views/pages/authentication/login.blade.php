@@ -36,7 +36,7 @@
                             @enderror
                         </div>
                         
-                        <button type="submit" class="btn btn-primary mt-4 w-100 p-2">Entrar</button>
+                        <button type="submit" class="btn text-white btn-primary mt-4 w-100 p-2">Entrar</button>
                     </form>
                 </div>
             </div>
