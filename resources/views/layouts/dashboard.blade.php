@@ -6,13 +6,18 @@
         <div class="row">
             <nav class="lateral-nav col-3 col-sm-2 vh-100 p-0">
                 <img src={{Vite::asset('/resources/images/logo.png')}} alt="Secure Access" class="p-4 w-100">
+                <ul class="welcome">
+                    @if (auth()->check())
+                        <p class="text-white">Bem-vindo, {{ Auth::user()->name }}!</p>
+                    @endif
+                </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 w-200">
                     <li class="mb-2 menu-item">
                         @if (auth()->check())
                             <a href={{ route('index.registro') }} class="btn p-0 m-0 w-100 mb-1">{{ svg('hugeicons-folder-security') }} Controle de Acessos</a>
                             <a href={{ route('index.usuario') }} class="btn p-0 m-0 w-100 mb-1">{{ svg('hugeicons-user-shield-02') }} Usuários</a>
                             <a href={{ route('index.apartamento') }} class="btn p-0 m-0 w-100 mb-1">{{ svg('hugeicons-house-01') }} Apartamentos</a>
-                            <a href={{ route('index.morador') }} class="btn p-0 m-0 w-100 mb-1">{{ svg('hugeicons-user-multiple') }} Moradores</a> <!--{{ svg('hugeicons-user-account') }}-->
+                            <a href={{ route('index.morador') }} class="btn p-0 m-0 w-100 mb-1">{{ svg('hugeicons-user-multiple') }} Moradores</a> 
                             <a href={{ route('index.veiculo') }} class="btn p-0 m-0 w-100 mb-1">{{ svg('hugeicons-car-01') }} Veículos</a>
                             <a href={{ route('index.visitante') }} class="btn p-0 m-0 w-100 mb-1">{{ svg('hugeicons-validation-approval') }} Visitantes</a>
                             <a href="#" class="btn p-0 m-0 w-100 mb-1">{{ svg('hugeicons-note-01') }} Histórico de Acessos</a>
