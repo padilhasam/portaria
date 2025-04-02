@@ -8,7 +8,7 @@
         <a href="{{route('create.veiculo')}}" class="btn text-white btn-primary">Cadastrar</a>
     </div>
 </header>
-<div class="container">
+<div class="">
     <div class="">
         <table class="table">
             <thead>
