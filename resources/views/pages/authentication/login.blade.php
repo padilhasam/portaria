@@ -22,7 +22,12 @@
                         
                         <div class="form-group">
                             <label class="text-white">Usuário</label>
-                            <input type="email" class="form-control df-input" name="email" value="" required>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1">
+                                    {{ svg('hugeicons-mail-account-01') }}
+                                </span>
+                                <input type="email" class="form-control" placeholder="example@company.com" name="email" value="" id="email" autofocus required>
+                            </div> 
                             @error('email')
                                 <p class="alert alert-secondary" role="alert">{{ $message }}</p>
                             @enderror
@@ -30,13 +35,18 @@
 
                         <div class="form-group mt-2 mb-2">
                             <label class="text-white">Senha</label>
-                            <input type="password" class="form-control df-input" name="password" value="" required>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon2">
+                                    {{ svg('hugeicons-lock-password') }}
+                                </span>
+                                <input type="password" class="form-control" placeholder="Password" name="password" value="" id="password" required>
+                            </div>
                             @error('password')
                                 <p class="alert alert-secondary" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
                         
-                        <button type="submit" class="btn text-white btn-primary mt-4 w-100 p-2">Entrar</button>
+                        <button type="submit" class="btn text-white btn-dark mt-4 w-100 p-2">Entrar</button>
                     </form>
                 </div>
             </div>
