@@ -9,8 +9,8 @@
 }
 
 .form{
-    background: #55595e;
-    border: 2px solid var(--bs-grey);
+    background: #d4d4d4;
+    border: 2px solid var(--bs-white);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 4px 4px 10px rgba(0,0,0,0.5);

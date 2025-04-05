@@ -11,17 +11,17 @@
                     <form action={{route('login.store')}} method="POST" class="form col-12 col-sm- col-md-6 col-lg-4">
                         @csrf
                         
-                        <img src={{ Vite::asset('resources/images/logo.png') }} class="logo mx-auto d-block mb-3 w-75">
+                        <img src={{ Vite::asset('resources/images/logo_black.png') }} class="logo mx-auto d-block mb-3 w-75">
                         
                         <h2 class="text-center mb-0 mt-4" id="saudacao"></h2>
-                        <p class="text-white text-center mb-4">Para acessar, faça seu login.</p>
+                        <p class="text-black text-center mb-4">Para acessar, faça seu login.</p>
 
                         @error('error')
                             <p class="alert alert-secondary" role="alert">{{ $message }}</p>
                         @enderror
                         
                         <div class="form-group">
-                            <label class="text-white">Usuário</label>
+                            <label class="text-black">Usuário</label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1">
                                     {{ svg('hugeicons-mail-account-01') }}
@@ -34,7 +34,7 @@
                         </div>
 
                         <div class="form-group mt-2 mb-2">
-                            <label class="text-white">Senha</label>
+                            <label class="text-black">Senha</label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon2">
                                     {{ svg('hugeicons-lock-password') }}
