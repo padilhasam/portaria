@@ -5,7 +5,7 @@
 <header class="header-content">
     <div class="d-flex justify-content-between align-items-center">
         <h3>Controle de Usuários</h3>
-        <a href="{{route('create.usuario')}}" class="btn text-white btn-primary">Cadastrar</a>
+        <a href="{{route('create.usuario')}}" class="btn text-white btn-dark">Cadastrar</a>
     </div>
 </header>
 <div class="">
@@ -54,13 +54,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#removeItemModal" href="#">
-                                            <!-- Botão ON/OFF 
-                                            <div class="switch__container">
-                                                <input id="switch-shadow" class="switch switch--shadow" type="checkbox" />
-                                                <label for="switch-shadow"></label>
-                                              </div>
-                                            Final Botão -->
+                                        <a class="dropdown-item text-danger" href="#" type="button" data-bs-toggle="modal" data-bs-target="#removeItemModal-{{ $usuario->id }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                                 <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
                                             </svg>
@@ -71,6 +65,28 @@
                             </div>
                         </td>
                     </tr>
+                    <!-- Modal para confirmação de remoção -->
+                    <div class="modal fade" id="removeItemModal-{{ $usuario->id }}" tabindex="-1" aria-labelledby="removeItemModalLabel-{{ $usuario->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="removeItemModalLabel-{{ $usuario->id }}">Confirmar remoção</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Tem certeza que deseja remover o usuário <strong>{{ $usuario->nome }}</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <form action="{{ route('destroy.usuario', ['id' => $usuario->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Remover</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @empty
                     <p>Nenhum morador cadastrado</p>
                 @endforelse

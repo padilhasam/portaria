@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class UsuarioSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,23 +14,29 @@ class UsuarioSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'name' => 'Jeferson Padilha',
+            'nome' => 'Jeferson Padilha',
+            'user'=>'Padilhajeff',
             'email' => 'jeferson_death@yahoo.com.br',
             'password' => Hash::make('samuca06'),
+            'acesso_tipo' =>'liberado',
             'user_verified' => true
         ]);
 
         DB::table('users')->insert([
-            'name' => 'Jefferson Santos',
+            'nome' => 'Jefferson Santos',
+            'user'=>'Santosjeff',
             'email' => 'jeffersonsantos@gmail.com.br',
             'password' => Hash::make('12345678'),
+            'acesso_tipo' => 'bloqueado',
             'user_verified' => true
         ]);
 
         DB::table('users')->insert([
-            'name' => 'Klisman Gabriel',
+            'nome' => 'Klisman Gabriel',
+            'user'=>'Gabrielklisman',
             'email' => 'klisgabriel@gmail.com',
             'password' => Hash::make('klisman2024'),
+            'acesso_tipo' => 'liberado',
             'user_verified' => true
         ]);
     }

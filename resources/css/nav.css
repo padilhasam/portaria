@@ -55,6 +55,9 @@ body {
 .menu-item{
     padding-left: 10%;
 }
+.navbar{
+  background-color: #424649;
+}
 .navbar-nav .mb-2 .btn{
     color:#FFFFFF;
  }
@@ -64,6 +67,9 @@ body {
 .menu-item > .btn{
     text-align: left;
     color: #FFFFFF;
+}
+.nav-link{
+  color: #FFFFFF;
 }
 .welcome{
     font-family:fantasy;

@@ -27,6 +27,7 @@ Route::controller(UsuarioController::class)->group(function(){
     Route::post('/usuario/store', 'store')->name('store.usuario');
     Route::get('/usuario/edit/{id}', 'edit')->name('edit.usuario');
     Route::put('/usuario/update/{id}', 'update')->name('update.usuario');
+    Route::delete('/usuario/{id}', 'destroy')->name('destroy.usuario');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(RegistroController::class)->group(function(){

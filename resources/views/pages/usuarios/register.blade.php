@@ -32,30 +32,25 @@
         </div>
         <div class="form-group">
             <label for="password">Senha</label>
-            <input name="password" type="password" class="form-control" id="password" placeholder="Digite uma senha" value="{{ $edit ? $usuario->password : "" }}">
+            <input name="password" type="password" class="form-control" id="password" placeholder="Digite uma senha">
         </div>
         <div class="form-group">
             <label for="rep_pass">Repetir Senha</label>
-            <input name="rep_pass" type="rep_pass" class="form-control" id="rep_pass" placeholder="repita a sua senha" value="{{ $edit ? $usuario->rep_pass : "" }}">
+            <input name="password_confirmation" type="password" class="form-control" id="rep_pass" placeholder="Repita a sua senha">
         </div>
         <div class="form-group">
             <label for="acesso_tipo">Tipo de Acesso</label>
-
             <!-- TROCAR POR CHECK BOX -->
-
-            
-
             <select class="form-control" name="acesso_tipo" id="acesso_tipo">
+                <option value="" selected>Selecione</option>
                 <option value="liberado" {{ $edit && $usuario->acesso_tipo == "liberado" ? "selected" : "" }}>Liberado</option>
-                <option value="bloqueado" {{ $edit && $usuario->acesso_tipo == "ocupada" ? "selected" : "" }}>Bloqueado</option>
+                <option value="bloqueado" {{ $edit && $usuario->acesso_tipo == "bloqueado" ? "selected" : "" }}>Bloqueado</option>
                 <option value="ferias" {{ $edit && $usuario->acesso_tipo == "ferias" ? "selected" : "" }}>Férias</option>
             </select>
-
-
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
-            <button type="reset" class="btn btn-primary">Limpar</button>
+            <button type="submit" class="btn btn-dark">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
+            <button type="reset" class="btn btn-dark">Limpar</button>
         </div>
     </form>
 </div>

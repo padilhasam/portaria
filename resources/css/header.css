@@ -1,7 +1,9 @@
 .header-content{
-    background: #777f8d;
-    color: #fff;
+    background: #EEEEEE;
+    color: #212529;
     padding: 10px 10px 10px 10px;
     /* margin-bottom: 15px; */
-    font-family: 'Courier New', Courier, monospace;
+    /*font-family: 'Courier New', Courier, monospace;*/
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: bold;
 }

@@ -35,7 +35,7 @@
     <!-- Sidebar -->
 
     <!-- Navbar -->
-    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <!-- Container wrapper -->
         <div class="container-fluid">
             <!-- Toggle button -->
@@ -60,7 +60,7 @@
                     <span class="badge rounded-pill badge-notification bg-danger">1</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">Some news</a></li>
+                    <li><a class="dropdown-item" href="#">Notificações</a></li>
                 </ul>
                 </li>
 
@@ -71,7 +71,7 @@
                     <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="22"
                     alt="" loading="lazy" />
                     @if (auth()->check())
-                        <p class="text-white m-3">{{ Auth::user()->name }}</p>
+                        <p class="text-white m-3">{{ Auth::user()->nome }}</p>
                     @endif
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">

@@ -26,7 +26,7 @@
                                 <span class="input-group-text" id="basic-addon1">
                                     {{ svg('hugeicons-mail-account-01') }}
                                 </span>
-                                <input type="email" class="form-control" placeholder="example@company.com" name="email" value="" id="email" autofocus required>
+                                <input type="email" class="form-control" placeholder="example@company.com" name="email" value="" id="email" required>
                             </div> 
                             @error('email')
                                 <p class="alert alert-secondary" role="alert">{{ $message }}</p>
