@@ -27,7 +27,7 @@
             <input name="bloco" type="text" class="form-control" id="bloco" placeholder="Digite o bloco do apartamento" value="{{ $edit ? $apartamento->bloco : "" }}">
         </div>
         <div class="form-group">
-            <label for="vaga">Número de Vagas</label>
+            <label for="vaga">Número da Vagas</label>
             <input name="vaga" type="text" class="form-control" id="vaga" placeholder="Vagas" value="{{ $edit ? $apartamento->vaga : "" }}">
         </div>
         <div class="form-group">

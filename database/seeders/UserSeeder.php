@@ -16,6 +16,9 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'nome' => 'Administrador',
+            'documento' => '01234567891',
+            'nascimento' => '1990-04-17',
+            'celular' => '41998909779',
             'user'=>'Admin',
             'email' => 'admin@admin.com.br',
             'password' => Hash::make('admin1234'),
@@ -25,6 +28,9 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'nome' => 'Jeferson Padilha',
+            'documento' => '45678912330',
+            'nascimento' => '1986-10-24',
+            'celular' => '419984305610',
             'user'=>'Padilhajeff',
             'email' => 'jeferson_death@yahoo.com.br',
             'password' => Hash::make('samuca06'),
@@ -34,6 +40,9 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'nome' => 'Jefferson Santos',
+            'documento' => '78998765425',
+            'nascimento' => '1999-09-09',
+            'celular' => '41995202654',
             'user'=>'Santosjeff',
             'email' => 'jeffersonsantos@gmail.com.br',
             'password' => Hash::make('12345678'),

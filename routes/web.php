@@ -50,6 +50,7 @@ Route::controller(MoradorController::class)->group(function(){
     Route::get('/morador', 'index')->name('index.morador');
     Route::get('/morador/create', 'create')->name('create.morador');
     Route::post('/morador/store', 'store')->name('store.morador');
+    Route::get('/moradores/{id}', 'show')->name('show.morador');
     Route::get('/morador/edit/{id}', 'edit')->name('edit.morador');
     Route::put('/morador/update/{id}', 'update')->name('update.morador');
 })->middleware(['auth'])->name('dashboard');

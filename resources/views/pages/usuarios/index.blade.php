@@ -15,9 +15,8 @@
                 <tr>
                     <th scope="col">id</th>
                     <th scope="col">Nome</th>
-                    <th scope="col">RG ou CPF</th>
-                    <th scope="col">Data Nascimento</th>
-                    <th scope="col">Telefone Fixo</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Data de Nascimento</th>
                     <th scope="col">Celular</th>
                     <th scope="col">Email</th>
                     <th scope="col">Data Admissão</th>
@@ -31,12 +30,11 @@
                         <th scope="row">{{$usuario->id}}</th>
                         <td>{{$usuario->nome}}</td>
                         <td>{{$usuario->documento}}</td>
-                        <td>{{$usuario->birthdate}}</td>
-                        <td>{{$usuario->tel_fixo}}</td>
+                        <td>{{$usuario->nascimento}}</td>
                         <td>{{$usuario->celular}}</td>
                         <td>{{$usuario->email}}</td>
-                        <td>{{$usuario->created_at}}</td>
-                        <td>{{$usuario->updated_at}}</td>
+                        <td>{{ $usuario->created_at ? $usuario->created_at->format('d/m/Y') : '-' }}</td>
+                        <td>{{ $usuario->updated_at ? $usuario->updated_at->format('d/m/Y') : '-' }}</td>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -88,7 +86,9 @@
                         </div>
                     </div>
                 @empty
-                    <p>Nenhum usuário cadastrado</p>
+                    <tr>
+                        <td colspan="13" class="text-center">Nenhum morador cadastrado</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>

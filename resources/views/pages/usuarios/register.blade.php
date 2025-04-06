@@ -37,26 +37,78 @@
 
         <div class="form-group">
             <label for="nome">Nome Completo</label>
-            <input name="nome" type="text" class="form-control" id="nome" placeholder="Nome Completo" value="{{ $edit ? $usuario->nome : "" }}">
+            <input name="nome" type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" placeholder="Nome Completo" value="{{ old('nome', $edit ? $usuario->nome : '') }}">
         </div>
+        @error('nome')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+        <div class="form-group">
+            <label for="documento">CPF</label>
+            <input name="documento" type="text" class="form-control @error('documento') is-invalid @enderror" id="documento" placeholder="CPF" value="{{ old('documento', $edit ? $usuario->documento : '') }}">
+        </div>
+        @error('documento')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+        <div class="form-group">
+            <label for="nascimento">Data de Nascimento</label>
+            <input name="nascimento" type="date" class="form-control @error('nascimento') is-invalid @enderror" id="nascimento" placeholder="Data de Nascimento" value="{{ old('nascimento', $edit ? $usuario->nascimento : '') }}">
+        </div>
+        @error('nascimento')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+        <div class="form-group">
+            <label for="celular">Celular</label>
+            <input name="celular" type="text" class="form-control @error('celular') is-invalid @enderror" id="celular" placeholder="WhatsApp" value="{{ old('celular', $edit ? $usuario->celular : '') }}">
+        </div>
+        @error('celular')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
         <div class="form-group">
             <label for="user">Usuario</label>
-            <input name="user" type="text" class="form-control" id="user" placeholder="Digite um usuário" value="{{ $edit ? $usuario->user : "" }}">
+            <input name="user" type="text" class="form-control @error('user') is-invalid @enderror" id="user" placeholder="Digite um usuário" value="{{ old('user', $edit ? $usuario->user : '') }}">
         </div>
+        @error('user')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
         <div class="form-group">
             <label for="email">Email</label>
-            <input name="email" type="text" class="form-control" id="email" placeholder="Digite um email de usuário" value="{{ $edit ? $usuario->email : "" }}">
+            <input name="email" type="text" class="form-control @error('email') is-invalid @enderror" placeholder="Digite um email de usuário" value="{{ old('email', $edit ? $usuario->email : '') }}">
         </div>
+        @error('email')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
         <div class="form-group">
             <label for="password">Senha</label>
-            <input name="password" type="password" class="form-control" id="password" placeholder="Digite uma senha">
+            <input name="password" type="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="Digite uma senha">
         </div>
+        @error('password')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
         <div class="form-group">
-            <label for="rep_pass">Repetir Senha</label>
-            <input name="password_confirmation" type="password" class="form-control" id="rep_pass" placeholder="Repita a sua senha">
+            <label for="password_confirmation">Repetir Senha</label>
+            <input name="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" placeholder="Repita a sua senha">
         </div>
+        @error('password_confirmation')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
         <div class="form-group">
-            <label for="acesso_tipo">Tipo de Acesso</label>
+            <label for="acesso_tipo">Status</label>
             <!-- TROCAR POR CHECK BOX -->
             <select class="form-control" name="acesso_tipo" id="acesso_tipo">
                 <option value="" selected>Selecione</option>

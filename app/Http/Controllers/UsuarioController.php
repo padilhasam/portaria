@@ -34,6 +34,9 @@ class UsuarioController extends Controller
     {
         $request->validate([
             'nome' => 'required|string|max:255',
+            'documento' => 'required|string|max:12',
+            'nascimento' => 'required|date',
+            'celular' => 'required|string|max:11',
             'user' => 'required|string|max:255|unique:users,user',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|confirmed|min:6',
@@ -42,6 +45,9 @@ class UsuarioController extends Controller
 
         User::create([
             'nome' => $request->nome,
+            'documento' => $request->documento,
+            'nascimento' => $request->nascimento,
+            'celular' => $request->celular,
             'user' => $request->user,
             'email' => $request->email,
             'password' => Hash::make($request->password), // Criptografando a senha

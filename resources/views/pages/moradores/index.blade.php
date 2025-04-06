@@ -2,26 +2,40 @@
 
 @section('page_dashboard')
 
-<header class="header-content">
-    <div class="d-flex justify-content-between align-items-center">
+<header class="header-content mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
         <h3>Cadastro de Moradores</h3>
-        <a href="{{route('create.morador')}}" class="btn text-white btn-dark">Cadastrar</a>
+
+        <div class="d-flex align-items-center">
+            {{-- Campo de busca --}}
+            <form method="GET" action="{{ route('index.morador') }}" class="d-flex me-2" style="width: 350px;">
+                <input type="text" name="search" class="form-control form-control-sm" placeholder="Buscar..." value="{{ request('search') }}">
+                <button class="btn btn-dark" type="submit">Buscar</button>
+            </form>
+
+            {{-- Botão cadastrar --}}
+            <a href="{{ route('create.morador') }}" class="btn btn-dark text-white">
+                Cadastrar
+            </a>
+        </div>
     </div>
 </header>
+
 <div class="">
     <div class="">
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">Foto</th>
                     <th scope="col">Nome</th>
-                    <th scope="col">RG ou CPF</th>
-                    <th scope="col">Aniversário</th>
-                    <th scope="col">Telefone Fixo</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Data de Nascimento</th>
                     <th scope="col">Celular</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Tipo Morador</th>
+                    <th scope="col">Apartamento</th>
+                    <th scope="col">Bloco</th>
+                    <th scope="col">Ramal</th>
+                    <th scope="col">Veículo</th>
+                    <th scope="col">Placa</th>
                     <th scope="col">Data Criação</th>
                     <th scope="col">Data Alteração</th>
                     <th scope="col">Ações</th>
@@ -31,16 +45,16 @@
                 @forelse ($moradores as $morador)
                     <tr>
                         <th scope="row">{{$morador->id}}</th>
-                        <td>
-                            <img src="{{$morador->image}}" alt="{{$morador->image}}" style="width: 50px; border-radius: 100px;">
-                        </td>
                         <td>{{$morador->nome}}</td>
                         <td>{{$morador->documento}}</td>
-                        <td>{{$morador->birthdate}}</td>
-                        <td>{{$morador->tel_fixo}}</td>
+                        <td>{{$morador->nascimento}}</td>
                         <td>{{$morador->celular}}</td>
                         <td>{{$morador->email}}</td>
-                        <td>{{$morador->tipo_morador}}</td>
+                        <td>{{$morador->apartamento}}</td>
+                        <td>{{$morador->bloco}}</td>
+                        <td>{{$morador->ramal}}</td>
+                        <td>{{$morador->veiculo}}</td>
+                        <td>{{$morador->placa}}</td>
                         <td>{{$morador->created_at}}</td>
                         <td>{{$morador->updated_at}}</td>
                         <td>
@@ -72,7 +86,9 @@
                         </td>
                     </tr>
                 @empty
-                    <p>Nenhum morador cadastrado</p>
+                    <tr>
+                        <td colspan="13" class="text-center">Nenhum morador cadastrado</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>
