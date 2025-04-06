@@ -16,7 +16,7 @@
                     <th scope="col">id</th>
                     <th scope="col">Nome</th>
                     <th scope="col">RG ou CPF</th>
-                    <th scope="col">Aniversário</th>
+                    <th scope="col">Data Nascimento</th>
                     <th scope="col">Telefone Fixo</th>
                     <th scope="col">Celular</th>
                     <th scope="col">Email</th>
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                 @empty
-                    <p>Nenhum morador cadastrado</p>
+                    <p>Nenhum usuário cadastrado</p>
                 @endforelse
             </tbody>
         </table>

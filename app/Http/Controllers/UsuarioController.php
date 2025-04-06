@@ -38,15 +38,6 @@ class UsuarioController extends Controller
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|confirmed|min:6',
             'acesso_tipo' => 'required|string',
-        ], [
-            
-            'acesso_tipo.required' => 'Por favor, escolha o tipo de acesso.',
-            'nome.required' => 'O nome completo é obrigatório.',
-            'user.required' => 'O nome de usuário é obrigatório.',
-            'email.required' => 'O email é obrigatório.',
-            'email.email' => 'Digite um email válido.',
-            'password.required' => 'A senha é obrigatória.',
-            'password.confirmed' => 'As senhas não conferem!',
         ]);
 
         User::create([

@@ -9,6 +9,8 @@
         "afatmustafa/blade-hugeicons": "^0.0.4",
         "blade-ui-kit/blade-icons": "^1.7",
         "guzzlehttp/guzzle": "^7.2",
+        "laravel-lang/common": "^6.7",
+        "laravel-lang/publisher": "^16.6",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8"

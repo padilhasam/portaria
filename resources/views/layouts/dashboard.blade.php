@@ -71,7 +71,7 @@
                     <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="22"
                     alt="" loading="lazy" />
                     @if (auth()->check())
-                        <p class="text-white m-3">{{ Auth::user()->nome }}</p>
+                        <p class="text-white m-3">{{ Auth::user()->user }}</p>
                     @endif
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">

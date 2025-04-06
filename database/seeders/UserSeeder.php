@@ -13,6 +13,16 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+
+        DB::table('users')->insert([
+            'nome' => 'Administrador',
+            'user'=>'Admin',
+            'email' => 'admin@admin.com.br',
+            'password' => Hash::make('admin1234'),
+            'acesso_tipo' =>'liberado',
+            'user_verified' => true
+        ]);
+
         DB::table('users')->insert([
             'nome' => 'Jeferson Padilha',
             'user'=>'Padilhajeff',
@@ -31,13 +41,5 @@ class UserSeeder extends Seeder
             'user_verified' => true
         ]);
 
-        DB::table('users')->insert([
-            'nome' => 'Klisman Gabriel',
-            'user'=>'Gabrielklisman',
-            'email' => 'klisgabriel@gmail.com',
-            'password' => Hash::make('klisman2024'),
-            'acesso_tipo' => 'liberado',
-            'user_verified' => true
-        ]);
     }
 }
