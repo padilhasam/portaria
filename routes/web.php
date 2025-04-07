@@ -7,7 +7,8 @@ use App\Http\Controllers\{
     RegistroController,
     UsuarioController,
     VisitanteController,
-    VeiculoController
+    VeiculoController,
+    AgendamentoController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -68,3 +69,14 @@ Route::controller(VeiculoController::class)->group(function(){
     Route::get('/veiculo/edit/{id}', 'edit')->name('edit.veiculo');
     Route::put('/veiculo/update/{id}', 'update')->name('update.veiculo');
 })->middleware(['auth'])->name('dashboard');
+
+Route::middleware(['auth'])->group(function() {
+    Route::controller(AgendamentoController::class)->group(function() {
+        Route::get('/agendamentos', 'index')->name('index.agendamento');
+        Route::get('/agendamentos/create', 'create')->name('create.agendamento');
+        Route::post('/agendamentos/store', 'store')->name('store.agendamento');
+        Route::get('/agendamentos/edit/{id}', 'edit')->name('edit.agendamento');
+        Route::put('/agendamentos/update/{id}', 'update')->name('update.agendamento');
+        Route::delete('/agendamentos/destroy/{id}', 'destroy')->name('destroy.agendamento');
+    });
+});

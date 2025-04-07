@@ -10,6 +10,32 @@
 </header>
 <div class="">
     <div class="">
+        <div class="row my-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Acessos</h5>
+                        <p class="card-text">{{ $totalAcessos }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Entradas Registradas</h5>
+                        <p class="card-text">{{ $entradasHoje }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Saídas Registradas</h5>
+                        <p class="card-text">{{ $saidasHoje }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <table class="table">
                 <thead>
                     <tr>

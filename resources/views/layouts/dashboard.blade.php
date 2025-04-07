@@ -21,7 +21,7 @@
                     <a href={{ route('index.veiculo') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-car-01') }} Veículos</a>
                     <a href={{ route('index.visitante') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-validation-approval') }} Visitantes</a>
                     <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-note-01') }} Histórico de Acessos</a>
-                    <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-calendar-01')}} Reservas</a>
+                    <a href="{{ route('index.agendamento') }}" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-calendar-01')}} Agendamentos</a>
                     <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-chatting-01')}} Ocorrências</a>
                     <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-repair') }} Serviços</a>
                     <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-package-delivered')}} Correspondências</a>

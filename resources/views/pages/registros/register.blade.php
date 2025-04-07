@@ -6,79 +6,73 @@
     $edit = isset($registro) ? true : false;
 @endphp
 
-<header class="header-content">
-    <div>
-        <h3>{{ $edit ? "Encerrar" : "Liberar" }} Acessos</h3>
-    </div>
+<header class="header-content mb-4">
+    <h3 class="fw-bold">{{ $edit ? "Encerrar" : "Liberar" }} Acessos</h3>
 </header>
-<div class="container">
-    <form action="{{ $edit ? route('update.registro', ['id' => $registro->id]) : route('store.registro') }}" method="POST">
-        @csrf
-        @if ($edit)
-            @method('PUT')
-        @endif
 
-        <div class="row">
-            <div id="container1" class="row">
-                <div class="col-sm-8 col-lg-10">
-                    <div class="form-group col-12">
-                        <label for="nome">Nome</label>
-                        <input name="nome" type="text" class="form-control" id="nome" placeholder="" value="">
+<div class="container">
+    <div class="card shadow-sm p-4">
+        <form action="{{ $edit ? route('update.registro', ['id' => $registro->id]) : route('store.registro') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @if ($edit)
+                @method('PUT')
+            @endif
+
+            <div class="row g-4">
+                <div class="col-lg-9">
+                    <div class="row g-3">
+                        @foreach ([
+                            ['nome', 'Nome'],
+                            ['documento', 'RG ou CNPJ'],
+                            ['empresa', 'Empresa'],
+                            ['veiculo', 'Veículo'],
+                            ['placa', 'Placa']
+                        ] as [$id, $label])
+                            <div class="col-12">
+                                <label for="{{ $id }}" class="form-label">{{ $label }}</label>
+                                <input type="text" class="form-control" id="{{ $id }}" name="{{ $id }}" value="{{ old($id, $registro->$id ?? '') }}">
+                            </div>
+                        @endforeach
                     </div>
-                    <div class="form-group col-12">
-                        <label for="documento">RG ou CNPJ</label>
-                        <input name="documento" type="text" class="form-control" id="documento" placeholder="" value="">
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="card shadow-sm p-3 text-center">
+                        <label class="form-label">Foto</label>
+                        <img id="photo" src="{{ Vite::asset('/resources/images/avatar.png') }}" class="img-fluid rounded mb-3" alt="Foto">
                         
-                    </div>
-                    <div class="form-group col-12">
-                        <label for="empresa">Empresa</label>
-                        <input name="empresa" type="text" class="form-control" id="empresa" placeholder="" value="">
-                    </div>
-                    <div class="form-group col-12">
-                        <label for="veiculo">Veículo</label>
-                        <input name="veiculo" type="text" class="form-control" id="veiculo" placeholder="" value="">
-                    </div>
-                    <div class="form-group col-12">
-                        <label for="placa">Placa</label>
-                        <input name="placa" type="text" class="form-control" id="placa" placeholder="" value="">
-                    </div>
-                </div>
-                <div class="form-group col-sm-4 col-lg-2">
-                    <label for="documento">Foto</label>
-                    <img id="photo" src="{{Vite::asset('/resources/images/avatar.png')}}" class="w-100">
-                    <div class="d-flex gap-2 mt-3">
-                        <div>
-                            <button type="button" class="btn btn-primary w-100" onclick="$('#user-image').click()">Arquivo</button>
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-outline-primary" onclick="$('#user-image').click()">Escolher Arquivo</button>
                             <input type="file" id="user-image" name="img" accept="image/*" class="d-none">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalCamera">Usar Câmera</button>
                         </div>
-                        <button type="button" id="switchFrontBtn" class="btn btn-primary w-100" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCamera">Camera</button>
                     </div>
                 </div>
+
+                <div class="col-12">
+                    <label for="tipo_morador" class="form-label">Tipo de Acesso</label>
+                    <select class="form-select" name="tipo_morador" id="tipo_morador">
+                        <option value="">Selecione...</option>
+                        @foreach (['visita', 'entrega', 'mudança', 'manutenção', 'abastecimento', 'limpeza', 'dedetização'] as $tipo)
+                            <option value="{{ $tipo }}" {{ old('tipo_morador', $registro->tipo_morador ?? '') == $tipo ? 'selected' : '' }}>
+                                {{ ucfirst($tipo) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label for="observacao" class="form-label">Observação</label>
+                    <input type="text" class="form-control" id="observacao" name="observacao" value="{{ old('observacao', $registro->observacao ?? '') }}">
+                </div>
+
+                <div class="col-12 d-flex gap-2 justify-content-end mt-4">
+                    <button type="submit" class="btn btn-dark">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
+                    <button type="reset" class="btn btn-outline-secondary">Limpar</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="tipo_morador">Tipo de Acesso</label>
-                <select class="form-control" name="tipo_morador" id="tipo_morador">
-                    <option value="">Selecione...</option>
-                    <option value="visita">Visita</option>
-                    <option value="entrega">Entrega</option>
-                    <option value="mudança">Mudança</option>
-                    <option value="manutenção" >Manutenção</option>
-                    <option value="abastecimento">Abastecimento</option>
-                    <option value="limpeza">Limpeza</option>
-                    <option value="dedetização">Dedetização</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="observacao">Observação</label>
-                <input name="observacao" type="text" class="form-control" id="observacao" placeholder="" value="">
-            </div>
-        </div>   
-        <div class="mt-4">
-            <button type="submit" class="btn btn-dark">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
-            <button type="reset" class="btn btn-dark">Limpar</button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
 @include('components.modal-camera')

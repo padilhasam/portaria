@@ -54,7 +54,9 @@
                         </td>
                     </tr>
                 @empty
-                    <p>Nenhum Visitante Criado</p>
+                    <tr>
+                        <td colspan="13" class="text-center">Nenhum morador cadastrado</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>

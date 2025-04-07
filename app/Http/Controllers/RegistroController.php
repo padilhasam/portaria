@@ -13,8 +13,14 @@ class RegistroController extends Controller
      */
     public function index()
     {
+
         $registros = Registro::all();
-        return view('pages.registros.index', compact('registros'));
+
+        $totalAcessos = $registros->count();
+        $entradasHoje = $registros->whereNotNull('entrada')->count();
+        $saidasHoje = $registros->whereNotNull('saida')->count();
+
+        return view('pages.registros.index', compact('registros', 'totalAcessos', 'entradasHoje', 'saidasHoje'));
     }
 
     /**
