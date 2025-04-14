@@ -70,13 +70,10 @@ Route::controller(VeiculoController::class)->group(function(){
     Route::put('/veiculo/update/{id}', 'update')->name('update.veiculo');
 })->middleware(['auth'])->name('dashboard');
 
-Route::middleware(['auth'])->group(function() {
-    Route::controller(AgendamentoController::class)->group(function() {
-        Route::get('/agendamentos', 'index')->name('index.agendamento');
-        Route::get('/agendamentos/create', 'create')->name('create.agendamento');
-        Route::post('/agendamentos/store', 'store')->name('store.agendamento');
-        Route::get('/agendamentos/edit/{id}', 'edit')->name('edit.agendamento');
-        Route::put('/agendamentos/update/{id}', 'update')->name('update.agendamento');
-        Route::delete('/agendamentos/destroy/{id}', 'destroy')->name('destroy.agendamento');
-    });
-});
+Route::controller(AgendamentoController::class)->group(function() {
+    Route::get('/agendamento', 'index')->name('index.agendamento');
+    Route::get('/agendamento/create', 'create')->name('create.agendamento');
+    Route::post('/agendamento/store', 'store')->name('store.agendamento');
+    Route::get('/agendamento/edit/{id}', 'edit')->name('edit.agendamento');
+    Route::put('/agendamento/update/{id}', 'update')->name('update.agendamento');
+})->middleware(['auth'])->name('dashboard');
