@@ -30,7 +30,7 @@ class VeiculoController extends Controller
      */
     public function store(Request $request)
     {
-        Veiculo::create($request->validate([
+        $veiculo = Veiculo::create($request->validate([
             'placa' => 'string|max:7',
             'tipo' => 'string|max:7',
             'marca' => 'string|max:50',
@@ -38,8 +38,14 @@ class VeiculoController extends Controller
             'cor' => 'string|max:15',
             'observacao' => 'string|max:10'
         ]));
-
-        return redirect(route('index.veiculo'));
+    
+        if ($request->query('from') === 'morador') {
+            return redirect()->route('create.morador', ['veiculo_id' => $veiculo->id])
+                            ->with('success', 'Veículo cadastrado com sucesso!');
+        }
+    
+        return redirect()->route('index.veiculo')
+                         ->with('success', 'Veículo cadastrado com sucesso!');
     }
 
     /**

@@ -118,7 +118,7 @@
             </select>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-dark">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
+            <button type="submit" class="btn btn-dark">{{ $edit ? "Alterar" : "Salvar" }}</button>
             <button type="reset" class="btn btn-dark">Limpar</button>
         </div>
     </form>

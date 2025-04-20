@@ -9,9 +9,7 @@ class Morador extends Model
 {
     use HasFactory;
 
-    
     protected $table = 'moradores';
-
 
     /**
      * The attributes that are mass assignable.
@@ -20,14 +18,30 @@ class Morador extends Model
      */
     protected $fillable = [
         'id_apartamento',
+        'bloco',
         'nome',
         'documento',
-        'birthdate',
+        'nascimento',
         'tel_fixo',
         'celular',
         'email',
         'tipo_morador',
-        'image'
+        'id_veiculo',  // Adicionado caso o morador tenha um veículo
     ];
 
+    /**
+     * Relacionamento com o modelo Veiculo
+     */
+    public function veiculo()
+    {
+        return $this->belongsTo(Veiculo::class, 'id_veiculo');
+    }
+
+    /**
+     * Relacionamento com o modelo Apartamento
+     */
+    public function apartamento()
+    {
+        return $this->belongsTo(Apartamento::class, 'id_apartamento');
+    }
 }

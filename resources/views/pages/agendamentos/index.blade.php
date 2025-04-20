@@ -20,6 +20,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th scope="col">Morador</th>
                         <th scope="col">Área</th>
                         <th scope="col">Data</th>
                         <th scope="col">Horário</th>

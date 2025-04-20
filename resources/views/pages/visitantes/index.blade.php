@@ -55,7 +55,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="13" class="text-center">Nenhum morador cadastrado</td>
+                        <td colspan="13" class="text-center">Nenhum visitante cadastrado</td>
                     </tr>
                 @endforelse
             </tbody>

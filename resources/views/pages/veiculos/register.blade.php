@@ -12,7 +12,7 @@
     </div>
 </header>
 <div class="container">
-    <form action="{{ $edit ? route('update.veiculo', ['id' => $veiculo->id]) : route('store.veiculo') }}" method="POST">
+    <form action="{{ $edit ? route('update.veiculo', ['id' => $veiculo->id, 'from' => request()->query('from')]) : route('store.veiculo', ['from' => request()->query('from')]) }}" method="POST">
         @csrf
         @if ($edit)
             @method('PUT')

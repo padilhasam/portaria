@@ -2,7 +2,7 @@
 
 @section('page_dashboard')
 
-<header class="header-content mb-4">
+<header class="header-content">
     <div class="d-flex justify-content-between align-items-center flex-wrap">
         <h3>Cadastro de Moradores</h3>
 

@@ -56,7 +56,9 @@
                         </td>
                     </tr>
                 @empty
-                    <p>Nenhum veículo criado</p>
+                <tr>
+                    <td colspan="13" class="text-center">Nenhum veículo cadastrado</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

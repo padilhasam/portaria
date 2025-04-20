@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agendamento;
+use App\Models\Morador;
 use Illuminate\Http\Request;
 
 class AgendamentoController extends Controller
@@ -10,31 +11,56 @@ class AgendamentoController extends Controller
     // Listar todos os agendamentos
     public function index()
     {
-        $agendamentos = Agendamento::latest()->paginate(10);
+        $agendamentos = Agendamento::with('morador')->latest()->paginate(10);
         return view('pages.agendamentos.index', compact('agendamentos'));
     }
 
     // Mostrar formulário de criação
     public function create()
     {
-        return view('pages.agendamentos.register');
+        $moradores = Morador::all();
+        return view('pages.agendamentos.register', compact('moradores'));
     }
 
     // Salvar novo agendamento
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'nome_area' => 'required|string|max:255',
-            'data_agendamento' => 'required|date|after:today',
+            'data_agendamento' => 'required|date',
             'horario_inicio' => 'required',
             'horario_fim' => 'required|after:horario_inicio',
-            'observacoes' => 'nullable|string|max:500',
+            'observacoes' => 'string|max:255',
         ]);
-
-        Agendamento::create($validated);
-
-        return redirect()->route('index.agendamento')
-            ->with('success', 'Agendamento criado com sucesso!');
+        
+        // Verificar conflito
+        $conflito = Agendamento::where('nome_area', $request->nome_area)
+            ->where('data_agendamento', $request->data_agendamento)
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('horario_inicio', [$request->horario_inicio, $request->horario_fim])
+                        ->orWhereBetween('horario_fim', [$request->horario_inicio, $request->horario_fim])
+                        ->orWhere(function ($query) use ($request) {
+                            $query->where('horario_inicio', '<=', $request->horario_inicio)
+                                ->where('horario_fim', '>=', $request->horario_fim);
+                        });
+            })
+            ->exists();
+    
+        if ($conflito) {
+            return back()->withErrors(['Conflito de agendamento: já existe um agendamento para essa área nesse horário.'])->withInput();
+        }
+    
+        // Sem conflito: criar agendamento
+        Agendamento::create([
+            'usuario_id' => auth()->id(),
+            'nome_area' => $request->nome_area,
+            'data_agendamento' => $request->data_agendamento,
+            'horario_inicio' => $request->horario_inicio,
+            'horario_fim' => $request->horario_fim,
+            'observacoes' => $request->observacoes,
+        ]);
+        
+        return redirect()->route('index.agendamento')->with('success', 'Agendamento realizado com sucesso.');    
     }
 
     // Mostrar formulário de edição

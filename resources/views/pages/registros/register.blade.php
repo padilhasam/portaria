@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="col-12 d-flex gap-2 justify-content-end mt-4">
-                    <button type="submit" class="btn btn-dark">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
+                    <button type="submit" class="btn btn-dark">{{ $edit ? "Alterar" : "Salvar" }}</button>
                     <button type="reset" class="btn btn-outline-secondary">Limpar</button>
                 </div>
             </div>

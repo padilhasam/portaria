@@ -22,7 +22,7 @@
     </div>
 </header>
 <div class="container">
-    <form action="{{ $edit ? route('update.apartamento', ['id' => $apartamento->id]) : route('store.apartamento') }}" method="POST">
+    <form action="{{ $edit ? route('update.apartamento', ['id' => $apartamento->id, 'from' => request()->query('from')]) : route('store.apartamento', ['from' => request()->query('from')]) }}" method="POST">
         @csrf
         @if ($edit)
             @method('PUT')
@@ -55,7 +55,7 @@
             </select>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-dark">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
+            <button type="submit" class="btn btn-dark">{{ $edit ? "Alterar" : "Salvar" }}</button>
             <button type="reset" class="btn btn-dark">Limpar</button>
         </div>
     </form>
