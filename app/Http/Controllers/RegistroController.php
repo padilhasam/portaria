@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Registro;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class RegistroController extends Controller
 {
@@ -13,12 +14,12 @@ class RegistroController extends Controller
      */
     public function index()
     {
+        $registros = Registro::orderBy('entrada', 'desc')->paginate(10);
 
-        $registros = Registro::all();
-
-        $totalAcessos = $registros->count();
-        $entradasHoje = $registros->whereNotNull('entrada')->count();
-        $saidasHoje = $registros->whereNotNull('saida')->count();
+        // Totais calculados com base em todos os registros
+        $totalAcessos = Registro::count();
+        $entradasHoje = Registro::whereDate('entrada', Carbon::today())->count();
+        $saidasHoje = Registro::whereDate('saida', Carbon::today())->count();
 
         return view('pages.registros.index', compact('registros', 'totalAcessos', 'entradasHoje', 'saidasHoje'));
     }
@@ -36,27 +37,28 @@ class RegistroController extends Controller
      */
     public function store(Request $request)
     {
-        Registro::create($request->validate([
-            'nome' => 'string|max:50',
-            'documento' => 'string|max:13',
-            'empresa' => 'string|max:12',
-            'veiculo' => 'string|max:12',
-            'placa' => 'string|max:12',
-            'foto' => 'integer|max:50',
-            'tipo_acesso' => 'string|max:40',
-            'local_descricao' => 'string|max:40',
-            'observacao' => 'string|max:500'
-        ]));
-
-        return redirect(route('index.registro'));
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        $data = $request->validate([
+            'nome' => 'nullable|string|max:50',
+            'documento' => 'nullable|string|max:14',
+            'empresa' => 'nullable|string|max:30',
+            'veiculo' => 'nullable|string|max:30',
+            'placa' => 'nullable|string|max:12',
+            'tipo_morador' => 'nullable|string|max:40',
+            'observacoes' => 'nullable|string|max:500',
+            'img' => 'nullable|image|max:2048'
+        ]);
+    
+        if ($request->hasFile('img')) {
+            $caminho = $request->file('img')->store('registros', 'public');
+            $data['foto'] = Storage::url($caminho); // retorna o caminho acessível via URL
+        }
+    
+        // Define a entrada atual
+        $data['entrada'] = now();
+    
+        Registro::create($data);
+    
+        return redirect()->route('index.registro')->with('success', 'Registro criado com sucesso!');
     }
 
     /**
@@ -64,7 +66,8 @@ class RegistroController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $registro = Registro::findOrFail($id);
+        return view('pages.registros.register', compact('registro'));
     }
 
     /**
@@ -72,7 +75,27 @@ class RegistroController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $registro = Registro::findOrFail($id);
+
+        $data = $request->validate([
+            'nome' => 'nullable|string|max:50',
+            'documento' => 'nullable|string|max:13',
+            'empresa' => 'nullable|string|max:30',
+            'veiculo' => 'nullable|string|max:30',
+            'placa' => 'nullable|string|max:12',
+            'tipo_morador' => 'nullable|string|max:40',
+            'observacoes' => 'nullable|string|max:500',
+            'img' => 'nullable|image|max:2048'
+        ]);
+
+        if ($request->hasFile('img')) {
+            $caminho = $request->file('img')->store('registros', 'public');
+            $data['foto'] = Storage::url($caminho);
+        }
+
+        $registro->update($data);
+
+        return redirect()->route('index.registro')->with('success', 'Registro atualizado com sucesso!');
     }
 
     /**
@@ -80,6 +103,24 @@ class RegistroController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $registro = Registro::findOrFail($id);
+        $registro->delete();
+
+        return redirect()->route('index.registro')->with('success', 'Registro excluído com sucesso!');
+    }
+
+    /**
+     * Marca a saída atual no registro.
+     */
+    public function registrarSaida($id)
+    {
+        $registro = Registro::findOrFail($id);
+
+        if (!$registro->saida) {
+            $registro->saida = now();
+            $registro->save();
+        }
+
+        return redirect()->back()->with('success', 'Saída registrada com sucesso!');
     }
 }

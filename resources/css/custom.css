@@ -1,0 +1,30 @@
+.toggleButton {
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.toggleButton.ligado {
+    color: #fff;
+    background-color: #198754; /* verde bootstrap */
+}
+
+.toggleButton.desligado {
+    color: #fff;
+    background-color: #dc3545; /* vermelho bootstrap */
+}
+/* Animação de clique (pulse) */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 0.3s ease-in-out;
+}

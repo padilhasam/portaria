@@ -15,17 +15,17 @@
                 </a>
                 @if (auth()->check())
                     <a href={{ route('index.registro') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-folder-security') }} Controle de Acessos</a>
-                    <a href={{ route('index.usuario') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-user-shield-02') }} Usuários</a>
-                    <a href={{ route('index.apartamento') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-house-01') }} Apartamentos</a>
-                    <a href={{ route('index.morador') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-user-multiple') }} Moradores</a> 
-                    <a href={{ route('index.veiculo') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-car-01') }} Veículos</a>
                     <a href={{ route('index.visitante') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-validation-approval') }} Visitantes</a>
-                    <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-note-01') }} Histórico de Acessos</a>
+                    <a href={{ route('index.morador') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-user-multiple') }} Moradores</a> 
+                    <a href={{ route('index.apartamento') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-house-01') }} Apartamentos</a>
+                    <a href={{ route('index.veiculo') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-car-01') }} Veículos</a>
+                    <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-package-delivered')}} Correspondências</a>
+                    <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-repair') }} Serviços</a>
                     <a href="{{ route('index.agendamento') }}" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-calendar-01')}} Agendamentos</a>
                     <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-chatting-01')}} Ocorrências</a>
-                    <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-repair') }} Serviços</a>
-                    <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-package-delivered')}} Correspondências</a>
-                    <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-notification-01')}} Notificações</a>
+                    <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-note-01') }} Histórico de Acessos</a>
+                    <a href={{ route('index.usuario') }} class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-user-shield-02') }} Usuários</a>
+                    <!--<a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-notification-01')}} Notificações</a>-->
                     <a href="#" class="list-group-item list-group-item-action py-2">{{ svg('hugeicons-settings-01')}} Configurações
                     </a>
                 @endif
@@ -98,6 +98,9 @@
     </div>
 </main>
 <!--Main layout-->
+
+<!-- Scripts compilados pelo Vite -->
+@vite(['resources/js/app.js'])
    
 @endsection
 

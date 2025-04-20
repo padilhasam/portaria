@@ -117,11 +117,4 @@
     </form>
 </div>
 
-@vite([
-    'resources/js/mascara.js',
-    'resources/js/validarCPF.js',
-    'resources/js/preencherCampos.js',
-    'resources/js/tom-select-init.js'
-])
-
 @endsection

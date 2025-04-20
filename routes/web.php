@@ -34,9 +34,11 @@ Route::controller(UsuarioController::class)->group(function(){
 Route::controller(RegistroController::class)->group(function(){
     Route::get('/registro', 'index')->name('index.registro');
     Route::get('/registro/create', 'create')->name('create.registro');
-    Route::post('/registro/store', 'store')->name('store.registro');
-    Route::get('/registro/edit/{id}', 'edit')->name('edit.registro');
-    Route::put('/registro/update/{id}', 'update')->name('update.registro');
+    Route::post('/registro', 'store')->name('store.registro');
+    Route::get('/registro/{id}/edit', 'edit')->name('edit.registro');
+    Route::put('/registro/{id}', 'update')->name('update.registro');
+    Route::delete('/registro/{id}', 'destroy')->name('destroy.registro');
+    Route::post('/registro/{id}/saida', 'registrarSaida')->name('saida.registro');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(ApartamentoController::class)->group(function(){

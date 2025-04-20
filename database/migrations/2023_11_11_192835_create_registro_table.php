@@ -13,18 +13,16 @@ return new class extends Migration
     {
         Schema::create('registros', function (Blueprint $table) {
             $table->id();
-            $table->string('nome')->nullable(false);
-            $table->string('foto')->nullable(true);
-            $table->string('documento')->nullable(false);
-            $table->string('empresa')->nullable(true);
-            $table->string('veiculo')->nullable(true);
-            $table->string('placa')->nullable(true);
-            $table->string('tipo_morador')->nullable(true);
-            $table->string('tipo_acesso');
-            $table->string('local_descricao');
-            $table->string('observacao');
-            $table->string('nome_porteiro_entrada')->nullable(true);
-            $table->string('nome_porteiro_saida')->nullable(true);
+            $table->string('nome')->nullable();
+            $table->string('documento')->nullable();
+            $table->string('empresa')->nullable();
+            $table->string('veiculo')->nullable();
+            $table->string('placa')->nullable();
+            $table->string('foto')->nullable();
+            $table->string('tipo_morador')->nullable();
+            $table->text('observacoes')->nullable();
+            $table->timestamp('entrada')->nullable();
+            $table->timestamp('saida')->nullable();
             $table->timestamps();
         });
     }

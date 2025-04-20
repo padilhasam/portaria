@@ -19,16 +19,14 @@ class Registro extends Model
      */
     protected $fillable = [
         'nome',
-        'foto',
         'documento',
         'empresa',
         'veiculo',
         'placa',
+        'foto', // nome da imagem salva
         'tipo_morador',
-        'tipo_acesso',
-        'local_descricao',
-        'observacao',
-        'nome_porteiro_entrada',
-        'nome_porteiro_saida',
+        'observacoes',
+        'entrada',
+        'saida'
     ];
 }
