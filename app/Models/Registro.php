@@ -24,7 +24,7 @@ class Registro extends Model
         'veiculo',
         'placa',
         'foto', // nome da imagem salva
-        'tipo_morador',
+        'tipo_acesso',
         'observacoes',
         'entrada',
         'saida'

@@ -38,27 +38,37 @@ class RegistroController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nome' => 'nullable|string|max:50',
-            'documento' => 'nullable|string|max:14',
-            'empresa' => 'nullable|string|max:30',
+            'nome' => 'required|string|max:50',
+            'documento' => 'required|string|max:14',
+            'empresa' => 'required|string|max:30',
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:12',
-            'tipo_morador' => 'nullable|string|max:40',
-            'observacoes' => 'nullable|string|max:500',
-            'img' => 'nullable|image|max:2048'
+            'tipo_acesso' => 'required|string|max:40',
+            'observacoes' => 'required|string|max:500',
+            'img' => 'required|image|max:2048'
         ]);
     
         if ($request->hasFile('img')) {
             $caminho = $request->file('img')->store('registros', 'public');
             $data['foto'] = Storage::url($caminho); // retorna o caminho acessível via URL
+        } elseif ($request->has('img') && is_string($request->input('img'))) {
+            $file = $request->file('img');
+            if ($file && $file->isValid()) {
+                $caminho = $file->store('registros', 'public');
+                $data['foto'] = Storage::url($caminho);
+            }
         }
     
         // Define a entrada atual
         $data['entrada'] = now();
     
-        Registro::create($data);
+        $registro = Registro::create($data);
     
-        return redirect()->route('index.registro')->with('success', 'Registro criado com sucesso!');
+        if ($registro) {
+            return response()->json(['success' => true, 'message' => 'Registro criado com sucesso!']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Erro ao criar o registro.']);
+        }
     }
 
     /**
@@ -78,14 +88,14 @@ class RegistroController extends Controller
         $registro = Registro::findOrFail($id);
 
         $data = $request->validate([
-            'nome' => 'nullable|string|max:50',
-            'documento' => 'nullable|string|max:13',
-            'empresa' => 'nullable|string|max:30',
+            'nome' => 'required|string|max:50',
+            'documento' => 'required|string|max:14',
+            'empresa' => 'required|string|max:30',
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:12',
-            'tipo_morador' => 'nullable|string|max:40',
-            'observacoes' => 'nullable|string|max:500',
-            'img' => 'nullable|image|max:2048'
+            'tipo_acesso' => 'required|string|max:40',
+            'observacoes' => 'required|string|max:500',
+            'img' => 'required|image|max:2048'
         ]);
 
         if ($request->hasFile('img')) {
