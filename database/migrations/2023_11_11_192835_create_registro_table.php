@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('veiculo')->nullable();
             $table->string('placa')->nullable();
             $table->string('foto')->nullable();
-            $table->string('tipo_morador')->nullable();
+            $table->string('tipo_acesso')->nullable();
             $table->text('observacoes')->nullable();
             $table->timestamp('entrada')->nullable();
             $table->timestamp('saida')->nullable();
