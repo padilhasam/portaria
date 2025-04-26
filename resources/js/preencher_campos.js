@@ -1,27 +1,51 @@
-$(document).ready(function () {
-    // Preenche bloco automaticamente ao selecionar apartamento
-    $('#id_apartamento').on('change', function () {
-        let id = $(this).val();
+document.addEventListener('DOMContentLoaded', function () {
+    // Função para buscar e preencher o bloco
+    const apartamentoSelect = document.getElementById('id_apartamento');
+    if (apartamentoSelect) {
+        apartamentoSelect.addEventListener('change', function () {
+            const id = this.value;
 
-        if (id) {
-            $.get('/apartamento/' + id + '/bloco', function (data) {
-                $('#bloco').val(data.bloco ?? '');
-            });
-        } else {
-            $('#bloco').val('');
-        }
-    });
+            if (id) {
+                fetch(`/apartamento/${id}/bloco`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const blocoInput = document.getElementById('bloco');
+                        if (blocoInput) {
+                            blocoInput.value = data.bloco ?? '';
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar bloco:', error));
+            } else {
+                const blocoInput = document.getElementById('bloco');
+                if (blocoInput) {
+                    blocoInput.value = '';
+                }
+            }
+        });
+    }
 
-    // Preenche placa automaticamente ao selecionar veículo
-    $('#id_veiculo').on('change', function () {
-        let id = $(this).val();
+    // Função para buscar e preencher a placa
+    const veiculoSelect = document.getElementById('id_veiculo');
+    if (veiculoSelect) {
+        veiculoSelect.addEventListener('change', function () {
+            const id = this.value;
 
-        if (id) {
-            $.get('/veiculo/' + id + '/placa', function (data) {
-                $('#placa').val(data.placa ?? '');
-            });
-        } else {
-            $('#placa').val('');
-        }
-    });
+            if (id) {
+                fetch(`/veiculo/${id}/placa`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const placaInput = document.getElementById('placa');
+                        if (placaInput) {
+                            placaInput.value = data.placa ?? '';
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar placa:', error));
+            } else {
+                const placaInput = document.getElementById('placa');
+                if (placaInput) {
+                    placaInput.value = '';
+                }
+            }
+        });
+    }
 });

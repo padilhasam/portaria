@@ -2,6 +2,8 @@ import $ from 'jquery';
 window.$ = $;
 window.jQuery = $;
 
+import 'egalink-toasty.js'
+import './alerts';
 import './bootstrap';
 import './grafico-acessos';
 import './mascara';

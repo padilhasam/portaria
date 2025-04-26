@@ -77,7 +77,6 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                     <li>
                     @if (auth()->check())
-                        {{ session()->get('success') }}
                         <a href={{ route('login.destroy') }} class="btn w-100">{{ svg('hugeicons-logout-04') }} Deslogar</a>
                     @endif
                     </li>

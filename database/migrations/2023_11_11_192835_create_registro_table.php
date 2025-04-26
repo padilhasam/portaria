@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('registros', function (Blueprint $table) {
             $table->id();
-            $table->string('nome')->nullable();
-            $table->string('documento')->nullable();
+            $table->string('nome');
+            $table->string('documento');
             $table->string('empresa')->nullable();
             $table->string('veiculo')->nullable();
             $table->string('placa')->nullable();
-            $table->string('foto')->nullable();
-            $table->string('tipo_acesso')->nullable();
+            $table->string('foto');
+            $table->string('tipo_acesso');
             $table->text('observacoes')->nullable();
             $table->timestamp('entrada')->nullable();
             $table->timestamp('saida')->nullable();

@@ -15,6 +15,7 @@ class RegistroController extends Controller
     public function index()
     {
         $registros = Registro::orderBy('entrada', 'desc')->paginate(10);
+        //$registros = Registro::orderBy('entrada', 'asc')->paginate(10);
 
         // Totais calculados com base em todos os registros
         $totalAcessos = Registro::count();
@@ -40,7 +41,7 @@ class RegistroController extends Controller
         $data = $request->validate([
             'nome' => 'required|string|max:50',
             'documento' => 'required|string|max:14',
-            'empresa' => 'required|string|max:30',
+            'empresa' => 'nullable|string|max:30',
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:12',
             'tipo_acesso' => 'required|string|max:40',
@@ -65,9 +66,9 @@ class RegistroController extends Controller
         $registro = Registro::create($data);
     
         if ($registro) {
-            return response()->json(['success' => true, 'message' => 'Registro criado com sucesso!']);
+            return redirect(route('index.registro'))->with(['success' => true, 'message' => 'Entrada registrada com sucesso!']);
         } else {
-            return response()->json(['success' => false, 'message' => 'Erro ao criar o registro.']);
+            return redirect(route('index.registro'))->with(['success' => false, 'message' => 'Erro ao registrar entrada!']);
         }
     }
 
@@ -90,7 +91,7 @@ class RegistroController extends Controller
         $data = $request->validate([
             'nome' => 'required|string|max:50',
             'documento' => 'required|string|max:14',
-            'empresa' => 'required|string|max:30',
+            'empresa' => 'nullable|string|max:30',
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:12',
             'tipo_acesso' => 'required|string|max:40',
@@ -105,7 +106,7 @@ class RegistroController extends Controller
 
         $registro->update($data);
 
-        return redirect()->route('index.registro')->with('success', 'Registro atualizado com sucesso!');
+        return redirect()->route('index.registro')->with(['success', 'Registro atualizado com sucesso!', 'message' => 'Atualizado com sucesso!']);
     }
 
     /**
@@ -131,6 +132,6 @@ class RegistroController extends Controller
             $registro->save();
         }
 
-        return redirect()->back()->with('success', 'Saída registrada com sucesso!');
+        return redirect(route('index.registro'))->with('success', 'Saída registrada com sucesso!');
     }
 }

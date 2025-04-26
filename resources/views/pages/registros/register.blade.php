@@ -7,20 +7,27 @@
 @endphp
 
 @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
+    <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
 @endif
 
 @if(session('error'))
-    <div class="alert alert-danger">{{ session('error') }}</div>
+    <div id="error-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
 @endif
 
 @if($errors->any())
-    <div class="alert alert-danger">
+    <div id="validation-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
         <ul class="mb-0">
             @foreach($errors->all() as $erro)
                 <li>{{ $erro }}</li>
             @endforeach
         </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
     </div>
 @endif
 
