@@ -40,23 +40,24 @@ class RegistroController extends Controller
     {
         $data = $request->validate([
             'nome' => 'required|string|max:50',
-            'documento' => 'required|string|max:14',
-            'empresa' => 'nullable|string|max:30',
+            'documento' => 'required|string|min:11|max:14',
+            'empresa' => 'nullable|string|max:50',
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:12',
             'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'required|string|max:500',
-            'img' => 'required|image|max:2048'
+            'img' => 'nullable|image|max:2048'
         ]);
+
     
         if ($request->hasFile('img')) {
             $caminho = $request->file('img')->store('registros', 'public');
-            $data['foto'] = Storage::url($caminho); // retorna o caminho acessível via URL
+            $data['img'] = Storage::url($caminho); // retorna o caminho acessível via URL
         } elseif ($request->has('img') && is_string($request->input('img'))) {
             $file = $request->file('img');
             if ($file && $file->isValid()) {
                 $caminho = $file->store('registros', 'public');
-                $data['foto'] = Storage::url($caminho);
+                $data['img'] = Storage::url($caminho);
             }
         }
     
@@ -90,18 +91,18 @@ class RegistroController extends Controller
 
         $data = $request->validate([
             'nome' => 'required|string|max:50',
-            'documento' => 'required|string|max:14',
-            'empresa' => 'nullable|string|max:30',
+            'documento' => 'required|string|min:11|max:14',
+            'empresa' => 'nullable|string|max:50',
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:12',
             'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'required|string|max:500',
-            'img' => 'required|image|max:2048'
+            'img' => 'nullable|image|max:2048'
         ]);
 
         if ($request->hasFile('img')) {
             $caminho = $request->file('img')->store('registros', 'public');
-            $data['foto'] = Storage::url($caminho);
+            $data['img'] = Storage::url($caminho);
         }
 
         $registro->update($data);

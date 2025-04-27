@@ -82,11 +82,11 @@
                 <div class="col-lg-3">
                     <div class="card shadow-sm p-3 text-center">
                         <label class="form-label">Foto</label>
-                        <img id="photo" src="{{ $edit && $registro->foto ? $registro->foto : Vite::asset('/resources/images/avatar.png') }}" class="img-fluid rounded mb-3" alt="Foto">
+                        <img id="photo" src="{{ $edit && $registro->img ? $registro->img : Vite::asset('/resources/images/avatar.png') }}" class="img-fluid rounded mb-3" alt="Foto">
 
                         <div class="d-grid gap-2">
                             <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('user-image').click()">Escolher Arquivo</button>
-                            <input type="file" id="user-image" name="img" accept="image/*" class="d-none" onchange="previewImage(this)">
+                            <input type="file" id="user-image" name="img" accept="image/*" class="d-none" required>
                             <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalCamera">Usar Câmera</button>
                         </div>
                     </div>
@@ -97,29 +97,10 @@
                     <button type="reset" class="btn btn-danger">Limpar</button>
                 </div>
             </div>
+            
+            @include('components.modal-camera')
         </form>
     </div>
 </div>
-
-@include('components.modal-camera')
-
-<script>
-   document.addEventListener('DOMContentLoaded', function () {
-    const userImageInput = document.getElementById('user-image');
-    const photoPreview = document.getElementById('photo');
-
-    if (userImageInput && photoPreview) {
-        userImageInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    photoPreview.src = e.target.result;
-                }
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-    }
-});
-</script>
 
 @endsection

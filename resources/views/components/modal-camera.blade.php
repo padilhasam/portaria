@@ -24,6 +24,7 @@
     const captureButton = document.getElementById('capture');
     const savePhotoButton = document.getElementById('savePhoto');
     const modalCamera = document.getElementById('modalCamera'); // Obtém a referência do modal
+    const userImageInput = document.getElementById('user-image');
     let stream;
     let capturedImageBlob = null;
     const photoPreview = document.getElementById('photo'); // Certifique-se de que este elemento existe no seu formulário
@@ -66,60 +67,38 @@
         savePhotoButton.disabled = false;
     });
 
-    // Quando salvar a foto, obter a imagem do canvas como Blob e exibir no preview
     savePhotoButton.addEventListener('click', function () {
         canvas.toBlob(function(blob) {
             capturedImageBlob = blob;
+
             if (photoPreview) {
                 photoPreview.src = URL.createObjectURL(capturedImageBlob);
+            }
+
+            if (capturedImageBlob) {
+                const fileName = `captured_${Date.now()}.png`;
+                const file = new File([capturedImageBlob], fileName, { type: 'image/png' });
+
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                userImageInput.files = dataTransfer.files;
             }
         }, 'image/png');
     });
 
-    // Adiciona um evento de change ao input de arquivo para resetar a capturedImageBlob
-    const userImageInput = document.getElementById('user-image');
-    if (userImageInput) {
-        userImageInput.addEventListener('change', function() {
-            capturedImageBlob = null;
-            if (photoPreview && this.files && this.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    photoPreview.src = e.target.result;
-                }
-                reader.readAsDataURL(this.files[0]);
-            } else if (photoPreview && !capturedImageBlob) {
-                photoPreview.src = "{{ Vite::asset('/resources/images/avatar.png') }}"; // Ou a imagem padrão
+    // Se o usuário escolher arquivo manualmente
+    userImageInput.addEventListener('change', function() {
+        capturedImageBlob = null; // reseta foto capturada da câmera, se tiver
+
+        if (photoPreview && this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                photoPreview.src = e.target.result;
             }
-        });
-    }
-
-    // Obtém a referência do formulário (certifique-se de que o ID 'registroForm' está correto no seu formulário)
-    const registroForm = document.getElementById('registroForm');
-    if (registroForm) {
-        registroForm.addEventListener('submit', function(event) {
-            if (capturedImageBlob) {
-                event.preventDefault(); // Impede o envio padrão
-
-                const formData = new FormData(this);
-                formData.append('img', capturedImageBlob, 'camera_image.png');
-
-                fetch(this.action, {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => response.json()) // Ou response.text() dependendo da sua API
-                .then(data => {
-                    console.log('Sucesso:', data);
-                    window.location.href = "{{ route('index.registro') }}"; // Redireciona após o sucesso
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    alert('Ocorreu um erro ao salvar o registro.');
-                });
-            }
-            // Se capturedImageBlob é null, o envio padrão ocorrerá, permitindo o envio do arquivo selecionado.
-            // A validação 'required' no backend cuidará de garantir que alguma imagem seja enviada.
-        });
-    }
+            reader.readAsDataURL(this.files[0]);
+        } else if (photoPreview) {
+            photoPreview.src = "{{ Vite::asset('/resources/images/avatar.png') }}"; // imagem padrão
+        }
+    });
 });
 </script>

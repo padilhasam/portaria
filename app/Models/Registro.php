@@ -23,7 +23,7 @@ class Registro extends Model
         'empresa',
         'veiculo',
         'placa',
-        'foto', // nome da imagem salva
+        'img', // nome da imagem salva
         'tipo_acesso',
         'observacoes',
         'entrada',

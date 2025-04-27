@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {{-- Ícone Favicon--}}
-    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ Vite::asset('resources/images/favicon.ico') }}" type="image/x-icon"> 
 
     {{-- Título dinâmico com fallback padrão --}}
     <title>@yield('title', 'Secure Access')</title>

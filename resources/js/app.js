@@ -9,6 +9,5 @@ import './grafico-acessos';
 import './mascara';
 import './preencher_campos';
 import './registro';
-import './saudacao';
 import './tom-select-init';
 import './validarCPF';

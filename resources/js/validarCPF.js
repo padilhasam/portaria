@@ -15,14 +15,23 @@ function validarCPF(cpf) {
     return resto === parseInt(cpf.charAt(10));
 }
 
-$(document).ready(function () {
-    $("#documento").on("blur", function () {
-        const cpf = $(this).val();
+document.addEventListener('DOMContentLoaded', function () {
+    const documentoInput = document.getElementById('documento');
+    const cpfError = document.getElementById('cpf-error');
+
+    if (!documentoInput) return; // Não faz nada se não tiver o input
+    if (!cpfError) return; // Não faz nada se não tiver a mensagem de erro
+
+    documentoInput.addEventListener('blur', function () {
+        const cpf = documentoInput.value;
         const isValid = validarCPF(cpf);
+
         if (!isValid) {
-            $("#cpf-error").removeClass("hidden").show();
+            cpfError.classList.remove('hidden');
+            cpfError.style.display = 'block';
         } else {
-            $("#cpf-error").addClass("hidden").hide();
+            cpfError.classList.add('hidden');
+            cpfError.style.display = 'none';
         }
     });
 });
