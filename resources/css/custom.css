@@ -89,3 +89,31 @@
     z-index: 1050;                       /* sobrepõe outros elementos */
     min-width: 150px;                    /* largura mínima */
 }
+
+/* Cor dos botões de paginação */
+
+/* Altera a cor de fundo dos botões de paginação */
+.pagination .page-link {
+    background-color: #ffffff; /* azul */
+    color: #1e2125; /* texto branco */
+    border-color: #ffffff;
+}
+
+/* Quando o botão está ativo */
+.pagination .page-item.active .page-link {
+    background-color: #5C636A; /* roxo */
+    border-color: #ffffff;
+    color:#ffffff;
+}
+
+/* Quando passa o mouse */
+.pagination .page-link:hover {
+    background-color: #1e2125;
+    color: #fff;
+}
+
+/* Hover do Dropdown de ações*/
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: transparent !important;
+}

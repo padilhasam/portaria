@@ -9,8 +9,24 @@ class Visitante extends Model
 {
     use HasFactory;
 
-    
     protected $table = 'visitantes';
 
-    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'nome',
+        'documento',
+        'empresa',
+        'veiculo',
+        'placa',
+        'image', // nome da imagem salva
+        'tipo_acesso',
+        'observacoes',
+        'entrada',
+        'saida'
+    ];
+
 }

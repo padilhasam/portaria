@@ -76,3 +76,104 @@ body {
     font-size: 18px;
     font-weight: bold;
 }
+
+/* Estilos para o Sidebar */
+#sidebarMenu {
+    background-color: #f8f9fa; /* Um cinza bem claro */
+    border-right: 1px solid #eee;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Sombra sutil */
+}
+
+#sidebarMenu .list-group-item {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    color: #333;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+#sidebarMenu .list-group-item:hover {
+    background-color: #e9ecef; /* Um cinza um pouco mais escuro no hover */
+    color: #007bff; /* Cor primária ao passar o mouse */
+}
+
+#sidebarMenu .list-group-item.active {
+    background-color: #007bff; /* Cor primária para o item ativo */
+    color: #fff;
+    border-color: #007bff;
+}
+
+#sidebarMenu .list-group-item svg {
+    margin-right: 0.5rem;
+    font-size: 1.1rem; /* Aumentando um pouco o tamanho dos ícones */
+    vertical-align: middle;
+}
+
+#sidebarMenu .navbar-brand img {
+    opacity: 0.8; /* Leve transparência na logo */
+    transition: opacity 0.15s ease-in-out;
+}
+
+#sidebarMenu .navbar-brand img:hover {
+    opacity: 1;
+}
+
+/* Estilos para o Navbar */
+#main-navbar {
+    background-color: #343a40; /* Mantendo o tom escuro */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.15); /* Sombra um pouco mais pronunciada */
+}
+
+#main-navbar .navbar-brand img {
+    filter: brightness(1.1); /* Leve realce na logo */
+}
+
+#main-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.15s ease-in-out;
+}
+
+#main-navbar .nav-link:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+#main-navbar .dropdown-menu {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+}
+
+#main-navbar .dropdown-item {
+    transition: background-color 0.15s ease-in-out;
+}
+
+#main-navbar .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+#main-navbar .badge-notification {
+    transform: scale(0.8); /* Reduzindo um pouco o tamanho do badge */
+}
+
+#main-navbar .avatar-icon {
+    border: 2px solid rgba(255, 255, 255, 0.5); /* Adicionando uma borda sutil ao avatar */
+    transition: border-color 0.15s ease-in-out;
+}
+
+#main-navbar .avatar-icon:hover {
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.bg-gradient {
+  background: linear-gradient(to right, #020202, #57555a) !important;
+}
+
+.navbar-brand .text-warning {
+  color: #ffc107 !important;
+}
+
+.badge-notification {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  transform: translate(0, -50%);
+}

@@ -2,35 +2,69 @@
 
 @section('page_dashboard')
 
-<div class="container-fluid py-4" style="min-height: 80vh;"> {{-- Aumentando a altura mínima da div principal --}}
+    <header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
+        <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
+            <span class="icon-container" style="width: 32px; height: 32px;">
+                {{ svg('hugeicons-folder-security') }}
+            </span>
+            Registros de Acessos
+        </h3>
+        <div class="d-flex align-items-center gap-3">
+            <!-- Formulário de busca com design melhorado -->
+            <form method="GET" action="{{ route('index.morador') }}" class="d-flex align-items-center" role="search">
+                <input type="text" name="search" class="form-control form-control-sm me-2 rounded-pill border-dark" placeholder="Buscar por nome, CPF..." value="{{ request('search') }}">
+                <button class="btn btn-outline-dark btn-sm rounded-pill" type="submit">
+                    <span class="d-none d-sm-inline">Buscar</span>
+                    <span class="d-inline d-sm-none">🔍</span> <!-- Ícone para mobile -->
+                </button>
+            </form>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="mb-0">Registros de Acessos</h3>
-        <a href="{{ route('create.registro') }}" class="btn btn-success">Novo Registro</a>
-    </div>
+            <!-- Botão 'Novo Registro' com efeito de hover -->
+            <a href="{{ route('create.registro') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
+                Novo Registro
+            </a>
+        </div>
+    </header>
 
-    <div class="row mb-4">
+    <div class="row">
         <div class="col-md-4 col-sm-6 col-12 mb-3">
-            <div class="card shadow-sm text-white bg-primary">
-                <div class="card-body">
-                    <h5 class="card-title">Total de Acessos</h5>
-                    <h3 class="card-text">{{ $totalAcessos }}</h3>
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #4e73df, #224abe);">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="fs-6 fw-semibold mb-1">Total de Acessos</div>
+                        <div class="fs-3 fw-bold">{{ $totalAcessos }}</div>
+                    </div>
+                    <div class="bg-white bg-opacity-25 rounded-circle p-3">
+                        <i class="bi bi-people-fill fs-3 text-white"></i>
+                    </div>
                 </div>
             </div>
         </div>
+    
         <div class="col-md-4 col-sm-6 col-12 mb-3">
-            <div class="card shadow-sm text-white bg-success">
-                <div class="card-body">
-                    <h5 class="card-title">Entradas Hoje</h5>
-                    <h3 class="card-text">{{ $entradasHoje }}</h3>
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #1cc88a, #198754);">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="fs-6 fw-semibold mb-1">Entradas Hoje</div>
+                        <div class="fs-3 fw-bold">{{ $entradasHoje }}</div>
+                    </div>
+                    <div class="bg-white bg-opacity-25 rounded-circle p-3">
+                        <i class="bi bi-door-open-fill fs-3 text-white"></i>
+                    </div>
                 </div>
             </div>
         </div>
+    
         <div class="col-md-4 col-sm-6 col-12 mb-3">
-            <div class="card shadow-sm text-white bg-danger">
-                <div class="card-body">
-                    <h5 class="card-title">Saídas Hoje</h5>
-                    <h3 class="card-text">{{ $saidasHoje }}</h3>
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #e74a3b, #c0392b);">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="fs-6 fw-semibold mb-1">Saídas Hoje</div>
+                        <div class="fs-3 fw-bold">{{ $saidasHoje }}</div>
+                    </div>
+                    <div class="bg-white bg-opacity-25 rounded-circle p-3">
+                        <i class="bi bi-door-closed-fill fs-3 text-white"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -39,16 +73,16 @@
     <div>
         @include('components.alerts', [
             'success' => session()->get('success'), 
-            'message' =>  session()->get('message')
+            'message' => session()->get('message')
         ])
     </div>
 
-    <div class="card shadow-sm" style="min-height: 600px;">
-        <div class="card-body d-flex flex-column" style="height: 100%;">
-            <h5 class="card-title mb-3">Lista de Registros</h5>
+    <div class="card shadow-sm border-0 rounded-4" style="min-height: 600px;">
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title mb-3 fw-semibold">Lista de Registros</h5>
     
-            <div class="table-responsive flex-grow-1" style="min-height: 0; overflow-y: auto;">
-                <table class="table align-middle mb-0">
+            <div class="table-responsive flex-grow-1">
+                <table class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
                             <th>Código</th>
@@ -61,7 +95,7 @@
                             <th>Observações</th>
                             <th>Entrada</th>
                             <th>Saída</th>
-                            <th style="position: static;">Ações</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,42 +107,47 @@
                                 <td>{{ $registro->empresa }}</td>
                                 <td>{{ $registro->veiculo }}</td>
                                 <td>{{ $registro->placa }}</td>
-                                <td>{{ ucfirst($registro->tipo_acesso) }}</td>
+                                <td>
+                                    <span class="badge bg-primary text-white">
+                                        {{ ucfirst($registro->tipo_acesso) }}
+                                    </span>
+                                </td>
                                 <td>{{ $registro->observacoes }}</td>
                                 <td>
                                     @if ($registro->entrada)
-                                        <span class="badge bg-success">{{ \Carbon\Carbon::parse($registro->entrada)->format('H:i') }}</span>
+                                        <span class="badge bg-success-subtle text-success">{{ \Carbon\Carbon::parse($registro->entrada)->format('H:i') }}</span>
                                     @else
-                                        <span class="badge bg-secondary">—</span>
+                                        <span class="badge bg-secondary-subtle text-muted">—</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if ($registro->saida)
-                                        <span class="badge bg-danger">{{ \Carbon\Carbon::parse($registro->saida)->format('H:i') }}</span>
+                                        <span class="badge bg-danger-subtle text-danger">{{ \Carbon\Carbon::parse($registro->saida)->format('H:i') }}</span>
                                     @else
-                                        <span class="badge bg-warning text-dark">Pendente</span>
+                                        <span class="badge bg-warning-subtle text-warning">Pendente</span>
                                     @endif
                                 </td>
-                                <td class="action-cell" style="position: relative;">
+                                <td>
                                     <div class="dropdown">
-                                        <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton-{{ $registro->id }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                        <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi" viewBox="0 0 16 16">
+                                                <path d="M8 3.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                             </svg>
                                         </button>
-                                        <ul class="dropdown-menu show-on-top" aria-labelledby="dropdownMenuButton-{{ $registro->id }}">
+                                        <ul class="dropdown-menu dropdown-menu-end show-on-top">
                                             <li>
-                                                <a class="dropdown-item" href="{{ route('edit.registro', $registro->id) }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('edit.registro', $registro->id) }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd" viewBox="0 0 16 16">
+                                                        <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-4 1.5a.5.5 0 0 1-.65-.65l1.5-4a.5.5 0 0 1 .11-.168l10-10zM11.207 2L13 3.793 14.293 2.5 12.5.707 11.207 2zM12 4.207 11.793 4 3 12.793 3.207 13 12 4.207zM2.5 13.5 4 13l-.5-.5-1.5.5.5 1.5z"/>
                                                     </svg>
                                                     Editar
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $registro->id }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                                                <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $registro->id }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                        <path d="M5.5 5.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 1 1 0V12a.5.5 0 0 1-1 0V6zm3-.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5z"/>
+                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2h4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h4a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3a.5.5 0 0 0 0 1H13.5a.5.5 0 0 0 0-1H2.5z"/>
                                                     </svg>
                                                     Remover
                                                 </a>
@@ -118,10 +157,10 @@
                                                     <form action="{{ route('saida.registro', $registro->id) }}" method="POST">
                                                         @csrf
                                                         <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-success">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
-                                                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
-                                                              </svg>
-                                                              Registrar Saída
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                                <path d="M10.854 5.146a.5.5 0 0 0-.708.708L11.293 7H1.5a.5.5 0 0 0 0 1h9.793L10.146 9.146a.5.5 0 0 0 .708.708l2-2a.5.5 0 0 0 0-.708l-2-2z"/>
+                                                            </svg>
+                                                            Registrar Saída
                                                         </button>
                                                     </form>
                                                 </li>
@@ -131,23 +170,20 @@
                                 </td>
                             </tr>
     
-                            <!-- Modal de confirmação de exclusão -->
+                            {{-- Modal de Confirmação --}}
                             <div class="modal fade" id="confirmDeleteModal{{ $registro->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $registro->id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
+                                    <div class="modal-content shadow">
                                         <form action="{{ route('destroy.registro', $registro->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-    
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="deleteModalLabel{{ $registro->id }}">Confirmar Exclusão</h5>
+                                                <h5 class="modal-title">Confirmar Exclusão</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                                             </div>
-    
                                             <div class="modal-body">
                                                 Tem certeza que deseja remover o registro <strong>#{{ $registro->id }}</strong> ({{ $registro->nome }})?
                                             </div>
-    
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                                 <button type="submit" class="btn btn-danger">Remover</button>
@@ -156,7 +192,6 @@
                                     </div>
                                 </div>
                             </div>
-    
                         @empty
                             <tr>
                                 <td colspan="11" class="text-center text-muted">Nenhum registro encontrado</td>
@@ -164,15 +199,13 @@
                         @endforelse
                     </tbody>
                 </table>
-            </div> <!-- Fim do table-responsive -->
-        </div> <!-- Fim do card-body -->
-    </div> <!-- Fim do card -->
-
-    {{-- Paginação Customizada --}}
+            </div>
+        </div>
+    </div>
+    
+    {{-- Paginação --}}
     <div class="mt-4 d-flex justify-content-center">
         {{ $registros->links('pagination::bootstrap-5') }}
     </div>
-
-</div>
-
-@endsection
+    
+    @endsection

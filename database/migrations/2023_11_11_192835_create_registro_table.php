@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('empresa')->nullable();
             $table->string('veiculo')->nullable();
             $table->string('placa')->nullable();
-            $table->string('foto');
+            $table->string('img');
             $table->string('tipo_acesso');
             $table->text('observacoes')->nullable();
             $table->timestamp('entrada')->nullable();

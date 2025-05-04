@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('visitantes', function (Blueprint $table) {
             $table->id();
-            $table->string('nome')->nullable(false);
-            $table->string('documento')->nullable(false);
-            $table->string('telefone')->nullable(false);
-            $table->string('image')->nullable(false);
-            $table->text('observacao');
+            $table->string('nome');
+            $table->string('documento');
+            $table->string('empresa')->nullable();
+            $table->string('veiculo')->nullable();
+            $table->string('placa')->nullable();
+            $table->string('image');
+            $table->string('tipo_acesso');
+            $table->text('observacoes')->nullable();
+            $table->timestamp('entrada')->nullable();
+            $table->timestamp('saida')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('visitante');
+        Schema::dropIfExists('visitantes');
     }
 };

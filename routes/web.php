@@ -52,16 +52,21 @@ Route::controller(ApartamentoController::class)->group(function(){
 Route::controller(MoradorController::class)->group(function(){
     Route::get('/morador', 'index')->name('index.morador');
     Route::get('/morador/create', 'create')->name('create.morador');
-    Route::post('/morador/store', 'store')->name('store.morador');
-    Route::get('/moradores/{id}', 'show')->name('show.morador');
-    Route::get('/morador/edit/{id}', 'edit')->name('edit.morador');
-    Route::put('/morador/update/{id}', 'update')->name('update.morador');
+    Route::post('/morador', 'store')->name('store.morador');
+    Route::get('/morador/{id}', 'show')->name('show.morador');
+    Route::get('/morador/{id}/edit', 'edit')->name('edit.morador');
+    Route::put('/morador/{id}', 'update')->name('update.morador');
+    Route::delete('/morador/{id}', 'destroy')->name('destroy.morador');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(VisitanteController::class)->group(function(){
-    Route::get('/cadastro/visitante', 'index')->name('index.visitante');
-    Route::get('/cadastro/visitante/create', 'create')->name('create.visitante');
-    Route::get('/cadastro/visitante/store', 'store')->name('store.visitante');
+    Route::get('/visitante', 'index')->name('index.visitante');
+    Route::get('/visitante/create', 'create')->name('create.visitante');
+    Route::post('/visitante', 'store')->name('store.visitante');
+    Route::get('/visitante/{id}/edit', 'edit')->name('edit.visitante');
+    Route::put('/visitante/{id}', 'update')->name('update.visitante');
+    Route::delete('/visitante/{id}', 'destroy')->name('destroy.visitante');
+    Route::post('/visitante/{id}/saida', 'registrarSaida')->name('saida.visitante');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(VeiculoController::class)->group(function(){
