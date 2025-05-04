@@ -2,94 +2,128 @@
 
 @section('page_dashboard')
 
-<header class="header-content">
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
-        <h3>Cadastro de Visitantes</h3>
+<header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
+    <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
+        <span class="icon-container" style="width: 32px; height: 32px;">
+            {{ svg('hugeicons-user') }}
+        </span>
+        Cadastro de Visitantes
+    </h3>
+    <div class="d-flex align-items-center gap-3">
+        <form method="GET" action="{{ route('index.visitante') }}" class="d-flex align-items-center" role="search">
+            <input type="text" name="search" class="form-control form-control-sm me-2 rounded-pill border-dark" placeholder="Buscar por nome, CPF..." value="{{ request('search') }}">
+            <button class="btn btn-outline-dark btn-sm rounded-pill" type="submit">
+                <span class="d-none d-sm-inline">Buscar</span>
+                <span class="d-inline d-sm-none">🔍</span>
+            </button>
+        </form>
 
-        <div class="d-flex align-items-center">
-            {{-- Campo de busca --}}
-            <form method="GET" action="{{ route('index.visitante') }}" class="d-flex me-2" style="width: 350px;">
-                <input type="text" name="search" class="form-control form-control-sm" placeholder="Buscar..." value="{{ request('search') }}">
-                <button class="btn btn-dark" type="submit">Buscar</button>
-            </form>
-
-            {{-- Botão cadastrar --}}
-            <a href="{{ route('create.visitante') }}" class="btn btn-success text-white">
-                Cadastrar
-            </a>
-        </div>
+        <a href="{{ route('create.visitante') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
+            Novo Visitante
+        </a>
     </div>
 </header>
 
-<div class="">
-    <div class="">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Código</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">RG/CPF</th>
-                    <th scope="col">Telefone</th>
-                    <th scope="col">Empresa</th>
-                    <th scope="col">Veículo</th>
-                    <th scope="col">Placa</th>
-                    <!--<th scope="col">Foto</th>-->
-                    <th scope="col">Observação</th>
-                    <th scope="col">Data Criação</th>
-                    <th scope="col">Data Alteração</th>
-                    <th scope="col">Opções</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($visitantes as $visitante)
+<div>
+    @include('components.alerts', [
+        'success' => session()->get('success'), 
+        'message' => session()->get('message')
+    ])
+</div>
+
+<div class="card shadow-sm border-0 rounded-4" style="min-height: 600px;">
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title mb-3 fw-semibold">Lista de Visitantes</h5>
+
+        <div class="table-responsive flex-grow-1">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
                     <tr>
-                        <th scope="row">{{$visitante->id}}</th>
-                        <td>{{$visitante->nome}}</td>
-                        <td>{{$visitante->documento}}</td>
-                        <td>{{$visitante->telefone}}</td>
-                        <td>{{$visitante->empresa}}</td>
-                        <td>{{$visitante->veiculo}}</td>
-                        <td>{{$visitante->placa}}</td>
-                        <!--<td>{{$visitante->image}}</td>-->
-                        <td>{{$visitante->observacao}}</td>
-                        <td>{{$visitante->created_at}}</td>
-                        <td>{{$visitante->updated_at}}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                    </svg>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="{{route('edit.visitante', ['id' => $visitante->id])}}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-                                            </svg>
-                                            Editar
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#removeItemModal" href="#">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                                            </svg>
-                                            Remover
-                                        </a>
-                                    </li>
-                                </ul>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>RG/CPF</th>
+                        <th>Telefone</th>
+                        <th>Empresa</th>
+                        <th>Veículo</th>
+                        <th>Placa</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($visitantes as $visitante)
+                        <tr>
+                            <td>{{ $visitante->id }}</td>
+                            <td>{{ $visitante->nome }}</td>
+                            <td>{{ $visitante->documento }}</td>
+                            <td>{{ $visitante->telefone }}</td>
+                            <td>{{ $visitante->empresa }}</td>
+                            <td>{{ $visitante->veiculo }}</td>
+                            <td>{{ $visitante->placa }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi" viewBox="0 0 16 16">
+                                            <path d="M8 3.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                        </svg>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end show-on-top">
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('edit.visitante', $visitante->id) }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd" viewBox="0 0 16 16">
+                                                    <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-4 1.5a.5.5 0 0 1-.65-.65l1.5-4a.5.5 0 0 1 .11-.168l10-10z"/>
+                                                </svg>
+                                                Editar
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $visitante->id }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 1 1 0V12a.5.5 0 0 1-1 0V6zm3-.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5z"/>
+                                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2h4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h4a1 1 0 0 1 1 1z"/>
+                                                </svg>
+                                                Remover
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                        {{-- Modal de Confirmação --}}
+                        <div class="modal fade" id="confirmDeleteModal{{ $visitante->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $visitante->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content shadow">
+                                    <form action="{{ route('destroy.visitante', $visitante->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Confirmar Exclusão</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Tem certeza que deseja remover o visitante <strong>#{{ $visitante->id }}</strong> ({{ $visitante->nome }})?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-danger">Remover</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="13" class="text-center">Nenhum visitante cadastrado</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                        </div>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">Nenhum visitante encontrado</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
+</div>
+
+<div class="mt-4 d-flex justify-content-center">
+    {{ $visitantes->links('pagination::bootstrap-5') }}
 </div>
 
 @endsection

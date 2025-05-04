@@ -2,73 +2,124 @@
 
 @section('page_dashboard')
 
-<x-modal-remove-item/>
-<header class="header-content">
-    <div class="d-flex justify-content-between align-items-center">
-        <h3>Cadastro de Apartamentos</h3>
-        <a href="{{route('create.apartamento')}}" class="btn text-white btn-dark">Cadastrar</a>
-    </div>
+<header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
+    <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
+        <span class="icon-container" style="width: 32px; height: 32px;">
+            {{ svg('hugeicons-house-01') }}
+        </span>
+        Cadastro de Apartamentos
+    </h3>
+    <a href="{{ route('create.apartamento') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
+        Novo Apartamento
+    </a>
 </header>
-<div class="">
-    <div class="">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Apartamento</th>
-                    <th scope="col">Bloco</th>
-                    <th scope="col">Vaga</th>
-                    <th scope="col">Ramal</th>
-                    <th scope="col">Situação</th>
-                    <th scope="col">Status da Vaga</th>
-                    <th scope="col">Data Criação</th>
-                    <th scope="col">Data Alteração</th>
-                    <th scope="col">Opções</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($apartamentos as $apartamento)
+
+<div class="card shadow-sm border-0 rounded-4" style="min-height: 600px;">
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title mb-3 fw-semibold">Lista de Apartamentos</h5>
+
+        <div class="table-responsive flex-grow-1">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
                     <tr>
-                        <th scope="row">{{$apartamento->numero}}</th>
-                        <td>{{$apartamento->bloco}}</td>
-                        <td>{{$apartamento->vaga}}</td>
-                        <td>{{$apartamento->ramal}}</td>
-                        <td>{{$apartamento->situacao}}</td>
-                        <td>{{$apartamento->status_vaga}}</td>
-                        <td>{{$apartamento->created_at}}</td>
-                        <td>{{$apartamento->updated_at}}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                    </svg>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="{{route('edit.apartamento', ['id' => $apartamento->id])}}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-                                            </svg>
-                                            Editar
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#removeItemModal" href="#">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                                            </svg>
-                                            Remover
-                                        </a>
-                                    </li>
-                                </ul>
-                              </div>
-                        </td>
+                        <th>Apartamento</th>
+                        <th>Bloco</th>
+                        <th>Vaga</th>
+                        <th>Ramal</th>
+                        <th>Situação</th>
+                        <th>Status da Vaga</th>
+                        <th>Data Criação</th>
+                        <th>Data Alteração</th>
+                        <th>Opções</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse ($apartamentos as $apartamento)
+                        <tr>
+                            <td>{{ $apartamento->numero }}</td>
+                            <td>{{ $apartamento->bloco }}</td>
+                            <td>{{ $apartamento->vaga }}</td>
+                            <td>{{ $apartamento->ramal }}</td>
+                            <td>
+                                <span class="badge bg-{{ $apartamento->situacao === 'ativo' ? 'success' : 'secondary' }}">
+                                    {{ ucfirst($apartamento->situacao) }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ $apartamento->status_vaga === 'ocupada' ? 'danger' : 'primary' }}">
+                                    {{ ucfirst($apartamento->status_vaga) }}
+                                </span>
+                            </td>
+                            <td>{{ $apartamento->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $apartamento->updated_at->format('d/m/Y H:i') }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi" viewBox="0 0 16 16">
+                                            <path d="M8 3.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                        </svg>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end show-on-top">
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('edit.apartamento', $apartamento->id) }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd" viewBox="0 0 16 16">
+                                                    <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-4 1.5a.5.5 0 0 1-.65-.65l1.5-4a.5.5 0 0 1 .11-.168l10-10z"/>
+                                                    <path d="M11.207 2L13 3.793 14.293 2.5 12.5.707 11.207 2z"/>
+                                                </svg>
+                                                Editar
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $apartamento->id }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 1 1 0V12a.5.5 0 0 1-1 0V6zm3-.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5z"/>
+                                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2h4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h4a1 1 0 0 1 1 1z"/>
+                                                </svg>
+                                                Remover
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                        {{-- Modal de Confirmação --}}
+                        <div class="modal fade" id="confirmDeleteModal{{ $apartamento->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $apartamento->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content shadow">
+                                    <form action="{{ route('destroy.apartamento', $apartamento->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Confirmar Exclusão</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Tem certeza que deseja remover o apartamento <strong>#{{ $apartamento->numero }}</strong>?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-danger">Remover</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <tr>
+                            <td colspan="9" class="text-center text-muted">Nenhum apartamento cadastrado</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-@endsection
+{{-- Paginação
+<div class="mt-4 d-flex justify-content-center">
+    {{ $apartamentos->links('pagination::bootstrap-5') }}
+</div>--}}
 
+@endsection
