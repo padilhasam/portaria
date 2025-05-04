@@ -117,9 +117,9 @@
     </div>
 </div>
 
-{{-- Paginação
+{{-- Paginação --}}
 <div class="mt-4 d-flex justify-content-center">
     {{ $apartamentos->links('pagination::bootstrap-5') }}
-</div>--}}
+</div>
 
 @endsection

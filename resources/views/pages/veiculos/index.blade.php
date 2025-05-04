@@ -2,66 +2,75 @@
 
 @section('page_dashboard')
 
-<header class="header-content">
-    <div class="d-flex justify-content-between align-items-center">
-        <h3>Cadastro de Veículos</h3>
-        <a href="{{route('create.veiculo')}}" class="btn text-white btn-dark">Cadastrar</a>
-    </div>
+<header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
+    <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
+        {{ svg('hugeicons-car-01') }}
+        Cadastro de Veículos
+    </h3>
+    <a href="{{ route('create.veiculo') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
+        Novo Veículo
+    </a>
 </header>
-<div class="">
-    <div class="">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Código</th>
-                    <th scope="col">Placa</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Marca</th>
-                    <th scope="col">Modelo</th>
-                    <th scope="col">Cor</th>
-                    <th scope="col">Observação</th>
-                    <th scope="col">Data Criação</th>
-                    <th scope="col">Data Alteração</th>
-                    <th scope="col">Opções</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($veiculos as $veiculo)
+
+<!-- Exibição de mensagens de sucesso ou erro -->
+<div>
+    @include('components.alerts', [
+        'success' => session()->get('success'), 
+        'message' => session()->get('message')
+    ])
+</div>
+
+<div class="card shadow-sm border-0 rounded-4" style="min-height: 600px;">
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title mb-3 fw-semibold">Lista de Veículos</h5>
+
+        <div class="table-responsive flex-grow-1">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
                     <tr>
-                        <th scope="row">{{$veiculo->id}}</th>
-                        <td>{{$veiculo->placa}}</td>
-                        <td>{{$veiculo->tipo}}</td>
-                        <td>{{$veiculo->marca}}</td>
-                        <td>{{$veiculo->modelo}}</td>
-                        <td>{{$veiculo->cor}}</td>
-                        <td>{{$veiculo->observacao}}</td>
-                        <td>{{$veiculo->created_at}}</td>
-                        <td>{{$veiculo->updated_at}}</td>
+                        <th>ID</th>
+                        <th>Placa</th>
+                        <th>Tipo</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Cor</th>
+                        <th>Observação</th>
+                        <th>Criado em</th>
+                        <th>Atualizado em</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($veiculos as $veiculo)
+                    <tr>
+                        <td><span class="badge bg-primary text-white">{{ $veiculo->id }}</span></td>
+                        <td>{{ $veiculo->placa }}</td>
+                        <td>{{ $veiculo->tipo }}</td>
+                        <td>{{ $veiculo->marca }}</td>
+                        <td>{{ $veiculo->modelo }}</td>
+                        <td>{{ $veiculo->cor }}</td>
+                        <td>{{ $veiculo->observacao }}</td>
+                        <td>{{ $veiculo->created_at->format('d/m/Y H:i') }}</td>
+                        <td>{{ $veiculo->updated_at->format('d/m/Y H:i') }}</td>
                         <td>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                    </svg>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="#">Editar</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">Remover</a>
-                                    </li>
-                                </ul>
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('edit.veiculo', ['id' => $veiculo->id]) }}" class="btn btn-primary btn-sm text-white">
+                                    <i class="bi bi-pencil-fill me-1"></i> Editar
+                                </a>
+                                <a href="javascript:void(0)" class="btn btn-danger btn-sm text-white" data-bs-toggle="modal" data-bs-target="#removeItemModal" data-id="{{ $veiculo->id }}">
+                                    <i class="bi bi-trash3-fill me-1"></i> Remover
+                                </a>
                             </div>
                         </td>
                     </tr>
-                @empty
-                <tr>
-                    <td colspan="13" class="text-center">Nenhum veículo cadastrado</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+                    @empty
+                    <tr>
+                        <td colspan="10" class="text-center text-muted">Nenhum veículo cadastrado.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

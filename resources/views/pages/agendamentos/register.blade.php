@@ -71,7 +71,8 @@
             </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-success">Confirmar Agendamento</button>
+            <button type="submit" class="btn btn-success rounded-pill px-4 me-2">Confirmar Agendamento</button>
+            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Cancelar</a>
         </div>
         <div class="mt-4">
             <a href="{{ route('index.agendamento') }}" class="text-sm text-gray-500 hover:text-gray-700 transition">

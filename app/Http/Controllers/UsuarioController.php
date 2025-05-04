@@ -32,30 +32,40 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nome' => 'required|string|max:255',
-            'documento' => 'required|string|max:12',
+            'documento' => 'required|string|max:15',
             'nascimento' => 'required|date',
-            'celular' => 'required|string|max:11',
+            'celular' => 'required|string|max:15',
             'user' => 'required|string|max:255|unique:users,user',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|confirmed|min:6',
             'acesso_tipo' => 'required|string',
         ]);
 
-        User::create([
-            'nome' => $request->nome,
-            'documento' => $request->documento,
-            'nascimento' => $request->nascimento,
-            'celular' => $request->celular,
-            'user' => $request->user,
-            'email' => $request->email,
-            'password' => Hash::make($request->password), // Criptografando a senha
-            'acesso_tipo' => $request->acesso_tipo,
-            'user_verified' => false, // padrão como não verificado
+        $user = User::create([
+            'nome' => $validated['nome'],
+            'documento' => $validated['documento'],
+            'nascimento' => $validated['nascimento'],
+            'celular' => $validated['celular'],
+            'user' => $validated['user'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'acesso_tipo' => $validated['acesso_tipo'],
+            'user_verified' => false,
         ]);
 
-        return redirect()->route('index.usuario')->with('success', 'Usuário cadastrado com sucesso!');
+        if ($user) {
+            return redirect()->route('index.usuario')->with([
+                'success' => true,
+                'message' => 'Usuário registrado com sucesso!'
+            ]);
+        } else {
+            return redirect()->route('index.usuario')->with([
+                'success' => false,
+                'message' => 'Erro ao registrar usuário!'
+            ]);
+        }
     }
 
     /**

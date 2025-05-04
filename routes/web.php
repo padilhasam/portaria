@@ -47,6 +47,7 @@ Route::controller(ApartamentoController::class)->group(function(){
     Route::post('/apartamento/store', 'store')->name('store.apartamento');
     Route::get('/apartamento/edit/{id}', 'edit')->name('edit.apartamento');
     Route::put('/apartamento/update/{id}', 'update')->name('update.apartamento');
+    Route::delete('/apartamento/{id}', 'destroy')->name('destroy.apartamento');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(MoradorController::class)->group(function(){

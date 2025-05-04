@@ -51,10 +51,17 @@ class VisitanteController extends Controller
         $visitante = Visitante::create($data);
 
         if ($visitante) {
-            return redirect()->route('index.visitante')->with('success', 'Visitante cadastrado com sucesso!');
+            return redirect()->route('index.visitante')->with([
+                'success' => true,
+                'message' => 'Usuário registrado com sucesso!'
+            ]);
         } else {
-            return redirect()->route('index.visitante')->with('error', 'Erro ao cadastrar visitante.');
+            return redirect()->route('index.visitante')->with([
+                'success' => false,
+                'message' => 'Erro ao registrar usuário!'
+            ]);
         }
+
     }
 
     /**

@@ -7,77 +7,67 @@ use Illuminate\Http\Request;
 
 class ApartamentoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $apartamentos = Apartamento::all();
-        return view("pages.apartamentos.index", compact('apartamentos'));
+        $apartamentos = Apartamento::latest()->paginate(10); // Paginação opcional
+        return view('pages.apartamentos.index', compact('apartamentos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('pages.apartamentos.register');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        Apartamento::create($request->validate([
-            'numero' => 'string|max:4',
-            'bloco' => 'string|max:4',
-            'ramal' => 'string|max:5',
-            'vaga' => 'string|max:10',
-            'status_vaga' => 'string|max:10'
-        ]));
+        $validated = $request->validate([
+            'numero' => 'required|string|max:10',
+            'bloco' => 'required|string|max:10',
+            'vaga' => 'required|string|max:10',
+            'ramal' => 'required|string|max:10',
+            'situacao' => 'required|string|max:20',
+            'status_vaga' => 'required|in:livre,ocupada',
+        ]);
 
-        return redirect(route('index.apartamento'));
+        $validated['situacao'] = 'ativo';
+
+        $apartamento = Apartamento::create($validated);
+
+        return redirect($request->query('from') ?? route('index.apartamento'))
+            ->with('success', "Apartamento #{$apartamento->numero} cadastrado com sucesso!");
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
         $apartamento = Apartamento::findOrFail($id);
         return view('pages.apartamentos.register', compact('apartamento'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        Apartamento::where('id', $id)
-        ->update($request->validate([
-            'bloco' => 'string|max:4',
-            'numero' => 'string|max:4',
-            'vaga' => 'string|max:10',
-            'status_vaga' => 'string|max:10'
-        ]));
+        $apartamento = Apartamento::findOrFail($id);
 
-        return redirect(route('index.apartamento'));
+        $validated = $request->validate([
+            'numero' => 'required|string|max:10',
+            'bloco' => 'required|string|max:10',
+            'vaga' => 'required|string|max:10',
+            'ramal' => 'required|string|max:10',
+            'ramal' => 'required|string|max:20',
+            'status_vaga' => 'required|in:livre,ocupada',
+        ]);
+
+        $apartamento->update($validated);
+
+        return redirect($request->query('from') ?? route('index.apartamento'))
+            ->with('success', "Apartamento #{$apartamento->numero} atualizado com sucesso!");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $apartamento = Apartamento::findOrFail($id);
+        $numero = $apartamento->numero;
+        $apartamento->delete();
+
+        return redirect()->back()->with('success', "Apartamento #{$numero} removido com sucesso.");
     }
 }

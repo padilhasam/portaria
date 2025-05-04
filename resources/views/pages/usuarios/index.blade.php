@@ -8,6 +8,15 @@
         <a href="{{route('create.usuario')}}" class="btn text-white btn-dark">Cadastrar</a>
     </div>
 </header>
+
+<!-- Exibição de mensagens de sucesso ou erro -->
+<div>
+    @include('components.alerts', [
+        'success' => session()->get('success'), 
+        'message' => session()->get('message')
+    ])
+</div>
+
 <div class="">
     <div class="">
         <table class="table">

@@ -19,6 +19,7 @@ class Visitante extends Model
     protected $fillable = [
         'nome',
         'documento',
+        'telefone',
         'empresa',
         'veiculo',
         'placa',

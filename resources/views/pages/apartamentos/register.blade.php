@@ -96,16 +96,3 @@
 </div>
 
 @endsection
-
-@section('scripts')
-    @if (session('success'))
-        <script>
-            setTimeout(function() {
-                const successMessage = document.querySelector('.bg-green-100');
-                if (successMessage) {
-                    successMessage.remove();
-                }
-            }, 3000); // Remove a mensagem após 3 segundos
-        </script>
-    @endif
-@endsection
