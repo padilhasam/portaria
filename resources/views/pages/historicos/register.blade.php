@@ -27,8 +27,8 @@
             <input name="documento" type="text" class="form-control" id="documento" placeholder="" value="{{ $edit ? $morador->documento : "" }}">
         </div>
         <div class="form-group">
-            <label for="birthdate">Data de Nascimento</label>
-            <input name="birthdate" type="text" class="form-control" id="birthdate" placeholder="" value="{{ $edit ? $morador->birthdate : "" }}">
+            <label for="nascimento">Data de Nascimento</label>
+            <input name="nascimento" type="text" class="form-control" id="nascimento" placeholder="" value="{{ $edit ? $morador->nascimento : "" }}">
         </div>
         <div class="form-group">
             <label for="tel_fixo">Telefone Fixo</label>

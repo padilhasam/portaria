@@ -71,7 +71,7 @@
                     <input name="documento" type="text" class="form-control rounded-pill border-dark" id="documento" required
                         value="{{ old('documento', $edit ? $morador->documento : '') }}"
                         onkeyup="mascara(this, mcpf)">
-                        <div id="cpf-error" class="invalid-feedback d-none">CPF inválido</div>
+                        <div id="cpf-error" class="invalid-feedback d-none">CPF inválido</div> {{-- Replicar este campo em  outros formulários--}}
                 </div>
                 <div class="col-md-4">
                     <label for="nascimento" class="form-label">Nascimento</label>
@@ -124,9 +124,11 @@
                                 </option>
                             @endforeach
                         </select>
-                        <a href="{{ route('create.apartamento', ['from' => 'morador']) }}" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                          </svg></a>
+                        <a href="{{ route('create.apartamento', ['from' => 'morador']) }}" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -158,9 +160,11 @@
                                 </option>
                             @endforeach
                         </select>
-                        <a href="{{ route('create.veiculo', ['from' => 'morador']) }}" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                          </svg></a>
+                        <a href="{{ route('create.veiculo', ['from' => 'morador']) }}" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -179,7 +183,7 @@
         {{-- BOTÕES --}}
         <div class="col-12 d-flex gap-2 justify-content-end mt-3">
             <button type="submit" class="btn btn-success rounded-pill">{{ $edit ? "Alterar" : "Salvar" }}</button>
-            <button type="reset" class="btn btn-outline-danger rounded-pill">Limpar</button>
+            <button type="reset" class="btn btn-outline-danger rounded-pill" onclick="return confirm('Tem certeza que deseja limpar o formulário?')">Limpar</button>
             <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Cancelar</a>
         </div>
     </form>

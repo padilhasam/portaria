@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('moradores', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_apartamento')->nullable(false);
-            $table->string('nome')->nullable(false);
-            $table->string('documento')->nullable(false);
-            $table->string('birthdate');
-            $table->string('tel_fixo');
-            $table->string('celular')->nullable(false);
-            $table->string('email')->nullable(false);
-            $table->string('tipo_morador')->nullable(false); //Aluguel ou Própria
-            $table->string('image');
+            $table->unsignedBigInteger('id_apartamento');
+            $table->string('nome');
+            $table->string('documento');
+            $table->date('nascimento');
+            $table->string('tel_fixo')->nullable();
+            $table->string('celular');
+            $table->string('email');
+            $table->string('tipo_morador');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('morador');
+        Schema::dropIfExists('moradores');
     }
 };

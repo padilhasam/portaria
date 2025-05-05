@@ -18,7 +18,6 @@ class Morador extends Model
      */
     protected $fillable = [
         'id_apartamento',
-        'bloco',
         'nome',
         'documento',
         'nascimento',
@@ -43,5 +42,21 @@ class Morador extends Model
     public function apartamento()
     {
         return $this->belongsTo(Apartamento::class, 'id_apartamento');
+    }
+
+    /**
+     * Acessor para pegar o bloco do apartamento
+     */
+    public function getBlocoAttribute()
+    {
+        return $this->apartamento ? $this->apartamento->bloco : null;
+    }
+
+    /**
+     * Acessor para pegar o ramal do apartamento
+     */
+    public function getRamalAttribute()
+    {
+        return $this->apartamento ? $this->apartamento->ramal : null;
     }
 }

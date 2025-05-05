@@ -6,11 +6,10 @@
     <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
             <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
-          </svg>
+        </svg>
         Cadastro de Moradores
     </h3>
     <div class="d-flex align-items-center gap-3">
-        <!-- Formulário de busca -->
         <form method="GET" action="{{ route('index.morador') }}" class="d-flex align-items-center" role="search">
             <input type="text" name="search" class="form-control form-control-sm me-2 rounded-pill border-dark" placeholder="Buscar por nome, CPF..." value="{{ request('search') }}">
             <button class="btn btn-outline-dark btn-sm rounded-pill" type="submit">
@@ -18,17 +17,15 @@
                 <span class="d-inline d-sm-none">🔍</span>
             </button>
         </form>
-        <!-- Botão de cadastro -->
         <a href="{{ route('create.morador') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
             Novo Morador
         </a>
     </div>
 </header>
 
-<!-- Exibição de mensagens de sucesso ou erro -->
 <div>
     @include('components.alerts', [
-        'success' => session()->get('success'), 
+        'success' => session()->get('success'),
         'message' => session()->get('message')
     ])
 </div>
@@ -37,7 +34,6 @@
     <div class="card-body d-flex flex-column">
         <h5 class="card-title mb-3 fw-semibold">Lista de Moradores</h5>
 
-        <!-- Tabela de moradores -->
         <div class="table-responsive flex-grow-1">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
@@ -90,13 +86,13 @@
                                     <i class="bi bi-trash3-fill me-1"></i> Remover
                                 </a>
                                 <a href="javascript:void(0)" class="btn btn-info btn-sm text-white view-morador" data-bs-toggle="modal" data-bs-target="#viewDataModal"
-                                   data-nome="{{ $morador->nome }}"
-                                   data-cpf="{{ $morador->documento }}"
-                                   data-apartamento="{{ optional($morador->apartamento)->numero }}{{ optional($morador->apartamento)->bloco ? ' - Bloco ' . optional($morador->apartamento)->bloco : '' }}"
-                                   data-veiculo="{{ optional($morador->veiculo)->placa }}{{ optional($morador->veiculo)->modelo ? ' - ' . optional($morador->veiculo)->modelo : '' }}"
-                                   data-celular="{{ $morador->celular }}"
-                                   data-email="{{ $morador->email }}"
-                                   data-tipo="{{ $morador->tipo_morador === 'aluguel' ? 'Aluguel' : 'Própria' }}">
+                                    data-nome="{{ $morador->nome }}"
+                                    data-cpf="{{ $morador->documento }}"
+                                    data-apartamento="{{ optional($morador->apartamento)->numero }}{{ optional($morador->apartamento)->bloco ? ' - Bloco ' . optional($morador->apartamento)->bloco : '' }}"
+                                    data-veiculo="{{ optional($morador->veiculo)->placa }}{{ optional($morador->veiculo)->modelo ? ' - ' . optional($morador->veiculo)->modelo : '' }}"
+                                    data-celular="{{ $morador->celular }}"
+                                    data-email="{{ $morador->email }}"
+                                    data-tipo="{{ $morador->tipo_morador === 'aluguel' ? 'Aluguel' : 'Própria' }}">
                                     <i class="bi bi-eye-fill me-1"></i> Ver Dados
                                 </a>
                             </div>
@@ -110,10 +106,9 @@
                 </tbody>
             </table>
         </div>
-    </div>
+        {{ $moradores->links() }} </div>
 </div>
 
-<!-- Modal para visualizar dados do morador -->
 <div class="modal fade" id="viewDataModal" tabindex="-1" aria-labelledby="viewDataModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content rounded-4 shadow">
@@ -154,6 +149,60 @@
             document.getElementById('modal-email').textContent = button.getAttribute('data-email') || 'N/A';
             document.getElementById('modal-tipo').textContent = button.getAttribute('data-tipo');
         });
+
+        // Função para preencher Bloco e Ramal ao selecionar o Apartamento
+        const apartamentoSelect = document.getElementById('id_apartamento');
+        const blocoInput = document.getElementById('bloco');
+        const ramalInput = document.getElementById('ramal');
+
+        if (apartamentoSelect) {
+            apartamentoSelect.addEventListener('change', function () {
+                const selectedId = this.value;
+                if (selectedId) {
+                    fetch(`/apartamentos/${selectedId}/details`) // Crie esta rota
+                        .then(response => response.json())
+                        .then(data => {
+                            blocoInput.value = data.bloco || '';
+                            ramalInput.value = data.ramal || '';
+                        })
+                        .catch(error => {
+                            console.error('Erro ao buscar detalhes do apartamento:', error);
+                            blocoInput.value = '';
+                            ramalInput.value = '';
+                        });
+                } else {
+                    blocoInput.value = '';
+                    ramalInput.value = '';
+                }
+            });
+        }
+
+        // Função para preencher Placa e Vaga ao selecionar o Veículo
+        const veiculoSelect = document.getElementById('id_veiculo');
+        const placaInput = document.getElementById('placa');
+        const vagaInput = document.getElementById('vaga');
+
+        if (veiculoSelect) {
+            veiculoSelect.addEventListener('change', function () {
+                const selectedId = this.value;
+                if (selectedId) {
+                    fetch(`/veiculos/${selectedId}/details`) // Crie esta rota
+                        .then(response => response.json())
+                        .then(data => {
+                            placaInput.value = data.placa || '';
+                            vagaInput.value = data.vaga || '';
+                        })
+                        .catch(error => {
+                            console.error('Erro ao buscar detalhes do veículo:', error);
+                            placaInput.value = '';
+                            vagaInput.value = '';
+                        });
+                } else {
+                    placaInput.value = '';
+                    vagaInput.value = '';
+                }
+            });
+        }
     });
 </script>
 @endpush

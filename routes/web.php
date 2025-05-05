@@ -48,6 +48,7 @@ Route::controller(ApartamentoController::class)->group(function(){
     Route::get('/apartamento/edit/{id}', 'edit')->name('edit.apartamento');
     Route::put('/apartamento/update/{id}', 'update')->name('update.apartamento');
     Route::delete('/apartamento/{id}', 'destroy')->name('destroy.apartamento');
+    Route::get('/apartamento/{id}/details', 'getDetails')->name('apartamento.details');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(MoradorController::class)->group(function(){
@@ -58,6 +59,9 @@ Route::controller(MoradorController::class)->group(function(){
     Route::get('/morador/{id}/edit', 'edit')->name('edit.morador');
     Route::put('/morador/{id}', 'update')->name('update.morador');
     Route::delete('/morador/{id}', 'destroy')->name('destroy.morador');
+    
+    // Rota para preenchimento automático de moradores
+    Route::get('/morador/search', 'search')->name('search.morador');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(VisitanteController::class)->group(function(){
@@ -76,6 +80,11 @@ Route::controller(VeiculoController::class)->group(function(){
     Route::post('/veiculo/store', 'store')->name('store.veiculo');
     Route::get('/veiculo/edit/{id}', 'edit')->name('edit.veiculo');
     Route::put('/veiculo/update/{id}', 'update')->name('update.veiculo');
+    
+    // Rota para preenchimento automático de veículos
+    Route::get('/veiculo/search', 'search')->name('search.veiculo');
+
+    Route::get('/veiculo/{id}/details', 'getDetails')->name('veiculo.details');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(AgendamentoController::class)->group(function() {

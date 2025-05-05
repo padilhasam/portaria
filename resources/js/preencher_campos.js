@@ -1,50 +1,42 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Função para buscar e preencher o bloco
-    const apartamentoSelect = document.getElementById('id_apartamento');
-    if (apartamentoSelect) {
-        apartamentoSelect.addEventListener('change', function () {
-            const id = this.value;
-
-            if (id) {
-                fetch(`/apartamento/${id}/bloco`)
+document.addEventListener('DOMContentLoaded', function() {
+    // Função para preencher os campos de Apartamento
+    const apartamentoField = document.getElementById('id_apartamento');
+    if (apartamentoField) {
+        apartamentoField.addEventListener('change', function() {
+            const apartamentoId = this.value;
+            if (apartamentoId) {
+                fetch(`/apartamentos/${apartamentoId}`)
                     .then(response => response.json())
                     .then(data => {
-                        const blocoInput = document.getElementById('bloco');
-                        if (blocoInput) {
-                            blocoInput.value = data.bloco ?? '';
+                        if (data && data.bloco && data.ramal) {
+                            document.getElementById('bloco').value = data.bloco;
+                            document.getElementById('ramal').value = data.ramal;
+                        } else {
+                            console.log('Dados inválidos recebidos para o apartamento');
                         }
                     })
-                    .catch(error => console.error('Erro ao buscar bloco:', error));
-            } else {
-                const blocoInput = document.getElementById('bloco');
-                if (blocoInput) {
-                    blocoInput.value = '';
-                }
+                    .catch(error => console.log('Erro ao carregar dados do apartamento:', error));
             }
         });
     }
 
-    // Função para buscar e preencher a placa
-    const veiculoSelect = document.getElementById('id_veiculo');
-    if (veiculoSelect) {
-        veiculoSelect.addEventListener('change', function () {
-            const id = this.value;
-
-            if (id) {
-                fetch(`/veiculo/${id}/placa`)
+    // Função para preencher os campos de Veículo
+    const veiculoField = document.getElementById('id_veiculo');
+    if (veiculoField) {
+        veiculoField.addEventListener('change', function() {
+            const veiculoId = this.value;
+            if (veiculoId) {
+                fetch(`/veiculos/${veiculoId}`)
                     .then(response => response.json())
                     .then(data => {
-                        const placaInput = document.getElementById('placa');
-                        if (placaInput) {
-                            placaInput.value = data.placa ?? '';
+                        if (data && data.placa && data.vaga) {
+                            document.getElementById('placa').value = data.placa;
+                            document.getElementById('vaga').value = data.vaga;
+                        } else {
+                            console.log('Dados inválidos recebidos para o veículo');
                         }
                     })
-                    .catch(error => console.error('Erro ao buscar placa:', error));
-            } else {
-                const placaInput = document.getElementById('placa');
-                if (placaInput) {
-                    placaInput.value = '';
-                }
+                    .catch(error => console.log('Erro ao carregar dados do veículo:', error));
             }
         });
     }
