@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visitante;
+use App\Models\Veiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,11 +12,33 @@ class VisitanteController extends Controller
     /**
      * Exibe a listagem de visitantes.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $visitantes = Visitante::orderBy('created_at', 'desc')->paginate(10);
+        $search = $request->input('search');
+        $visitantes = Visitante::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('nome', 'like', "%{$search}%")
+                             ->orWhere('documento', 'like', "%{$this->unmask($search)}%");
+            })
+            ->with(['veiculo']) // Eager load relationships
+            ->latest()
+            ->paginate(10); // Paginação de resultados
 
-        return view('pages.visitantes.index', compact('visitantes'));
+        /* $visitantes = Visitante::orderBy('created_at', 'desc')->paginate(10); */
+
+        return view('pages.visitantes.index', compact('visitantes','search'));
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $visitantes = Visitante::query()
+            ->where('nome', 'like', "%{$search}%")
+            ->orWhere('documento', 'like', "%{$this->unmask($search)}%")
+            ->limit(10) // Limita os resultados a 10
+            ->get(['id', 'nome', 'documento']); // Selecionando apenas o necessário
+
+        return response()->json($visitantes);
     }
 
     /**
@@ -23,7 +46,8 @@ class VisitanteController extends Controller
      */
     public function create()
     {
-        return view('pages.visitantes.register');
+        $veiculos = Veiculo::orderBy('placa')->get();
+        return view('pages.visitantes.register', compact('veiculos'));
     }
 
     /**
@@ -53,12 +77,12 @@ class VisitanteController extends Controller
         if ($visitante) {
             return redirect()->route('index.visitante')->with([
                 'success' => true,
-                'message' => 'Usuário registrado com sucesso!'
+                'message' => 'Visitante registrado com sucesso!'
             ]);
         } else {
             return redirect()->route('index.visitante')->with([
                 'success' => false,
-                'message' => 'Erro ao registrar usuário!'
+                'message' => 'Erro ao registrar visitante!'
             ]);
         }
 
@@ -70,8 +94,9 @@ class VisitanteController extends Controller
     public function edit($id)
     {
         $visitante = Visitante::findOrFail($id);
+        $veiculos = Veiculo::orderBy('placa')->get();
 
-        return view('pages.visitantes.register', compact('visitante'));
+        return view('pages.visitantes.register', compact('visitante, veiculos'));
     }
 
     /**

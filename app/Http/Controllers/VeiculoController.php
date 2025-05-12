@@ -35,13 +35,17 @@ class VeiculoController extends Controller
         $veiculo = Veiculo::create($validated);
 
         // Verifica se o redirecionamento vem da página do morador
-        if ($request->query('from') === 'morador') {
-            return redirect()->route('create.morador', ['veiculo_id' => $veiculo->id])
-                             ->with('success', 'Veículo cadastrado com sucesso!');
+        if ($veiculo) {
+            return redirect()->route('index.veiculo')->with([
+                'success' => true,
+                'message' => 'Veículo registrado com sucesso!'
+            ]);
+        } else {
+            return redirect()->route('index.veiculo')->with([
+                'success' => false,
+                'message' => 'Erro ao registrar veículo!'
+            ]);
         }
-
-        return redirect()->route('index.veiculo')
-                         ->with('success', 'Veículo cadastrado com sucesso!');
     }
 
     /**
@@ -106,7 +110,7 @@ class VeiculoController extends Controller
     {
         return $request->validate([
             'placa' => 'required|string|max:7|unique:veiculos,placa,' . $veiculo_id, // Validando a placa com a exceção para o próprio registro
-            'tipo' => 'required|string|max:7',
+            'tipo' => 'required|string|max:12',
             'marca' => 'required|string|max:50',
             'modelo' => 'required|string|max:50',
             'cor' => 'required|string|max:15',

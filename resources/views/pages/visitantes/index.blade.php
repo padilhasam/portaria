@@ -54,7 +54,7 @@
                 <tbody>
                     @forelse ($visitantes as $visitante)
                         <tr>
-                            <td>{{ $visitante->nome }}</td>
+                            <td><span class="badge bg-primary text-white">{{ $visitante->nome }}</span></td>
                             <td>{{ $visitante->documento }}</td>
                             <td>{{ $visitante->telefone }}</td>
                             <td>{{ $visitante->empresa }}</td>

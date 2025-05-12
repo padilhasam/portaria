@@ -27,7 +27,16 @@ class Visitante extends Model
         'tipo_acesso',
         'observacoes',
         'entrada',
-        'saida'
+        'saida',
+        'id_veiculo',  // Adicionado caso o morador tenha um veículo
     ];
+
+    /**
+     * Relacionamento com o modelo Veiculo
+     */
+    public function veiculo()
+    {
+        return $this->belongsTo(Veiculo::class, 'id_veiculo');
+    }
 
 }

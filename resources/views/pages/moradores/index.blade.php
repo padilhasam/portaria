@@ -78,23 +78,46 @@
                             @endif
                         </td>
                         <td>
-                            <div class="d-flex gap-2">
-                                <a href="{{ route('edit.morador', ['id' => $morador->id]) }}" class="btn btn-primary btn-sm text-white">
-                                    <i class="bi bi-pencil-fill me-1"></i> Editar
-                                </a>
-                                <a href="javascript:void(0)" class="btn btn-danger btn-sm text-white" data-bs-toggle="modal" data-bs-target="#removeItemModal" data-id="{{ $morador->id }}">
-                                    <i class="bi bi-trash3-fill me-1"></i> Remover
-                                </a>
-                                <a href="javascript:void(0)" class="btn btn-info btn-sm text-white view-morador" data-bs-toggle="modal" data-bs-target="#viewDataModal"
-                                    data-nome="{{ $morador->nome }}"
-                                    data-cpf="{{ $morador->documento }}"
-                                    data-apartamento="{{ optional($morador->apartamento)->numero }}{{ optional($morador->apartamento)->bloco ? ' - Bloco ' . optional($morador->apartamento)->bloco : '' }}"
-                                    data-veiculo="{{ optional($morador->veiculo)->placa }}{{ optional($morador->veiculo)->modelo ? ' - ' . optional($morador->veiculo)->modelo : '' }}"
-                                    data-celular="{{ $morador->celular }}"
-                                    data-email="{{ $morador->email }}"
-                                    data-tipo="{{ $morador->tipo_morador === 'aluguel' ? 'Aluguel' : 'Própria' }}">
-                                    <i class="bi bi-eye-fill me-1"></i> Ver Dados
-                                </a>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi" viewBox="0 0 16 16">
+                                            <path d="M8 3.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                        </svg>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end show-on-top">
+                                    <li>
+                                        <a href="{{ route('edit.morador', ['id' => $morador->id]) }}" class="dropdown-item d-flex align-items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd" viewBox="0 0 16 16">
+                                                    <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-4 1.5a.5.5 0 0 1-.65-.65l1.5-4a.5.5 0 0 1 .11-.168l10-10z"/>
+                                            </svg>
+                                            Editar
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)" class="dropdown-item d-flex align-items-center gap-2 text-danger" data-bs-toggle="modal" data-bs-target="#removeItemModal" data-id="{{ $morador->id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 1 1 0V12a.5.5 0 0 1-1 0V6zm3-.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5z"/>
+                                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2h4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h4a1 1 0 0 1 1 1z"/>
+                                            </svg> 
+                                            Remover
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)" class="dropdown-item d-flex align-items-center gap-2 view-morador" data-bs-toggle="modal" data-bs-target="#viewDataModal"
+                                            data-nome="{{ $morador->nome }}"
+                                            data-cpf="{{ $morador->documento }}"
+                                            data-apartamento="{{ optional($morador->apartamento)->numero }}{{ optional($morador->apartamento)->bloco ? ' - Bloco ' . optional($morador->apartamento)->bloco : '' }}"
+                                            data-veiculo="{{ optional($morador->veiculo)->placa }}{{ optional($morador->veiculo)->modelo ? ' - ' . optional($morador->veiculo)->modelo : '' }}"
+                                            data-celular="{{ $morador->celular }}"
+                                            data-email="{{ $morador->email }}"
+                                            data-tipo="{{ $morador->tipo_morador === 'aluguel' ? 'Aluguel' : 'Própria' }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#b45f06" class="bi bi-search" viewBox="0 0 16 16">
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                            </svg>
+                                            Ver Dados
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </td>
                     </tr>
@@ -111,20 +134,38 @@
 
 <div class="modal fade" id="viewDataModal" tabindex="-1" aria-labelledby="viewDataModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content rounded-4 shadow">
-            <div class="modal-header bg-info text-white rounded-top-4">
-                <h5 class="modal-title" id="viewDataModalLabel">Detalhes do Morador</h5>
-                <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        <div class="modal-content rounded-4 shadow-sm border-0">
+            <div class="modal-header bg-primary text-white rounded-top-4 py-3 px-4">
+                <h5 class="modal-title" id="viewDataModalLabel">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16"><path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z"/>
+                    </svg> 
+                    Detalhes do Morador
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
-            <div class="modal-body">
-                <ul class="list-group">
-                    <li class="list-group-item"><strong>Nome:</strong> <span id="modal-nome"></span></li>
-                    <li class="list-group-item"><strong>CPF:</strong> <span id="modal-cpf"></span></li>
-                    <li class="list-group-item"><strong>Apartamento:</strong> <span id="modal-apartamento"></span></li>
-                    <li class="list-group-item"><strong>Veículo:</strong> <span id="modal-veiculo"></span></li>
-                    <li class="list-group-item"><strong>Celular:</strong> <span id="modal-celular"></span></li>
-                    <li class="list-group-item"><strong>Email:</strong> <span id="modal-email"></span></li>
-                    <li class="list-group-item"><strong>Tipo:</strong> <span id="modal-tipo"></span></li>
+            <div class="modal-body px-4 py-3">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item py-3">
+                        <strong class="text-secondary">Nome:</strong> <span id="modal-nome" class="ms-2"></span>
+                    </li>
+                    <li class="list-group-item py-3">
+                        <strong class="text-secondary">CPF:</strong> <span id="modal-cpf" class="ms-2"></span>
+                    </li>
+                    <li class="list-group-item py-3">
+                        <strong class="text-secondary">Apartamento:</strong> <span id="modal-apartamento" class="ms-2"></span>
+                    </li>
+                    <li class="list-group-item py-3">
+                        <strong class="text-secondary">Veículo:</strong> <span id="modal-veiculo" class="ms-2"></span>
+                    </li>
+                    <li class="list-group-item py-3">
+                        <strong class="text-secondary">Celular:</strong> <span id="modal-celular" class="ms-2"></span>
+                    </li>
+                    <li class="list-group-item py-3">
+                        <strong class="text-secondary">Email:</strong> <span id="modal-email" class="ms-2"></span>
+                    </li>
+                    <li class="list-group-item py-3">
+                        <strong class="text-secondary">Tipo:</strong> <span id="modal-tipo" class="ms-2"></span>
+                    </li>
                 </ul>
             </div>
         </div>
