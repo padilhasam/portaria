@@ -42,7 +42,7 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Nome</th>
+                        <th scope="col">Nome</th>
                         <th>CPF</th>
                         <th>Telefone</th>
                         <th>Empresa</th>
@@ -58,8 +58,8 @@
                             <td>{{ $visitante->documento }}</td>
                             <td>{{ $visitante->telefone }}</td>
                             <td>{{ $visitante->empresa }}</td>
-                            <td>{{ $visitante->veiculo }}</td>
-                            <td>{{ $visitante->placa }}</td>
+                            <td>{{ $visitante->veiculo->modelo ?? '-' }}</td>
+                            <td>{{ $visitante->veiculo->placa ?? '-' }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">

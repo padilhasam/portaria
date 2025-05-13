@@ -18,7 +18,7 @@ class MoradorController extends Controller
         $moradores = Morador::query()
             ->when($search, function ($query, $search) {
                 return $query->where('nome', 'like', "%{$search}%")
-                             ->orWhere('documento', 'like', "%{$this->unmask($search)}%");
+                             ->orWhere('documento', 'like', "%{$search}%");
             })
             ->with(['apartamento', 'veiculo']) // Eager load relationships
             ->latest()
@@ -35,7 +35,7 @@ class MoradorController extends Controller
         $search = $request->input('search');
         $moradores = Morador::query()
             ->where('nome', 'like', "%{$search}%")
-            ->orWhere('documento', 'like', "%{$this->unmask($search)}%")
+            ->orWhere('documento', 'like', "%{$search}%")
             ->limit(10) // Limita os resultados a 10
             ->get(['id', 'nome', 'documento']); // Selecionando apenas o necessário
 
@@ -61,9 +61,20 @@ class MoradorController extends Controller
 
         // Conversão da data para formato MySQL
         $validated['nascimento'] = $this->convertDateToMySQL($validated['nascimento']);
-        $validated['documento'] = $this->unmask($validated['documento']);
+        
+        $morador = Morador::create($validated);
 
-        Morador::create($validated);
+        if ($morador) {
+            return redirect()->route('index.morador')->with([
+                'success' => true,
+                'message' => 'Morador registrado com sucesso!'
+            ]);
+        } else {
+            return redirect()->route('index.morador')->with([
+                'success' => false,
+                'message' => 'Erro ao registrar Morador!'
+            ]);
+        }
 
         return redirect()->route('index.morador')->with('success', 'Morador cadastrado com sucesso!');
     }
@@ -88,7 +99,6 @@ class MoradorController extends Controller
     {
         $morador = Morador::findOrFail($id);
         $validated = $this->validateMorador($request);
-        $validated['documento'] = $this->unmask($validated['documento']);
         $validated['nascimento'] = $this->convertDateToMySQL($validated['nascimento']);
 
         $morador->update($validated);
@@ -123,14 +133,6 @@ class MoradorController extends Controller
             'email' => 'nullable|string|email|max:100',
             'tipo_morador' => 'required|string|max:40|in:aluguel,propria',
         ]);
-    }
-
-    /**
-     * Remove máscaras de strings (e.g., CPF).
-     */
-    private function unmask($string)
-    {
-        return preg_replace('/[^0-9]/', '', $string);
     }
 
     /**

@@ -56,14 +56,15 @@ class VisitanteController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
+            'id_veiculo' => 'nullable|exists:veiculos,id',
             'nome' => 'required|string|max:50',
             'documento' => 'required|string|min:11|max:14',
-            'telefone' => 'nullable|string|max:20',
+            'telefone' => 'required|string|max:20',
             'empresa' => 'nullable|string|max:50',
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:12',
             'tipo_acesso' => 'required|string|max:40',
-            'observacao' => 'nullable|string|max:500',
+            'observacoes' => 'nullable|string|max:500',
             'image' => 'nullable|image|max:2048',
         ]);
 
@@ -96,7 +97,7 @@ class VisitanteController extends Controller
         $visitante = Visitante::findOrFail($id);
         $veiculos = Veiculo::orderBy('placa')->get();
 
-        return view('pages.visitantes.register', compact('visitante, veiculos'));
+        return view('pages.visitantes.register', compact('visitante', 'veiculos'));
     }
 
     /**
@@ -107,14 +108,15 @@ class VisitanteController extends Controller
         $visitante = Visitante::findOrFail($id);
 
         $data = $request->validate([
+            'id_veiculo' => 'nullable|exists:veiculos,id',
             'nome' => 'required|string|max:50',
             'documento' => 'required|string|min:11|max:14',
-            'telefone' => 'nullable|string|max:20',
+            'telefone' => 'required|string|max:20',
             'empresa' => 'nullable|string|max:50',
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:12',
             'tipo_acesso' => 'required|string|max:40',
-            'observacao' => 'nullable|string|max:500',
+            'observacoes' => 'nullable|string|max:500',
             'image' => 'nullable|image|max:2048',
         ]);
 
@@ -143,5 +145,10 @@ class VisitanteController extends Controller
         $visitante->delete();
 
         return redirect()->route('index.visitante')->with('success', 'Visitante removido com sucesso!');
+    }
+
+        private function unmask($value)
+    {
+        return preg_replace('/[^0-9]/', '', $value);
     }
 }

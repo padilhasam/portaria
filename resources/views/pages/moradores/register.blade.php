@@ -3,7 +3,7 @@
 @section('page_dashboard')
 
 @php
-    $edit = isset($morador);
+    $edit = isset($morador)? true : false;
 @endphp
 
 @if(session('success'))

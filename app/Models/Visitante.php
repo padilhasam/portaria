@@ -21,14 +21,12 @@ class Visitante extends Model
         'documento',
         'telefone',
         'empresa',
-        'veiculo',
-        'placa',
+        'id_veiculo',  // Agora é id_veiculo, que é a chave estrangeira
         'image', // nome da imagem salva
         'tipo_acesso',
         'observacoes',
         'entrada',
         'saida',
-        'id_veiculo',  // Adicionado caso o morador tenha um veículo
     ];
 
     /**
@@ -36,7 +34,6 @@ class Visitante extends Model
      */
     public function veiculo()
     {
-        return $this->belongsTo(Veiculo::class, 'id_veiculo');
+        return $this->belongsTo(Veiculo::class, 'id_veiculo'); // 'id_veiculo' é a chave estrangeira
     }
-
 }
