@@ -17,13 +17,9 @@ return new class extends Migration
             $table->string('documento');
             $table->string('telefone');
             $table->string('empresa')->nullable();
-            $table->string('veiculo')->nullable();
-            $table->string('placa')->nullable();
             $table->string('image');
             $table->string('tipo_acesso');
             $table->text('observacoes')->nullable();
-            $table->timestamp('entrada')->nullable();
-            $table->timestamp('saida')->nullable();
             $table->timestamps();
         });
     }

@@ -17,16 +17,14 @@ class Visitante extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id_veiculo',  // Agora é id_veiculo, que é a chave estrangeira
         'nome',
         'documento',
         'telefone',
         'empresa',
-        'id_veiculo',  // Agora é id_veiculo, que é a chave estrangeira
-        'image', // nome da imagem salva
         'tipo_acesso',
+        'image', // nome da imagem salva
         'observacoes',
-        'entrada',
-        'saida',
     ];
 
     /**

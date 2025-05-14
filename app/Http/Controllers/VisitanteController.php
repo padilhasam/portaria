@@ -56,13 +56,11 @@ class VisitanteController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'id_veiculo' => 'nullable|exists:veiculos,id',
+            'id_veiculo' => 'nullable|integer|exists:veiculos,id',
             'nome' => 'required|string|max:50',
             'documento' => 'required|string|min:11|max:14',
             'telefone' => 'required|string|max:20',
             'empresa' => 'nullable|string|max:50',
-            'veiculo' => 'nullable|string|max:30',
-            'placa' => 'nullable|string|max:12',
             'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'nullable|string|max:500',
             'image' => 'nullable|image|max:2048',
@@ -113,8 +111,6 @@ class VisitanteController extends Controller
             'documento' => 'required|string|min:11|max:14',
             'telefone' => 'required|string|max:20',
             'empresa' => 'nullable|string|max:50',
-            'veiculo' => 'nullable|string|max:30',
-            'placa' => 'nullable|string|max:12',
             'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'nullable|string|max:500',
             'image' => 'nullable|image|max:2048',

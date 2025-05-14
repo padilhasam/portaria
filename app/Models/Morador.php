@@ -17,6 +17,7 @@ class Morador extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id_veiculo',  // Adicionado caso o morador tenha um veículo
         'id_apartamento',
         'nome',
         'documento',
@@ -25,7 +26,6 @@ class Morador extends Model
         'celular',
         'email',
         'tipo_morador',
-        'id_veiculo',  // Adicionado caso o morador tenha um veículo
     ];
 
     /**

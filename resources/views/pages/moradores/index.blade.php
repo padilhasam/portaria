@@ -41,7 +41,10 @@
                         <th>Nome</th>
                         <th>CPF</th>
                         <th>Apartamento</th>
+                        <th>Bloco</th>
                         <th>Veículo</th>
+                        <th>Cor</th>
+                        <th>Placa</th>
                         <th>Contato</th>
                         <th>Tipo</th>
                         <th>Ações</th>
@@ -54,15 +57,28 @@
                         <td>{{ $morador->documento }}</td>
                         <td>
                             {{ optional($morador->apartamento)->numero }}
-                            @if (optional($morador->apartamento)->bloco)
-                                - Bloco {{ optional($morador->apartamento)->bloco }}
+                        </td>
+                        <td>
+                            @if(optional($morador->apartamento)->bloco) 
+                            Bloco {{optional($morador->apartamento)
+                            ->bloco }}
                             @endif
                         </td>
                         <td>
-                            {{ optional($morador->veiculo)->placa }}
-                            @if (optional($morador->veiculo)->modelo)
-                                - {{ optional($morador->veiculo)->modelo }}
+                            {{optional($morador->veiculo)
+                            ->marca}}
+                            @if(optional($morador->veiculo)->modelo)
+                             - {{optional($morador->veiculo)
+                             ->modelo }}
                             @endif
+                        </td>
+                        <td>
+                            {{optional($morador->veiculo)
+                            ->cor}}
+                        </td>
+                        <td>
+                            {{optional($morador->veiculo)
+                            ->placa}}
                         </td>
                         <td>
                             {{ $morador->celular }}

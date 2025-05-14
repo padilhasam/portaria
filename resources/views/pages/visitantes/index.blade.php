@@ -47,6 +47,7 @@
                         <th>Telefone</th>
                         <th>Empresa</th>
                         <th>Veículo</th>
+                        <th>Cor</th>
                         <th>Placa</th>
                         <th>Ações</th>
                     </tr>
@@ -58,8 +59,23 @@
                             <td>{{ $visitante->documento }}</td>
                             <td>{{ $visitante->telefone }}</td>
                             <td>{{ $visitante->empresa }}</td>
-                            <td>{{ $visitante->veiculo->modelo ?? '-' }}</td>
-                            <td>{{ $visitante->veiculo->placa ?? '-' }}</td>
+                            <td>
+                                {{optional($visitante->veiculo)
+                                ->marca}}
+                                @if(optional($visitante->veiculo)->modelo)
+                                - {{optional($visitante->veiculo)
+                                ->modelo }}
+                            @endif
+                            </td>
+                            <td>
+                                {{optional($visitante->veiculo)
+                                ->cor}}
+                            </td>
+                            <td>
+                                {{optional($visitante->veiculo)
+                                ->placa}}
+                            </td>
+                            {{--<td>{{ $visitante->veiculo->placa ?? '-' }}</td>--}}
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">
