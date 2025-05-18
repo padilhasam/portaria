@@ -144,8 +144,11 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
-        {{ $moradores->links() }} </div>
+        </div> 
+    </div>
+</div>
+<div class="mt-4 d-flex justify-content-center">
+    {{ $moradores->links('pagination::bootstrap-5') }}
 </div>
 
 <div class="modal fade" id="viewDataModal" tabindex="-1" aria-labelledby="viewDataModalLabel" aria-hidden="true">

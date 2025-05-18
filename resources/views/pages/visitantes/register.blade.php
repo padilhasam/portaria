@@ -117,7 +117,7 @@
                                 </svg>
                             </label>
                             <div>
-                                <img id="photo" src="{{ $edit && $visitante->image ? $visitante->image : Vite::asset('/resources/images/avatar2.png') }}" class="img-fluid rounded mb-3 border" alt="Foto">
+                                <img id="photo" src="{{ $edit && $visitante->image ? asset('storage/visitantes/'.$visitante->image) : Vite::asset('/resources/images/avatar2.png') }}" class="img-fluid rounded mb-3 border" alt="Foto">
                             </div>
 
                             <div class="d-grid gap-2">
@@ -127,7 +127,7 @@
                                         <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12z"/>
                                     </svg> Escolher Arquivo
                                 </button>
-                                <input type="file" id="user-image" name="image" accept="image/*" class="d-none" required>
+                                <input type="file" id="user-image" name="image" accept="image/*" class="d-none" required readonly>
                                 <button type="button" class="btn btn-outline-secondary rounded-pill btn-sm" data-bs-toggle="modal" data-bs-target="#modalCamera">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
                                         <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z"/>

@@ -66,9 +66,11 @@ class VisitanteController extends Controller
             'image' => 'nullable|image|max:2048',
         ]);
 
+ 
         if ($request->hasFile('image')) {
-            $caminho = $request->file('image')->store('visitantes', 'public');
-            $data['image'] = Storage::url($caminho);
+            $nomeArquivo = $request->file('image')->hashName();
+            $request->file('image')->storeAs('visitantes', $nomeArquivo, 'public');
+            $data['image'] = $nomeArquivo;
         }
 
         $visitante = Visitante::create($data);
@@ -117,8 +119,9 @@ class VisitanteController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $caminho = $request->file('image')->store('visitantes', 'public');
-            $data['image'] = Storage::url($caminho);
+            $nomeArquivo = $request->file('image')->hashName();
+            $request->file('image')->storeAs('visitantes', $nomeArquivo, 'public');
+            $data['image'] = $nomeArquivo;
         }
 
         $visitante->update($data);

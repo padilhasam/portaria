@@ -46,11 +46,11 @@
                     <tr>
                         <td>                        
                             @if ($veiculo->tipo === 'Carro')
-                                <span class="badge bg-info text-white">Carro</span>
+                                <span class="badge bg-primary text-white">Carro</span>
                             @elseif ($veiculo->tipo === 'Moto')
-                                <span class="badge bg-success text-white">Moto</span>
+                                <span class="badge bg-primary text-white">Moto</span>
                             @elseif($veiculo->tipo === 'Caminhão')
-                                <span class="badge bg-danger text-white">Caminhão</span>
+                                <span class="badge bg-primary text-white">Caminhão</span>
                             @endif
                         </td>
                         <td>{{ $veiculo->marca }}</td>
