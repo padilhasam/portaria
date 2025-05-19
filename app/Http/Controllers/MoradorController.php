@@ -125,12 +125,12 @@ class MoradorController extends Controller
         return $request->validate([
             'id_apartamento' => 'required|integer|exists:apartamentos,id',
             'id_veiculo' => 'nullable|integer|exists:veiculos,id',
-            'nome' => 'required|string|max:100',
-            'documento' => 'required|string|max:14|unique:moradores,documento,' . ($request->route('id') ?? ''),
+            'nome' => 'required|string|max:255',
+            'documento' => 'required|string|min:11|max:14|unique:moradores,documento,' . ($request->route('id') ?? ''),
             'nascimento' => 'required|date', // Validando como data
-            'tel_fixo' => 'nullable|string|max:14',
-            'celular' => 'required|string|max:15',
-            'email' => 'nullable|string|email|max:100',
+            'tel_fixo' => 'nullable|string|max:20',
+            'celular' => 'required|string|max:20',
+            'email' => 'nullable|string|email|max:255',
             'tipo_morador' => 'required|string|max:40|in:aluguel,propria',
         ]);
     }

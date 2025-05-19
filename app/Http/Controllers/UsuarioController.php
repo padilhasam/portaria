@@ -34,9 +34,9 @@ class UsuarioController extends Controller
     {
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
-            'documento' => 'required|string|max:15',
+            'documento' => 'required|string|min:11|max:15',
             'nascimento' => 'required|date',
-            'celular' => 'required|string|max:15',
+            'celular' => 'required|string|max:20',
             'user' => 'required|string|max:255|unique:users,user',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|confirmed|min:6',

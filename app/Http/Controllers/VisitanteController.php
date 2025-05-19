@@ -57,8 +57,8 @@ class VisitanteController extends Controller
     {
         $data = $request->validate([
             'id_veiculo' => 'nullable|integer|exists:veiculos,id',
-            'nome' => 'required|string|max:50',
-            'documento' => 'required|string|min:11|max:14',
+            'nome' => 'required|string|max:255',
+            'documento' => 'required|string|min:11|max:15',
             'telefone' => 'required|string|max:20',
             'empresa' => 'nullable|string|max:50',
             'tipo_acesso' => 'required|string|max:40',
@@ -109,8 +109,8 @@ class VisitanteController extends Controller
 
         $data = $request->validate([
             'id_veiculo' => 'nullable|exists:veiculos,id',
-            'nome' => 'required|string|max:50',
-            'documento' => 'required|string|min:11|max:14',
+            'nome' => 'required|string|max:255',
+            'documento' => 'required|string|min:11|max:15',
             'telefone' => 'required|string|max:20',
             'empresa' => 'nullable|string|max:50',
             'tipo_acesso' => 'required|string|max:40',

@@ -104,7 +104,7 @@ class ApartamentoController extends Controller
             'bloco' => 'required|string|max:10',
             'vaga' => 'nullable|string|max:10',
             'ramal' => 'nullable|string|max:10',
-            'situacao' => 'nullable|string|max:20|in:ativo,inativo',
+            'situacao' => 'nullable|string|max:50|in:ativo,inativo',
             'status_vaga' => 'required|in:livre,ocupada',
         ]);
     }

@@ -39,11 +39,11 @@ class RegistroController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nome' => 'required|string|max:50',
-            'documento' => 'required|string|min:11|max:14',
+            'nome' => 'required|string|max:255',
+            'documento' => 'required|string|min:11|max:15',
             'empresa' => 'nullable|string|max:50',
             'veiculo' => 'nullable|string|max:30',
-            'placa' => 'nullable|string|max:12',
+            'placa' => 'nullable|string|max:10',
             'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'required|string|max:500',
             'img' => 'nullable|image|max:2048'
@@ -90,11 +90,11 @@ class RegistroController extends Controller
         $registro = Registro::findOrFail($id);
 
         $data = $request->validate([
-            'nome' => 'required|string|max:50',
-            'documento' => 'required|string|min:11|max:14',
+            'nome' => 'required|string|max:255',
+            'documento' => 'required|string|min:11|max:15',
             'empresa' => 'nullable|string|max:50',
             'veiculo' => 'nullable|string|max:30',
-            'placa' => 'nullable|string|max:12',
+            'placa' => 'nullable|string|max:10',
             'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'required|string|max:500',
             'img' => 'nullable|image|max:2048'

@@ -109,12 +109,12 @@ class VeiculoController extends Controller
     private function validateVeiculo(Request $request, $veiculo_id = null)
     {
         return $request->validate([
-            'placa' => 'required|string|max:7|unique:veiculos,placa,' . $veiculo_id, // Validando a placa com a exceção para o próprio registro
-            'tipo' => 'required|string|max:12',
+            'placa' => 'required|string|max:10|unique:veiculos,placa,' . $veiculo_id, // Validando a placa com a exceção para o próprio registro
+            'tipo' => 'required|string|max:30',
             'marca' => 'required|string|max:50',
             'modelo' => 'required|string|max:50',
-            'cor' => 'required|string|max:15',
-            'vaga' => 'nullable|string|max:10', // Se a vaga for opcional
+            'cor' => 'required|string|max:20',
+            'vaga' => 'nullable|string|max:20', // Se a vaga for opcional
             'observacao' => 'nullable|string|max:255', // Observações com limite maior
         ], [
             'placa.required' => 'A placa do veículo é obrigatória.',
