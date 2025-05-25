@@ -13,7 +13,7 @@ class Agendamento extends Model
     use HasFactory;
 
     protected $fillable = [
-        'usuario_id',
+        'id_usuario',
         'nome_area',
         'data_agendamento',
         'horario_inicio',
@@ -80,6 +80,6 @@ class Agendamento extends Model
 
     public function morador()
     {
-        return $this->belongsTo(Morador::class, 'usuario_id');
+        return $this->belongsTo(Morador::class, 'id_usuario');
     }
 }

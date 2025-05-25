@@ -44,7 +44,7 @@
                     <tr>
                         <th scope="col">Nome</th>
                         <th>CPF</th>
-                        <th>Telefone</th>
+                        <th>Celular</th>
                         <th>Empresa</th>
                         <th>Veículo</th>
                         <th>Cor</th>
@@ -57,7 +57,7 @@
                         <tr>
                             <td><span class="badge bg-primary text-white">{{ $visitante->nome }}</span></td>
                             <td>{{ $visitante->documento }}</td>
-                            <td>{{ $visitante->telefone }}</td>
+                            <td>{{ $visitante->celular }}</td>
                             <td>{{ $visitante->empresa }}</td>
                             <td>
                                 {{optional($visitante->veiculo)

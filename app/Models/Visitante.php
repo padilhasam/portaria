@@ -20,7 +20,7 @@ class Visitante extends Model
         'id_veiculo',  // Agora é id_veiculo, que é a chave estrangeira
         'nome',
         'documento',
-        'telefone',
+        'celular',
         'empresa',
         'tipo_acesso',
         'image', // nome da imagem salva

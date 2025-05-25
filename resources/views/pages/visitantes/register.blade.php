@@ -75,13 +75,13 @@
                                 <label for="documento" class="form-label">CPF</label>
                                 <input name="documento" type="text" class="form-control rounded-pill border-dark" id="documento" required
                                     value="{{ old('documento', $edit ? $visitante->documento : '') }}"
-                                    onkeyup="mascara(this, mcpf)">
+                                    >
                                 <div id="cpf-error" class="invalid-feedback d-none">CPF inválido</div>
                             </div>
                             <div class="col-md-4">
-                                <label for="telefone" class="form-label">Telefone</label>
-                                <input name="telefone" type="text" class="form-control rounded-pill border-dark" id="telefone" required
-                                    value="{{ old('telefone', $edit ? $visitante->telefone : '') }}"
+                                <label for="celular" class="form-label">Telefone</label>
+                                <input name="celular" type="text" class="form-control rounded-pill border-dark" id="celular" required
+                                    value="{{ old('celular', $edit ? $visitante->celular : '') }}"
                                     onkeyup="mascara(this, mtel)">
                             </div>
                             <div class="col-md-4">

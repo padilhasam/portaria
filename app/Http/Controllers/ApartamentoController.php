@@ -43,8 +43,18 @@ class ApartamentoController extends Controller
 
         $apartamento = Apartamento::create($validated);
 
-        return redirect($request->query('from') ?? route('index.apartamento'))
-            ->with('success', "Apartamento #{$apartamento->numero} cadastrado com sucesso!");
+        // Verifica se o redirecionamento vem da página do morador
+        if ($apartamento) {
+            return redirect()->route('index.apartamento')->with([
+                'success' => true,
+                'message' => 'Apartamento registrado com sucesso!'
+            ]);
+        } else {
+            return redirect()->route('index.apartamento')->with([
+                'success' => false,
+                'message' => 'Erro ao registrar apartamento!'
+            ]);
+        }
     }
 
     /**

@@ -57,7 +57,7 @@
                         <td>{{ $veiculo->modelo }}</td>
                         <td>{{ $veiculo->cor }}</td>
                         <td>{{ $veiculo->placa }}</td>
-                        <td>{{ $veiculo->observacao }}</td>
+                        <td>{{ $veiculo->observacoes }}</td>
                         <td>{{ $veiculo->created_at->format('d/m/Y H:i') }}</td>
                         <td>{{ $veiculo->updated_at->format('d/m/Y H:i') }}</td>
                         <td>

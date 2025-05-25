@@ -16,6 +16,14 @@
     </a>
 </header>
 
+<!-- Exibição de mensagens de sucesso ou erro -->
+<div>
+    @include('components.alerts', [
+        'success' => session()->get('success'), 
+        'message' => session()->get('message')
+    ])
+</div>
+
 <div class="card shadow-sm border-0 rounded-4" style="min-height: 600px;">
     <div class="card-body d-flex flex-column">
         <h5 class="card-title mb-3 fw-semibold">Lista de Apartamentos</h5>

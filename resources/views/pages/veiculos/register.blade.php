@@ -91,7 +91,7 @@
             </div>
 
             <div class="col-md-6">
-                <label for="observacao" class="form-label">Observação</label>
+                <label for="observacoes" class="form-label">Observação</label>
                 <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" style="resize: none">{{ old('observacoes', $edit ? $veiculo->observacoes : '') }}</textarea>
             </div>
         </div>

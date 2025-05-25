@@ -115,7 +115,7 @@ class VeiculoController extends Controller
             'modelo' => 'required|string|max:50',
             'cor' => 'required|string|max:20',
             'vaga' => 'nullable|string|max:20', // Se a vaga for opcional
-            'observacao' => 'nullable|string|max:255', // Observações com limite maior
+            'observacoes' => 'nullable|string|max:255', // Observações com limite maior
         ], [
             'placa.required' => 'A placa do veículo é obrigatória.',
             'placa.unique' => 'A placa informada já está cadastrada.',
@@ -124,7 +124,7 @@ class VeiculoController extends Controller
             'modelo.required' => 'O modelo do veículo é obrigatório.',
             'cor.required' => 'A cor do veículo é obrigatória.',
             'vaga.max' => 'A vaga pode ter no máximo 10 caracteres.',
-            'observacao.max' => 'A observação pode ter no máximo 255 caracteres.',
+            'observacoes.max' => 'A observação pode ter no máximo 255 caracteres.',
         ]);
     }
 }
