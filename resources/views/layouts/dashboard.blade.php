@@ -41,8 +41,8 @@
                     <a href="#" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('ocorrencia*') ? 'active' : '' }}">
                         {{ svg('hugeicons-chatting-01') }} Ocorrências
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('historico*') ? 'active' : '' }}">
-                        {{ svg('hugeicons-note-01') }} Histórico de Acessos
+                    <a href={{ route('index.relatorio') }} class="list-group-item list-group-item-action py-2 rounded {{ request()->is('relatorio*') ? 'active' : '' }}">
+                        {{ svg('hugeicons-note-01') }} Relatórios de Acessos
                     </a>
                     <a href={{ route('index.usuario') }} class="list-group-item list-group-item-action py-2 rounded {{ request()->is('usuario*') ? 'active' : '' }}">
                         {{ svg('hugeicons-user-shield-02') }} Usuários

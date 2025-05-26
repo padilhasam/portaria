@@ -8,7 +8,8 @@ use App\Http\Controllers\{
     UsuarioController,
     VisitanteController,
     VeiculoController,
-    AgendamentoController
+    AgendamentoController,
+    RelatorioController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -95,3 +96,7 @@ Route::controller(AgendamentoController::class)->group(function() {
     Route::put('/agendamento/update/{id}', 'update')->name('update.agendamento');
     Route::delete('/agendamento/{id}', 'destroy')->name('destroy.agendamento');
 })->middleware(['auth'])->name('dashboard');
+
+// routes/web.php
+Route::get('/relatorios', [RelatorioController::class, 'index'])->name('index.relatorio');
+Route::get('/relatorios/export', [RelatorioController::class, 'export'])->name('export.relatorio');
