@@ -20,7 +20,6 @@
         "inputmask": "^5.0.9",
         "jquery": "^3.7.1",
         "lodash": "^4.17.21",
-        "sweetalert2": "^11.6.13",
         "tom-select": "^2.4.3"
     }
 }
