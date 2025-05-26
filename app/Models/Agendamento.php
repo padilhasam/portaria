@@ -14,6 +14,7 @@ class Agendamento extends Model
 
     protected $fillable = [
         'id_usuario',
+        'id_morador',
         'nome_area',
         'data_agendamento',
         'horario_inicio',
@@ -41,26 +42,22 @@ class Agendamento extends Model
         $horaInicio = Carbon::parse($this->horario_inicio);
         $horaFim = Carbon::parse($this->horario_fim);
 
-        // 1. Não pode agendar para o passado
         if ($dataAgendamento->isBefore($agora->startOfDay())) {
             throw ValidationException::withMessages(['data_agendamento' => 'Não é possível agendar uma data passada.']);
         }
 
-        // 2. Hora de início deve ser menor que hora de fim
         if ($horaInicio->gte($horaFim)) {
             throw ValidationException::withMessages(['horario_inicio' => 'A hora de início deve ser antes da hora de fim.']);
         }
 
-        // 3. Horário permitido (08:00 - 22:00)
         $horaInicioPermitida = config('agendamento.horario_inicio');
         $horaFimPermitida = config('agendamento.horario_fim');
 
         if ($horaInicio->hour < $horaInicioPermitida || 
-        ($horaFim->hour > $horaFimPermitida || ($horaFim->hour == $horaFimPermitida && $horaFim->minute > 0))) {
+            ($horaFim->hour > $horaFimPermitida || ($horaFim->hour == $horaFimPermitida && $horaFim->minute > 0))) {
             throw ValidationException::withMessages(['horario_inicio' => "O horário deve ser entre {$horaInicioPermitida}:00 e {$horaFimPermitida}:00."]);
         }
 
-        // 4. Checar se já existe agendamento sobreposto na mesma área
         $existeConflito = self::where('nome_area', $this->nome_area)
             ->where('data_agendamento', $this->data_agendamento)
             ->where(function ($query) {
@@ -78,8 +75,13 @@ class Agendamento extends Model
         }
     }
 
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'id_usuario');
+    }
+
     public function morador()
     {
-        return $this->belongsTo(Morador::class, 'id_usuario');
+        return $this->belongsTo(Morador::class, 'id_morador');
     }
 }

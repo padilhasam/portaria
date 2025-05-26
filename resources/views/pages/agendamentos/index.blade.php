@@ -42,59 +42,65 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th scope="col">Morador</th>
-                        <th scope="col">Área</th>
-                        <th scope="col">Data</th>
-                        <th scope="col">Horário</th>
-                        <th scope="col">Usuário</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Ações</th>
+                        <th>Morador</th>
+                        <th>Área</th>
+                        <th>Data</th>
+                        <th>Horário Início</th>
+                        <th>Horário Fim</th>
+                        <th>Usuário</th>
+                        <th>Status</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($agendamentos as $agendamento)
                         <tr class="border-t hover:bg-gray-50">
-                            <td class="p-4">{{ $agendamento->area }}</td>
-                            <td class="p-4">{{ \Carbon\Carbon::parse($agendamento->data)->format('d/m/Y') }}</td>
-                            <td class="p-4">{{ $agendamento->hora_inicio }} - {{ $agendamento->hora_fim }}</td>
-                            <td class="p-4">{{ $agendamento->usuario->name ?? 'N/A' }}</td>
-                            <td class="p-4">
+                            <td>{{ $agendamento->morador->nome}}</td>
+                            <td>{{ $agendamento->nome_area }}</td>
+                            <td>{{ \Carbon\Carbon::parse($agendamento->data)->format('d/m/Y') }}</td>
+                            <td>{{ $agendamento->horario_inicio }}</td>
+                            <td>{{ $agendamento->horario_fim }}</td>
+                            <td>{{ $agendamento->usuario->nome ?? 'N/A' }}</td>
+                            <td>
                                 <span class="px-2 py-1 rounded text-sm {{ $agendamento->status === 'aprovado' ? 'bg-green-200 text-green-800' : ($agendamento->status === 'recusado' ? 'bg-red-200 text-red-800' : 'bg-yellow-200 text-yellow-800') }}">
                                     {{ ucfirst($agendamento->status) }}
                                 </span>
                             </td>
-                            <div class="dropdown">
-                                <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi" viewBox="0 0 16 16">
-                                            <path d="M8 3.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                        </svg>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end show-on-top">
-                                        <li> 
-                                            <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('edit.agendamento', $agendamento->id) }}"> 
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd" viewBox="0 0 16 16">
-                                                    <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-4 1.5a.5.5 0 0 1-.65-.65l1.5-4a.5.5 0 0 1 .11-.168l10-10z"/>
-                                                </svg>
-                                                Editar
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $visitante->id }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                                    <path d="M5.5 5.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 1 1 0V12a.5.5 0 0 1-1 0V6zm3-.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5z"/>
-                                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2h4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h4a1 1 0 0 1 1 1z"/>
-                                                </svg>
-                                                Remover
-                                            </a>
-                                        </li>
-                                    </ul>
-                            </div>   
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi" viewBox="0 0 16 16">
+                                                <path d="M8 3.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                            </svg>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end show-on-top">
+                                            <li> 
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('edit.agendamento', $agendamento->id) }}"> 
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd" viewBox="0 0 16 16">
+                                                        <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-4 1.5a.5.5 0 0 1-.65-.65l1.5-4a.5.5 0 0 1 .11-.168l10-10z"/>
+                                                    </svg>
+                                                    Editar
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $agendamento->id }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                        <path d="M5.5 5.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 1 1 0V12a.5.5 0 0 1-1 0V6zm3-.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5z"/>
+                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2h4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h4a1 1 0 0 1 1 1z"/>
+                                                    </svg>
+                                                    Remover
+                                                </a>
+                                            </li>
+                                        </ul>
+                                </div>
+                            </td>
+                               
                         </tr>
                          {{-- Modal de Confirmação --}}
-                        <div class="modal fade" id="confirmDeleteModal{{ $visitante->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $visitante->id }}" aria-hidden="true">
+                        <div class="modal fade" id="confirmDeleteModal{{ $agendamento->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $agendamento->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content shadow">
-                                    <form action="{{ route('destroy.visitante', $visitante->id) }}" method="POST">
+                                    <form action="{{ route('destroy.agendamento', $agendamento->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-header">
@@ -102,7 +108,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                                         </div>
                                         <div class="modal-body">
-                                            Tem certeza que deseja remover o visitante <strong>#{{ $visitante->id }}</strong> ({{ $visitante->nome }})?
+                                            Tem certeza que deseja remover o agendamento <strong>#{{ $agendamento->id }}</strong> ({{ $agendamento->morador->nome }})?
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

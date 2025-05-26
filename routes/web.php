@@ -93,4 +93,5 @@ Route::controller(AgendamentoController::class)->group(function() {
     Route::post('/agendamento/store', 'store')->name('store.agendamento');
     Route::get('/agendamento/edit/{id}', 'edit')->name('edit.agendamento');
     Route::put('/agendamento/update/{id}', 'update')->name('update.agendamento');
+    Route::delete('/agendamento/{id}', 'destroy')->name('destroy.agendamento');
 })->middleware(['auth'])->name('dashboard');

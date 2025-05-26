@@ -1,43 +1,62 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Função para preencher os campos de Apartamento
-    const apartamentoField = document.getElementById('id_apartamento');
-    if (apartamentoField) {
-        apartamentoField.addEventListener('change', function() {
-            const apartamentoId = this.value;
-            if (apartamentoId) {
-                fetch(`/apartamentos/${apartamentoId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.bloco && data.ramal) {
-                            document.getElementById('bloco').value = data.bloco;
-                            document.getElementById('ramal').value = data.ramal;
-                        } else {
-                            console.log('Dados inválidos recebidos para o apartamento');
-                        }
-                    })
-                    .catch(error => console.log('Erro ao carregar dados do apartamento:', error));
+    function fetchAndFill(url, fieldMap) {
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (!data) throw new Error('Dados vazios');
+
+                // Preenche os campos definidos em fieldMap
+                Object.entries(fieldMap).forEach(([fieldId, dataKey]) => {
+                    const el = document.getElementById(fieldId);
+                    if (el) {
+                        el.value = data[dataKey] ?? '';
+                    }
+                });
+            })
+            .catch(error => {
+                console.log('Erro ao carregar dados:', error);
+                // Limpa os campos se der erro
+                Object.keys(fieldMap).forEach(fieldId => {
+                    const el = document.getElementById(fieldId);
+                    if (el) el.value = '';
+                });
+            });
+    }
+
+    function setupListener(selectId, urlPrefix, fieldMap) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        select.addEventListener('change', function() {
+            const id = this.value;
+            if (id) {
+                fetchAndFill(`${urlPrefix}/${id}`, fieldMap);
+            } else {
+                // Limpa os campos se nada selecionado
+                Object.keys(fieldMap).forEach(fieldId => {
+                    const el = document.getElementById(fieldId);
+                    if (el) el.value = '';
+                });
             }
         });
     }
 
-    // Função para preencher os campos de Veículo
-    const veiculoField = document.getElementById('id_veiculo');
-    if (veiculoField) {
-        veiculoField.addEventListener('change', function() {
-            const veiculoId = this.value;
-            if (veiculoId) {
-                fetch(`/veiculos/${veiculoId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.placa && data.vaga) {
-                            document.getElementById('placa').value = data.placa;
-                            document.getElementById('vaga').value = data.vaga;
-                        } else {
-                            console.log('Dados inválidos recebidos para o veículo');
-                        }
-                    })
-                    .catch(error => console.log('Erro ao carregar dados do veículo:', error));
-            }
-        });
-    }
+    // Configura listeners para apartamento, veículo e visitante
+    setupListener('id_apartamento', '/apartamentos', {
+        'bloco': 'bloco',
+        'ramal': 'ramal'
+    });
+
+    setupListener('id_veiculo', '/veiculos', {
+        'placa': 'placa',
+        'vaga': 'vaga'
+    });
+
+    setupListener('id_visitante', '/visitantes', {
+        'nome': 'nome',
+        'documento': 'documento',
+        'empresa': 'empresa',
+        'veiculo': 'veiculo',
+        'placa': 'placa'
+    });
 });

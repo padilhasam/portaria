@@ -49,54 +49,61 @@
     </div>
 </header>
 
-<div class="container">
-    <form action="{{ route('store.agendamento') }}" method="POST" class="bg-white p-10 rounded-2xl shadow-xl space-y-8">
+<div class="card shadow-sm p-4">
+    <form action="{{ $edit ? route('update.agendamento', ['id' => $agendamento->id, 'from' => request()->query('from')]) : route('store.agendamento', ['from' => request()->query('from')]) }}" method="POST">
         @csrf
+        @if ($edit)
+            @method('PUT')
+        @endif
 
-            <div class="form-group">
-                <label for="moradores">Morador</label>
-                <select name="moradores" id="moradores" class="form-control w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition" required>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_morador" class="form-label">Morador</label>
+                <select name="id_morador" id="id_morador" class="form-control rounded-pill border-dark">
                     <option value="">Selecione</option>
                     @foreach($moradores as $morador)
-                        <option value="{{ $morador->nome }}"
-                            {{ old('moradores') == $morador->nome ? 'selected' : '' }}>
+                        <option value="{{ $morador->id }}"
+                            {{ old('id_morador', $agendamento->id_morador ?? '') == $morador->id ? 'selected' : '' }}>
                             {{ $morador->nome }}
                         </option>
                     @endforeach
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="nome_area">Área Comum</label>
-                <select class="form-control w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition" name="nome_area" id="nome_area" required>{{ old('nome_area') }}
+            <div class="col-md-6">
+                <label for="nome_area" class="form-label">Área Comum</label>
+                <select class="form-control rounded-pill border-dark" name="nome_area" id="nome_area" required>{{ old('nome_area') }}
                     <option value="selecione">Selecione</option>
-                    <option value="churrasqueira">Churrasqueira</option>
-                    <option value="quadra">Quadra</option>
-                    <option value="piscina">Piscina</option>
-                    <option value="academia">Academia</option>
+                    <option value="Churrasqueira">Churrasqueira</option>
+                    <option value="Quadra">Quadra</option>
+                    <option value="Piscina">Piscina</option>
+                    <option value="Academia">Academia</option>
+                    <option value="Sala de Jogos">Sala de Jogos</option>
+                    <option value="Biblioteca">Biblioteca</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="data_agendamento">Data do Agendamento</label>
-                <input type="date" class="form-control w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition" name="data_agendamento" id="data_agendamento" value="{{ old('data_agendamento') }}" required>
+            <div class="col-md-4">
+                <label for="data_agendamento" class="form-label">Data do Agendamento</label>
+                <input type="date" class="form-control rounded-pill border-dark" name="data_agendamento" id="data_agendamento" value="{{ old('data_agendamento') }}" required>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="col-md-4">
                 <div>
-                    <label for="horario_inicio">Horário de Início</label>
-                    <input type="time" class="form-control w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition" name="horario_inicio" id="hora_inicio" min="08:00" max="22:00" value="{{ old('hora_inicio') }}" required>
+                    <label for="horario_inicio" class="form-label">Horário de Início</label>
+                    <input type="time" class="form-control rounded-pill border-dark" name="horario_inicio" id="hora_inicio" min="08:00" max="22:00" value="{{ old('hora_inicio') }}" required>
                 </div>
-
+            </div>
+            <div class="col-md-4">
                 <div>
-                    <label for="horario_fim">Horário de Término</label>
-                    <input type="time" class="form-control w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition" name="horario_fim" id="hora_fim" min="08:00" max="22:00" value="{{ old('hora_fim') }}" required>
+                    <label for="horario_fim" class="form-label">Horário de Término</label>
+                    <input type="time" class="form-control rounded-pill border-dark" name="horario_fim" id="hora_fim" min="08:00" max="22:00" value="{{ old('hora_fim') }}" required>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                     <label for="observacoes">Observações</label>
-                    <textarea class="form-control w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition" name="observacoes" id="observacoes" rows="4" cols="50" style="resize: none">{{ old('observacoes') }}</textarea>
+                    <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" cols="50" style="resize: none">{{ old('observacoes') }}</textarea>
                 </div>
             </div>
 
