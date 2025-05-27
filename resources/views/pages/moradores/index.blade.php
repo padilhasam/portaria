@@ -119,7 +119,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)" class="dropdown-item d-flex align-items-center gap-2 view-morador" data-bs-toggle="modal" data-bs-target="#viewDataModal"
+                                        <a href="javascript:void(0)" class="dropdown-item d-flex align-items-center gap-2 view-morador" data-bs-toggle="modal" data-bs-target="#viewDataModalMorador"
                                             data-nome="{{ $morador->nome }}"
                                             data-cpf="{{ $morador->documento }}"
                                             data-apartamento="{{ optional($morador->apartamento)->numero }}{{ optional($morador->apartamento)->bloco ? ' - Bloco ' . optional($morador->apartamento)->bloco : '' }}"
@@ -139,7 +139,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center text-muted">Nenhum morador cadastrado.</td>
+                        <td colspan="10" class="text-center text-muted">Nenhum morador cadastrado.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -151,7 +151,7 @@
     {{ $moradores->links('pagination::bootstrap-5') }}
 </div>
 
-<div class="modal fade" id="viewDataModal" tabindex="-1" aria-labelledby="viewDataModalLabel" aria-hidden="true">
+<div class="modal fade" id="viewDataModalMorador" tabindex="-1" aria-labelledby="viewDataModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content rounded-4 shadow-sm border-0">
             <div class="modal-header bg-primary text-white rounded-top-4 py-3 px-4">

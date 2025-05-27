@@ -65,7 +65,7 @@
             <div class="col-lg-9">
                 <div class="row g-3">
                    <div class="col-md-6">
-                        <label for="nome" class="form-label">Nome</label>
+                        <label for="id_visitante" class="form-label">Nome</label>
                         <select class="form-select rounded-pill border-dark" id="id_visitante_registros" name="nome">
                             <option value="">Selecione um nome</option>
                             @foreach ($visitantes as $visitante)

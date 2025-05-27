@@ -132,24 +132,18 @@ class RegistroController extends Controller
      */
     public function getRegisterByVisitante($id)
     {
-        $visitante = Visitante::select(
-                        "visitantes.nome", 
-                        "visitantes.documento",
-                        "visitantes.empresa",
-                        "veiculos.modelo",
-                        "veiculos.placa"
-                    )
-                    ->leftJoin("registros", "registros.id_visitante", '=', 'visitantes.id')
-                    ->leftJoin("veiculos", "veiculos.id",  "=", "visitantes.id_veiculo")
-                    ->where("visitantes.id", $id)
-                    ->first();
-                    
+        $visitante = Visitante::with('veiculo')->find($id);
+
+        if (!$visitante) {
+            return response()->json(['error' => 'Visitante não encontrado'], 404);
+        }
+
         return response()->json([
             'nome' => $visitante->nome,
             'documento' => $visitante->documento,
             'empresa' => $visitante->empresa,
-            'modelo' => $visitante->modelo,
-            'placa' => $visitante->placa,
+            'modelo' => $visitante->veiculo->modelo ?? '',
+            'placa' => $visitante->veiculo->placa ?? '',
         ]);
     }
 

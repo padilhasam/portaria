@@ -28,7 +28,7 @@ class Registro extends Model
         'observacoes',
         'entrada',
         'saida',
-        'id_visitante' // 👈 adicionado aqui
+        'id_visitante' // adicionado aqui
     ];
 
     public function visitante()

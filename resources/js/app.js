@@ -20,5 +20,5 @@ import './preencher_campos';
 import './registro';
 import './tom-select-init';
 import './validarCPF';
-import './view-morador';
+import './view-dados';
 import './dselect';

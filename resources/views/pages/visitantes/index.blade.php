@@ -42,7 +42,7 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th scope="col">Nome</th>
+                        <th>Nome</th>
                         <th>CPF</th>
                         <th>Celular</th>
                         <th>Empresa</th>
@@ -101,6 +101,24 @@
                                                 Remover
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="javascript:void(0)" 
+                                                class="dropdown-item d-flex align-items-center gap-2 view-dados" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#viewDataModalVisitante"
+                                                data-nome="{{ $visitante->nome }}"
+                                                data-cpf="{{ $visitante->documento }}"
+                                                data-empresa="{{ $visitante->empresa }}"
+                                                data-veiculo="{{ $visitante->veiculo->placa ?? 'Sem veículo' }}"
+                                                data-celular="{{ $visitante->celular }}"
+                                                data-tipoacesso="{{ ucfirst($visitante->tipo_acesso) }}"
+                                                data-foto="{{ $visitante->image ?? asset('imagens/default-user.jpg') }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#b45f06" class="bi bi-search" viewBox="0 0 16 16">
+                                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                    </svg>
+                                                    Ver Dados
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </td>
@@ -130,7 +148,7 @@
                         </div>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center text-muted">Nenhum visitante encontrado</td>
+                            <td colspan="10" class="text-center text-muted">Nenhum visitante encontrado</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -141,6 +159,54 @@
 
 <div class="mt-4 d-flex justify-content-center">
     {{ $visitantes->links('pagination::bootstrap-5') }}
+</div>
+
+<div class="modal fade" id="viewDataModalVisitante" tabindex="-1" aria-labelledby="viewDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 shadow-sm border-0">
+            <div class="modal-header bg-primary text-white rounded-top-4 py-3 px-4">
+                <h5 class="modal-title" id="viewDataModalLabel">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-lines-fill me-2" viewBox="0 0 16 16">
+                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z"/>
+                    </svg>
+                    Detalhes do Visitante
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body px-4 py-4">
+                <div class="row g-4">
+                    <!-- Coluna da Foto -->
+                    <div class="col-md-4 text-center">
+                        <img id="modal-foto" src="" alt="Foto do Visitante" class="img-fluid rounded-3 shadow-sm border" style="max-height: 300px; object-fit: cover;">
+                    </div>
+
+                    <!-- Coluna dos Dados -->
+                    <div class="col-md-8">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Nome:</strong> <span id="modal-nome" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">CPF:</strong> <span id="modal-cpf" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Empresa:</strong> <span id="modal-empresa" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Veículo:</strong> <span id="modal-veiculo" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Celular:</strong> <span id="modal-celular" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Tipo de Acesso:</strong> <span id="modal-tipoAcesso" class="ms-2"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection

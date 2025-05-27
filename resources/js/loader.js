@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Loader para modal Bootstrap
-    const modal = document.getElementById('viewDataModal');
-    if (modal) {
+    // Loader para modais Bootstrap (vários)
+    const modais = document.querySelectorAll('#viewDataModalMorador, #viewDataModalVisitante, #viewDataModalRegistro');
+    modais.forEach(modal => {
         modal.addEventListener('show.bs.modal', function () {
             loader.style.display = 'flex';
         });
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.addEventListener('shown.bs.modal', function () {
             loader.style.display = 'none';
         });
-    }
+    });
 
     // Loader para submits de formulários (cadastrar, editar, deletar)
     document.querySelectorAll('form').forEach(function(form) {
@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Loader para botões específicos (exemplo: cancelar, deletar)
-    // Ajuste os seletores conforme os IDs ou classes reais dos seus botões
     const actionButtons = document.querySelectorAll('.btn-cancelar, .btn-deletar, .btn-editar, .btn-cadastrar');
     actionButtons.forEach(function(button) {
         button.addEventListener('click', function() {
