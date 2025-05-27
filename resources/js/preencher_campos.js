@@ -1,62 +1,60 @@
 document.addEventListener('DOMContentLoaded', function() {
-    function fetchAndFill(url, fieldMap) {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                if (!data) throw new Error('Dados vazios');
 
-                // Preenche os campos definidos em fieldMap
-                Object.entries(fieldMap).forEach(([fieldId, dataKey]) => {
-                    const el = document.getElementById(fieldId);
-                    if (el) {
-                        el.value = data[dataKey] ?? '';
-                    }
-                });
-            })
-            .catch(error => {
+    var marca = document.getElementById('marca')
+    var modelo = document.getElementById('modelo')
+    var cor = document.getElementById('cor')
+
+    // apartamento, veículo e visitante
+    function getByPrefix(url, prefix) {
+        var csrfToken = document.getElementsByName('_token')[0].value;
+
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            data: {_token: csrfToken},
+            type: 'POST',
+            success: function(data) {
+                if (!data) throw new Error('Dados vazios');
+                
+                if(prefix === "id_veiculo"){
+                    marca.value = data.marca;
+                    modelo.value = data.modelo;
+                    cor.value = data.cor;
+                }
+                if(prefix === "id_visitante_registros"){
+                    document.getElementById('documento').value = data.documento;
+                    document.getElementById('empresa').value = data.empresa;
+                    document.getElementById('veiculo').value = data.modelo;
+                    document.getElementById('placa').value = data.placa;
+                }
+
+            },
+            error: function(error) {
                 console.log('Erro ao carregar dados:', error);
                 // Limpa os campos se der erro
-                Object.keys(fieldMap).forEach(fieldId => {
-                    const el = document.getElementById(fieldId);
-                    if (el) el.value = '';
+                $.each(fieldMap, function(fieldId) {
+                    $('#' + fieldId).val('');
                 });
-            });
+            }
+        });
     }
 
-    function setupListener(selectId, urlPrefix, fieldMap) {
+    //captura a troca dos dados no select
+    function setupListener(selectId, urlPrefix) {
         const select = document.getElementById(selectId);
         if (!select) return;
 
         select.addEventListener('change', function() {
             const id = this.value;
             if (id) {
-                fetchAndFill(`${urlPrefix}/${id}`, fieldMap);
-            } else {
-                // Limpa os campos se nada selecionado
-                Object.keys(fieldMap).forEach(fieldId => {
-                    const el = document.getElementById(fieldId);
-                    if (el) el.value = '';
-                });
+                getByPrefix(`${urlPrefix}/${id}/details`, selectId);
             }
         });
     }
 
     // Configura listeners para apartamento, veículo e visitante
-    setupListener('id_apartamento', '/apartamentos', {
-        'bloco': 'bloco',
-        'ramal': 'ramal'
-    });
-
-    setupListener('id_veiculo', '/veiculos', {
-        'placa': 'placa',
-        'vaga': 'vaga'
-    });
-
-    setupListener('id_visitante', '/visitantes', {
-        'nome': 'nome',
-        'documento': 'documento',
-        'empresa': 'empresa',
-        'veiculo': 'veiculo',
-        'placa': 'placa'
-    });
+    setupListener('id_apartamento', '/apartamento');
+    setupListener('id_veiculo', '/veiculo');
+    setupListener('id_visitante', '/visitante');
+    setupListener('id_visitante_registros', '/registro-by-idvisitante');
 });

@@ -40,6 +40,8 @@ Route::controller(RegistroController::class)->group(function(){
     Route::put('/registro/{id}', 'update')->name('update.registro');
     Route::delete('/registro/{id}', 'destroy')->name('destroy.registro');
     Route::post('/registro/{id}/saida', 'registrarSaida')->name('saida.registro');
+    Route::post('/registro-by-idvisitante/{id}/details', 'getRegisterByVisitante')->name('registro.byidvisitante');
+
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(ApartamentoController::class)->group(function(){
@@ -85,7 +87,7 @@ Route::controller(VeiculoController::class)->group(function(){
     // Rota para preenchimento automático de veículos
     Route::get('/veiculo/search', 'search')->name('search.veiculo');
 
-    Route::get('/veiculo/{id}/details', 'getDetails')->name('veiculo.details');
+    Route::post('/veiculo/{id}/details', 'getDetails')->name('veiculo.details');
 })->middleware(['auth'])->name('dashboard');
 
 Route::controller(AgendamentoController::class)->group(function() {

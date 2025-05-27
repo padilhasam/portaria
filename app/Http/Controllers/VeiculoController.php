@@ -99,7 +99,9 @@ class VeiculoController extends Controller
         $veiculo = Veiculo::findOrFail($id);
         return response()->json([
             'placa' => $veiculo->placa,
-            'vaga' => $veiculo->vaga,
+            'marca' => $veiculo->marca,
+            'modelo' => $veiculo->modelo,
+            'cor' => $veiculo->cor,
         ]);
     }
 

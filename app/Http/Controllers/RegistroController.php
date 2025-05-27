@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Registro;
+use App\Models\Visitante;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -30,7 +31,8 @@ class RegistroController extends Controller
      */
     public function create(Request $request)
     {
-        return view("pages.registros.register");
+        $visitantes = Visitante::all();
+        return view("pages.registros.register", compact('visitantes'));
     }
 
     /**
@@ -119,6 +121,47 @@ class RegistroController extends Controller
         $registro->delete();
 
         return redirect()->route('index.registro')->with('success', 'Registro excluído com sucesso!');
+    }
+
+    
+    /**
+     * Retorna os detalhes do visitante em formato JSON para uso em formulários.
+     */
+    public function getRegisterByVisitante($id)
+    {
+        $visitante = Visitante::select(
+                        "visitantes.nome", 
+                        "visitantes.documento",
+                        "visitantes.empresa",
+                        "veiculos.modelo",
+                        "veiculos.placa"
+                    )
+                    ->leftJoin("registros", "registros.id_visitante", '=', 'visitantes.id')
+                    ->leftJoin("veiculos", "veiculos.id",  "=", "visitantes.id_veiculo")
+                    ->where("visitantes.id", $id)
+                    ->first();
+                    
+        return response()->json([
+            'nome' => $visitante->nome,
+            'documento' => $visitante->documento,
+            'empresa' => $visitante->empresa,
+            'modelo' => $visitante->modelo,
+            'placa' => $visitante->placa,
+        ]);
+    }
+
+        /**
+     * Retorna os detalhes do visitante em formato JSON para uso em formulários.
+     */
+    public function getVeiculoByVisitante($id)
+    {
+        $visitante = Visitante::select($id);
+        return response()->json([
+            // 'placa' => $veiculo->placa,
+            // 'marca' => $veiculo->marca,
+            // 'modelo' => $veiculo->modelo,
+            // 'cor' => $veiculo->cor,
+        ]);
     }
 
     /**

@@ -84,7 +84,7 @@
                                     value="{{ old('celular', $edit ? $visitante->celular : '') }}"
                                     onkeyup="mascara(this, mtel)">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="empresa" class="form-label">Empresa</label>
                                 <input name="empresa" type="text" class="form-control rounded-pill border-dark" id="empresa" required
                                     value="{{ old('empresa', $edit ? $visitante->empresa : '') }}">
@@ -143,50 +143,68 @@
 
         {{-- VEÍCULO --}}
         <div class="card shadow-sm mb-2">
-            <div class="card-header bg-light fw-bold">Veículo</div>
+            <div class="card-header bg-light fw-bold">
+                <div class="w-100 d-flex justify-content-between">
+                    Veículo
+                    <a href="{{ route('create.veiculo', ['from' => 'visitante']) }}" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
             <div class="card-body row g-3">
-                <div class="col-md-6">
-                    <label for="id_veiculo" class="form-label">Veículo</label>
+                <div class="col-md-3">
+                    <label for="id_veiculo" class="form-label">Placa</label>
                     <div class="d-flex gap-2">
                         <select name="id_veiculo" id="id_veiculo" class="form-select rounded-pill border-dark" required>
                             <option value="">Selecione</option>
                             @foreach ($veiculos as $veiculo)
                                 <option value="{{ $veiculo->id }}"
                                     {{ old('id_veiculo', $edit ? $visitante->id_veiculo : '') == $veiculo->id ? 'selected' : '' }}>
-                                    {{ $veiculo->placa }} - {{ $veiculo->modelo }}
+                                    {{ $veiculo->placa }}
                                 </option>
                             @endforeach
                         </select>
-                        <a href="{{ route('create.veiculo', ['from' => 'visitante']) }}" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                            </svg>
-                        </a>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="placa" class="form-label">Placa</label>
-                    <input type="text" name="placa" id="placa" class="form-control rounded-pill border-dark" readonly required
-                        value="{{ $edit ? optional($visitante->veiculo)->placa : '' }}">
+                    <label for="modelo" class="form-label">Modelo</label>
+                    <input type="text" name="modelo" id="modelo" class="form-control rounded-pill border-dark" readonly required
+                        value="{{ $edit ? optional($visitante->veiculo)->modelo : '' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="vaga" class="form-label">Vaga</label>
-                    <input type="text" name="vaga" id="vaga" class="form-control rounded-pill border-dark" readonly
-                        value="{{ $edit ? optional($visitante->veiculo)->vaga : '' }}">
+                    <label for="marca" class="form-label">Marca</label>
+                    <input type="text" name="marca" id="marca" class="form-control rounded-pill border-dark" readonly required
+                        value="{{ $edit ? optional($visitante->veiculo)->marca : '' }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="cor" class="form-label">Cor</label>
+                    <input type="text" name="cor" id="cor" class="form-control rounded-pill border-dark" readonly required
+                        value="{{ $edit ? optional($visitante->veiculo)->cor : '' }}">
                 </div>
             </div>
         </div>
 
         {{-- BOTÕES --}}
-            <div class="col-12 d-flex gap-2 justify-content-end mt-4">
-                <button type="submit" class="btn btn-success rounded-pill">{{ $edit ? "Alterar" : "Salvar" }}</button>
-                <button type="reset" class="btn btn-outline-danger rounded-pill">Limpar</button>
-                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Cancelar</a>
-            </div>
+        <div class="col-12 d-flex gap-2 justify-content-end mt-4">
+            <button type="submit" class="btn btn-success rounded-pill">{{ $edit ? "Alterar" : "Salvar" }}</button>
+            <button type="reset" class="btn btn-outline-danger rounded-pill">Limpar</button>
+            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Cancelar</a>
+        </div>
         
         @include('components.modal-camera')
 
     </form>
 </div>
-
 @endsection
+
+@push('script')
+    <script>
+        var select_box_element = document.querySelector('#id_veiculo');
+        dselect(select_box_element, {
+            search: true
+        });
+    </script>
+@endpush

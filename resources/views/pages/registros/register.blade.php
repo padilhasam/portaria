@@ -64,18 +64,38 @@
         <div class="row g-4">
             <div class="col-lg-9">
                 <div class="row g-3">
-                    @foreach ([
-                        ['nome', 'Nome', 'text'],
-                        ['documento', 'CPF', 'text'],
-                        ['empresa', 'Empresa', 'text'],
-                        ['veiculo', 'Veículo', 'text'],
-                        ['placa', 'Placa', 'text']
-                    ] as [$id, $label, $type])
-                        <div class="col-md-6">
-                            <label for="{{ $id }}" class="form-label">{{ $label }}</label>
-                            <input type="{{ $type }}" class="form-control rounded-pill border-dark" id="{{ $id }}" name="{{ $id }}" value="{{ old($id, $edit ? $registro->$id : '') }}">
-                        </div>
-                    @endforeach
+                   <div class="col-md-6">
+                        <label for="nome" class="form-label">Nome</label>
+                        <select class="form-select rounded-pill border-dark" id="id_visitante_registros" name="nome">
+                            <option value="">Selecione um nome</option>
+                            @foreach ($visitantes as $visitante)
+                                <option value="{{ $visitante->id }}"
+                                    {{ old('id_visitante', $edit ? $visitante->id_visitante : '') == $visitante->id ? 'selected' : '' }}>
+                                    {{ $visitante->nome }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="documento" class="form-label">CPF</label>
+                        <input type="text" class="form-control rounded-pill border-dark" id="documento" name="documento" value="{{ old('documento', $edit ? $registro->documento : '') }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="empresa" class="form-label">Empresa</label>
+                        <input type="text" class="form-control rounded-pill border-dark" id="empresa" name="empresa" value="{{ old('empresa', $edit ? $registro->empresa : '') }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="veiculo" class="form-label">Veículo</label>
+                        <input type="text" class="form-control rounded-pill border-dark" id="veiculo" name="veiculo" value="{{ old('veiculo', $edit ? $registro->veiculo : '') }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="placa" class="form-label">Placa</label>
+                        <input type="text" class="form-control rounded-pill border-dark" id="placa" name="placa" value="{{ old('placa', $edit ? $registro->placa : '') }}">
+                    </div>
 
                     <div class="col-md-6">
                         <label for="tipo_acesso" class="form-label">Tipo de Acesso</label>
