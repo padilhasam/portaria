@@ -27,6 +27,13 @@ class Registro extends Model
         'tipo_acesso',
         'observacoes',
         'entrada',
-        'saida'
+        'saida',
+        'id_visitante' // 👈 adicionado aqui
     ];
+
+    public function visitante()
+    {
+        return $this->belongsTo(Visitante::class, 'id_visitante');
+    }
+    
 }

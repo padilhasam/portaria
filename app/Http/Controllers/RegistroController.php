@@ -15,7 +15,8 @@ class RegistroController extends Controller
      */
     public function index()
     {
-        $registros = Registro::orderBy('entrada', 'desc')->paginate(10);
+        $registros = Registro::with('visitante')->orderBy('entrada', 'desc')->paginate(10);
+        //$registros = Registro::orderBy('entrada', 'desc')->paginate(10);
         //$registros = Registro::orderBy('entrada', 'asc')->paginate(10);
 
         // Totais calculados com base em todos os registros
@@ -41,6 +42,7 @@ class RegistroController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
+            'id_visitante' => 'nullable|integer|exists:visitantes,id',
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:15',
             'empresa' => 'nullable|string|max:50',
@@ -92,6 +94,7 @@ class RegistroController extends Controller
         $registro = Registro::findOrFail($id);
 
         $data = $request->validate([
+            'id_visitante' => 'nullable|integer|exists:visitantes,id',
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:15',
             'empresa' => 'nullable|string|max:50',

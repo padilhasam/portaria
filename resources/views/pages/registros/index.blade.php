@@ -102,11 +102,11 @@
                     <tbody>
                         @forelse ($registros as $registro)
                             <tr>
-                                <td>{{ $registro->nome }}</td>
-                                <td>{{ $registro->documento }}</td>
-                                <td>{{ $registro->empresa }}</td>
-                                <td>{{ $registro->veiculo }}</td>
-                                <td>{{ $registro->placa }}</td>
+                                <td>{{ $registro->nome ?? '—' }}</td>
+                                <td>{{ $registro->documento ?? '—' }}</td>
+                                <td>{{ $registro->empresa ?? '—' }}</td>
+                                <td>{{ $registro->veiculo ?? '—' }}</td>
+                                <td>{{ $registro->placa ?? '—' }}</td>
                                 <td>
                                     <span class="badge bg-primary text-white">
                                         {{ ucfirst($registro->tipo_acesso) }}
