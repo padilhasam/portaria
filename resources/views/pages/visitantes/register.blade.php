@@ -4,33 +4,33 @@
 
 @php
     $edit = isset($visitante) ? true : false;
-@endphp
+    @endphp
 
 @if(session('success'))
-    <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-    </div>
+<div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+</div>
 @endif
 
 @if(session('error'))
-    <div id="error-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+<div id="error-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
         {{ session('error') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
     </div>
-@endif
-
-@if($errors->any())
+    @endif
+    
+    @if($errors->any())
     <div id="validation-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
         <ul class="mb-0">
             @foreach($errors->all() as $erro)
-                <li>{{ $erro }}</li>
+            <li>{{ $erro }}</li>
             @endforeach
         </ul>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
     </div>
-@endif
-
+    @endif
+    
 <header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
     <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
         <span class="icon-container" style="width: 32px; height: 32px;">
@@ -153,7 +153,6 @@
                     </a>
                 </div>
             </div>
-            <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
             <div class="card-body row g-3">
                 <div class="col-md-3">
                     <label for="id_veiculo" class="form-label">Placa</label>

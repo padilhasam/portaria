@@ -95,12 +95,13 @@ class ApartamentoController extends Controller
     /**
      * Retorna os detalhes de um apartamento em formato JSON (usado para preenchimento automático).
      */
-    public function getDetails($id)
+    public function getDetailsApartamento($id)
     {
         $apartamento = Apartamento::findOrFail($id);
         return response()->json([
             'bloco' => $apartamento->bloco,
             'ramal' => $apartamento->ramal,
+            'vaga' => $apartamento->vaga
         ]);
     }
 

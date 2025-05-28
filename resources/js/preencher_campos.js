@@ -6,12 +6,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // apartamento, veículo e visitante
     function getByPrefix(url, prefix) {
-        var csrfToken = document.getElementsByName('_token')[0].value;
+        const token = document.querySelector('meta[name="csrf-token"]').content;
 
         $.ajax({
             url: url,
             dataType: 'json',
-            data: {_token: csrfToken},
+            data: {_token: token},
             type: 'POST',
             success: function(data) {
                 if (!data) throw new Error('Dados vazios');
@@ -22,10 +22,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     cor.value = data.cor;
                 }
                 if(prefix === "id_visitante_registros"){
+                    document.getElementById('nome').value = data.nome;
                     document.getElementById('documento').value = data.documento;
                     document.getElementById('empresa').value = data.empresa;
                     document.getElementById('veiculo').value = data.modelo;
                     document.getElementById('placa').value = data.placa;
+                }
+
+                if(prefix === "id_apartamento"){
+                    document.getElementById('bloco').value = data.bloco;
+                    document.getElementById('ramal').value = data.ramal;
+                    document.getElementById('vaga').value = data.vaga;
                 }
 
             },

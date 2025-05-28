@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    {{-- Token CSRF --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     {{-- Ícone Favicon--}}
     <link rel="icon" href="{{ Vite::asset('resources/images/favicon.ico') }}" type="image/x-icon"> 
 

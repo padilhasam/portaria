@@ -66,7 +66,7 @@
                 <div class="row g-3">
                    <div class="col-md-6">
                         <label for="id_visitante" class="form-label">Nome</label>
-                        <select class="form-select rounded-pill border-dark" id="id_visitante_registros" name="nome">
+                        <select class="form-select rounded-pill border-dark" id="id_visitante_registros" name="id_visitante">
                             <option value="">Selecione um nome</option>
                             @foreach ($visitantes as $visitante)
                                 <option value="{{ $visitante->id }}"
@@ -75,6 +75,7 @@
                                 </option>
                             @endforeach
                         </select>
+                        <input type="hidden" name="nome" id="nome"/>
                     </div>
 
                     <div class="col-md-6">

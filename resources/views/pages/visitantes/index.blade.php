@@ -109,10 +109,12 @@
                                                 data-nome="{{ $visitante->nome }}"
                                                 data-cpf="{{ $visitante->documento }}"
                                                 data-empresa="{{ $visitante->empresa }}"
-                                                data-veiculo="{{ $visitante->veiculo->placa ?? 'Sem veículo' }}"
+                                                data-marca="{{ $visitante->veiculo->marca ?? 'Sem veículo' }}"
+                                                data-modelo="{{ $visitante->veiculo->modelo ?? 'Sem veículo' }}"
+                                                data-cor="{{ $visitante->veiculo->cor ?? 'Sem veículo' }}"
+                                                data-placa="{{ $visitante->veiculo->placa ?? 'Sem veículo' }}"
                                                 data-celular="{{ $visitante->celular }}"
-                                                data-tipoacesso="{{ ucfirst($visitante->tipo_acesso) }}"
-                                                data-foto="{{ $visitante->image ?? asset('imagens/default-user.jpg') }}">
+                                                data-foto="{{ $visitante->image ? asset('storage/visitantes/'.$visitante->image) : Vite::asset('/resources/images/avatar2.png') }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#b45f06" class="bi bi-search" viewBox="0 0 16 16">
                                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                                     </svg>
@@ -193,13 +195,19 @@
                                 <strong class="text-secondary">Empresa:</strong> <span id="modal-empresa" class="ms-2"></span>
                             </li>
                             <li class="list-group-item">
-                                <strong class="text-secondary">Veículo:</strong> <span id="modal-veiculo" class="ms-2"></span>
+                                <strong class="text-secondary">Marca:</strong> <span id="modal-marca" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Modelo:</strong> <span id="modal-modelo" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Cor:</strong> <span id="modal-cor" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Placa:</strong> <span id="modal-placa" class="ms-2"></span>
                             </li>
                             <li class="list-group-item">
                                 <strong class="text-secondary">Celular:</strong> <span id="modal-celular" class="ms-2"></span>
-                            </li>
-                            <li class="list-group-item">
-                                <strong class="text-secondary">Tipo de Acesso:</strong> <span id="modal-tipoAcesso" class="ms-2"></span>
                             </li>
                         </ul>
                     </div>

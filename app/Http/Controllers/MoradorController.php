@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use app\Helpers\DateHelper;
 use App\Models\Apartamento;
 use App\Models\Veiculo;
 use App\Models\Morador;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MoradorController extends Controller
 {
+
+    
+
     /**
      * Display a listing of the resource.
      */
@@ -58,10 +63,7 @@ class MoradorController extends Controller
     public function store(Request $request)
     {
         $validated = $this->validateMorador($request);
-
-        // Conversão da data para formato MySQL
-        $validated['nascimento'] = $this->convertDateToMySQL($validated['nascimento']);
-        
+        $validated['nascimento'] = DateHelper::convertDateToUs($validated['nascimento']);
         $morador = Morador::create($validated);
 
         if ($morador) {
@@ -85,7 +87,8 @@ class MoradorController extends Controller
     public function edit(string $id)
     {
         $morador = Morador::with(['apartamento', 'veiculo'])->findOrFail($id); // Eager load relationships
-        $morador->nascimento = $this->convertDateToBR($morador->nascimento);
+        
+        $morador->nascimento = DateHelper::convertDateToUs($morador->nascimento);
         $apartamentos = Apartamento::orderBy('numero')->get();
         $veiculos = Veiculo::orderBy('placa')->get();
 
@@ -99,7 +102,7 @@ class MoradorController extends Controller
     {
         $morador = Morador::findOrFail($id);
         $validated = $this->validateMorador($request);
-        $validated['nascimento'] = $this->convertDateToMySQL($validated['nascimento']);
+        $validated['nascimento'] = DateHelper::convertDateToUs($validated['nascimento']);
 
         $morador->update($validated);
 
@@ -127,41 +130,11 @@ class MoradorController extends Controller
             'id_veiculo' => 'nullable|integer|exists:veiculos,id',
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:14|unique:moradores,documento,' . ($request->route('id') ?? ''),
-            'nascimento' => 'required|date', // Validando como data
+            'nascimento' => 'required|date_format:d/m/Y',
             'tel_fixo' => 'nullable|string|max:20',
             'celular' => 'required|string|max:20',
             'email' => 'nullable|string|email|max:255',
             'tipo_morador' => 'required|string|max:40|in:aluguel,propria',
         ]);
-    }
-
-    /**
-     * Converte data do formato dd/mm/yyyy para yyyy-mm-dd (MySQL).
-     */
-    private function convertDateToMySQL($date)
-    {
-        if (!$date) return null;
-
-        $parts = explode('/', $date);
-        if (count($parts) === 3) {
-            return $parts[2] . '-' . $parts[1] . '-' . $parts[0];
-        }
-
-        return $date; // Se já estiver no formato correto
-    }
-
-    /**
-     * Converte data do formato yyyy-mm-dd para dd/mm/yyyy.
-     */
-    private function convertDateToBR($date)
-    {
-        if (!$date) return null;
-
-        $parts = explode('-', $date);
-        if (count($parts) === 3) {
-            return $parts[2] . '/' . $parts[1] . '/' . $parts[0];
-        }
-
-        return $date;
     }
 }

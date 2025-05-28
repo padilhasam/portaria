@@ -110,9 +110,18 @@
 
         {{-- APARTAMENTO --}}
         <div class="card shadow-sm mb-2">
-            <div class="card-header bg-light fw-bold">Apartamento</div>
+            <div class="card-header bg-light fw-bold">
+                <div class="w-100 d-flex justify-content-between">
+                    Apartamento
+                    <a href="{{ route('create.apartamento', ['from' => 'morador']) }}" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
             <div class="card-body row g-3">
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <label for="id_apartamento" class="form-label">Apartamento</label>
                     <div class="d-flex gap-2">
                         <select name="id_apartamento" id="id_apartamento" class="form-select rounded-pill border-dark" required>
@@ -124,11 +133,6 @@
                                 </option>
                             @endforeach
                         </select>
-                        <a href="{{ route('create.apartamento', ['from' => 'morador']) }}" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                            </svg>
-                        </a>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -141,41 +145,55 @@
                     <input type="text" name="ramal" id="ramal" class="form-control rounded-pill border-dark" readonly
                         value="{{ $edit ? optional($morador->apartamento)->ramal : '' }}">
                 </div>
+                <div class="col-md-3">
+                    <label for="vaga" class="form-label">Vaga</label>
+                    <input type="text" name="vaga" id="vaga" class="form-control rounded-pill border-dark" readonly
+                        value="{{ $edit ? optional($morador->apartamento)->vaga : '' }}">
+                </div>
             </div>
         </div>
 
         {{-- VEÍCULO --}}
         <div class="card shadow-sm mb-2">
-            <div class="card-header bg-light fw-bold">Veículo</div>
+            <div class="card-header bg-light fw-bold">
+                <div class="w-100 d-flex justify-content-between">
+                    Veículo
+                    <a href="{{ route('create.veiculo', ['from' => 'visitante']) }}" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
             <div class="card-body row g-3">
-                <div class="col-md-6">
-                    <label for="id_veiculo" class="form-label">Veículo</label>
+                <div class="col-md-3">
+                    <label for="id_veiculo" class="form-label">Placa</label>
                     <div class="d-flex gap-2">
                         <select name="id_veiculo" id="id_veiculo" class="form-select rounded-pill border-dark" required>
                             <option value="">Selecione</option>
                             @foreach ($veiculos as $veiculo)
                                 <option value="{{ $veiculo->id }}"
-                                    {{ old('id_veiculo', $edit ? $morador->id_veiculo : '') == $veiculo->id ? 'selected' : '' }}>
-                                    {{ $veiculo->placa }} - {{ $veiculo->modelo }}
+                                    {{ old('id_veiculo', $edit ? $visitante->id_veiculo : '') == $veiculo->id ? 'selected' : '' }}>
+                                    {{ $veiculo->placa }}
                                 </option>
                             @endforeach
                         </select>
-                        <a href="{{ route('create.veiculo', ['from' => 'morador']) }}" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                            </svg>
-                        </a>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="placa" class="form-label">Placa</label>
-                    <input type="text" name="placa" id="placa" class="form-control rounded-pill border-dark" readonly required
-                        value="{{ $edit ? optional($morador->veiculo)->placa : '' }}">
+                    <label for="modelo" class="form-label">Modelo</label>
+                    <input type="text" name="modelo" id="modelo" class="form-control rounded-pill border-dark" readonly required
+                        value="{{ $edit ? optional($visitante->veiculo)->modelo : '' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="vaga" class="form-label">Vaga</label>
-                    <input type="text" name="vaga" id="vaga" class="form-control rounded-pill border-dark" readonly
-                        value="{{ $edit ? optional($morador->veiculo)->vaga : '' }}">
+                    <label for="marca" class="form-label">Marca</label>
+                    <input type="text" name="marca" id="marca" class="form-control rounded-pill border-dark" readonly required
+                        value="{{ $edit ? optional($visitante->veiculo)->marca : '' }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="cor" class="form-label">Cor</label>
+                    <input type="text" name="cor" id="cor" class="form-control rounded-pill border-dark" readonly required
+                        value="{{ $edit ? optional($visitante->veiculo)->cor : '' }}">
                 </div>
             </div>
         </div>

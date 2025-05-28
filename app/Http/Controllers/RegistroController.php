@@ -42,7 +42,7 @@ class RegistroController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'id_visitante' => 'nullable|integer|exists:visitantes,id',
+            'id_visitante' => 'nullable|integer',
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:15',
             'empresa' => 'nullable|string|max:50',
@@ -94,7 +94,7 @@ class RegistroController extends Controller
         $registro = Registro::findOrFail($id);
 
         $data = $request->validate([
-            'id_visitante' => 'nullable|integer|exists:visitantes,id',
+            'id_visitante' => 'nullable|integer',
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:15',
             'empresa' => 'nullable|string|max:50',
