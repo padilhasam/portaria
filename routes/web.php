@@ -9,7 +9,8 @@ use App\Http\Controllers\{
     VisitanteController,
     VeiculoController,
     AgendamentoController,
-    RelatorioController
+    NotificacaoController,
+    RelatorioController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -98,6 +99,13 @@ Route::controller(AgendamentoController::class)->group(function() {
     Route::put('/agendamento/update/{id}', 'update')->name('update.agendamento');
     Route::delete('/agendamento/{id}', 'destroy')->name('destroy.agendamento');
 })->middleware(['auth'])->name('dashboard');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notificacao', [NotificacaoController::class, 'all'])->name('index.notificacoes');
+    Route::post('/notificacao', [NotificacaoController::class, 'store'])->name('store.notificacoes');
+    Route::post('/notificacao/{id}/ler', [NotificacaoController::class, 'marcarComoLida'])->name('ler.notificacoes');
+    Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('destroy.notificacoes');
+});
 
 // routes/web.php
 Route::get('/relatorios', [RelatorioController::class, 'index'])->name('index.relatorio');

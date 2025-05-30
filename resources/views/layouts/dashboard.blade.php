@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@php
+    use App\Helpers\NotificacaoHelper;
+    $dadosNotificacao = NotificacaoHelper::carregarNotificacoes();
+@endphp
+
 @section('dashboard') <!-- Corpo padrão -->
     @vite(['resources/css/nav.css'])
     
@@ -76,14 +81,17 @@
                 <li class="nav-item dropdown mx-3">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                     role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notificações">
-                        {{ svg('hugeicons-notification-01') }}
-                        <span class="badge rounded-pill badge-notification bg-warning text-dark">1</span>
+                        {{ svg('hugeicons-notification-01', 'w-5 h-5') }}
+                        <span class="badge rounded-pill badge-notification bg-warning text-dark" aria-live="polite">{{ $dadosNotificacao['naoLidas'] }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item fw-bold" href="#">Notificações</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Nova solicitação de acesso</a></li>
-                        <li><a class="dropdown-item" href="#">Registro de saída pendente</a></li>
+                        @foreach($dadosNotificacao['notificacoes'] as $notificacao)
+                            <li><a class="dropdown-item" href="#">{{ $notificacao->title }}</a></li>
+                        @endforeach
+                        {{-- <li><a class="dropdown-item" href="#">Nova solicitação de acesso</a></li>
+                        <li><a class="dropdown-item" href="#">Registro de saída pendente</a></li> --}}
                     </ul>
                 </li>
 
