@@ -57,9 +57,9 @@
                         <tr class="border-t hover:bg-gray-50">
                             <td>{{ $agendamento->morador->nome}}</td>
                             <td>{{ $agendamento->nome_area }}</td>
-                            <td>{{ \Carbon\Carbon::parse($agendamento->data)->format('d/m/Y') }}</td>
-                            <td>{{ $agendamento->horario_inicio }}</td>
-                            <td>{{ $agendamento->horario_fim }}</td>
+                            <td>{{ \Carbon\Carbon::parse($agendamento->data_agendamento)->format('d/m/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($agendamento->horario_inicio)->format('H:i') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($agendamento->horario_fim)->format('H:i') }}</td>
                             <td>{{ $agendamento->usuario->nome ?? 'N/A' }}</td>
                             <td>
                                 <span class="px-2 py-1 rounded text-sm {{ $agendamento->status === 'aprovado' ? 'bg-green-200 text-green-800' : ($agendamento->status === 'recusado' ? 'bg-red-200 text-red-800' : 'bg-yellow-200 text-yellow-800') }}">

@@ -52,7 +52,7 @@ class AgendamentoController extends Controller
         }
 
         // Sem conflito: criar agendamento
-        Agendamento::create([
+        $agenda = Agendamento::create([
             'id_usuario' => auth()->id(),
             'id_morador' => $request->id_morador,
             'nome_area' => $request->nome_area,
@@ -62,7 +62,19 @@ class AgendamentoController extends Controller
             'observacoes' => $request->observacoes ?? '',
         ]);
         
-        return redirect()->route('index.agendamento')->with('success', 'Agendamento realizado com sucesso.');
+        // Verifica se o redirecionamento vem da página do morador
+        if ($agenda) {
+            return redirect()->route('index.agendamento')->with([
+                'success' => true,
+                'message' => 'Agendamento realizado com sucesso!'
+            ]);
+        } else {
+            return redirect()->route('index.agendamento')->with([
+                'success' => false,
+                'message' => 'Erro ao realizar agendamento!'
+            ]);
+        }
+    
     }
 
     // Mostrar formulário de edição
