@@ -11,6 +11,7 @@ use App\Http\Controllers\{
     AgendamentoController,
     NotificacaoController,
     RelatorioController,
+    PrestadorController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -106,6 +107,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notificacao/{id}/ler', [NotificacaoController::class, 'marcarComoLida'])->name('ler.notificacoes');
     Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('destroy.notificacoes');
 });
+
+Route::controller(PrestadorController::class)->group(function () {
+    Route::get('/prestador', 'index')->name('index.prestador');
+    Route::get('/prestador/create', 'create')->name('create.prestador');
+    Route::post('/prestador/store', 'store')->name('store.prestador');
+    Route::get('/prestador/edit/{id}', 'edit')->name('edit.prestador');
+    Route::put('/prestador/update/{id}', 'update')->name('update.prestador');
+    Route::delete('/prestador/{id}', 'destroy')->name('destroy.prestador');
+})->middleware(['auth'])->name('dashboard');
 
 // routes/web.php
 Route::get('/relatorios', [RelatorioController::class, 'index'])->name('index.relatorio');

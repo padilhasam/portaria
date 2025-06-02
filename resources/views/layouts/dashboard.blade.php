@@ -37,8 +37,8 @@
                     <a href="#" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('correspondencia*') ? 'active' : '' }}">
                         {{ svg('hugeicons-package-delivered') }} Correspondências
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('servicos*') ? 'active' : '' }}">
-                        {{ svg('hugeicons-repair') }} Serviços
+                    <a href={{ route('index.prestador') }} class="list-group-item list-group-item-action py-2 rounded {{ request()->is('servicos*') ? 'active' : '' }}">
+                        {{ svg('hugeicons-repair') }} Prestadores
                     </a>
                     <a href="{{ route('index.agendamento') }}" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('agendamento*') ? 'active' : '' }}">
                         {{ svg('hugeicons-calendar-01') }} Agendamentos
