@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Loader para modais Bootstrap (vários)
-    const modais = document.querySelectorAll('#viewDataModalMorador, #viewDataModalVisitante, #viewDataModalRegistro');
+    const modais = document.querySelectorAll('#viewDataModalMorador, #viewDataModalVisitante, #viewDataModalRegistro, #viewDataModalPrestador');
     modais.forEach(modal => {
         modal.addEventListener('show.bs.modal', function () {
             loader.style.display = 'flex';

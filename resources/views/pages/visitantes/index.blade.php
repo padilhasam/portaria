@@ -49,6 +49,8 @@
                         <th>Veículo</th>
                         <th>Cor</th>
                         <th>Placa</th>
+                        <th>Criado em</th>
+                        <th>Atualizado em</th>
                         <th>Ações</th>
                     </tr>
                 </thead>

@@ -38,8 +38,8 @@
                         <th>Ramal</th>
                         <th>Situação</th>
                         <th>Status da Vaga</th>
-                        <th>Data Criação</th>
-                        <th>Data Alteração</th>
+                        <th>Criado em</th>
+                        <th>Atualizado em</th>
                         <th>Opções</th>
                     </tr>
                 </thead>

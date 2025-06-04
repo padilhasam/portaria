@@ -23,10 +23,13 @@
     </div>
 </header>
 
-@include('components.alerts', [
-    'success' => session()->get('success'),
-    'message' => session()->get('message')
-])
+<!-- Exibição de mensagens de sucesso ou erro -->
+<div>
+    @include('components.alerts', [
+        'success' => session()->get('success'), 
+        'message' => session()->get('message')
+    ])
+</div>
 
 <div class="card shadow-sm border-0 rounded-4" style="min-height: 600px;">
     <div class="card-body d-flex flex-column">
@@ -42,30 +45,22 @@
                         <th>Email</th>
                         <th>Prestador</th>
                         <th>CPF</th>
-                        <th>Celular</th>
-                        <th>Acompanhante</th>                        
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Cor</th>
-                        <th>Placa</th>
+                        <th>Celular</th> 
+                        <th>Criado em</th>
+                        <th>Atualizado em</th>                       
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($prestadores as $prestador)
                     <tr>
-                        <td>{{ $prestador->empresa ?? '-' }}</td>
+                        <td><span class="badge bg-primary text-white">{{ $prestador->empresa ?? '-' }}</td>
                         <td>{{ $prestador->cnpj ?? '-' }}</td>
                         <td>{{ $prestador->tel_fixo ?? '-' }}</td>
                         <td>{{ $prestador->email ?? '-' }}</td>
-                        <td>{{ $prestador->prestador }}</td>
+                        <td><span class="badge bg-primary text-white">{{ $prestador->prestador }}</td>
                         <td>{{ $prestador->documento }}</td>
                         <td>{{ $prestador->celular }}</td>
-                        <td>{{ $prestador->acompanhante }}</td>
-                        <td>{{ optional($prestador->veiculo)->marca ?? '-' }}</td>
-                        <td>{{ optional($prestador->veiculo)->modelo ?? '-' }}</td>
-                        <td>{{ optional($prestador->veiculo)->cor ?? '-' }}</td>
-                        <td>{{ optional($prestador->veiculo)->placa ?? '-' }}</td>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">
@@ -92,11 +87,10 @@
                                         </a>
                                     </li>
                                    <li>
-                                        <button type="button" 
-                                            class="dropdown-item d-flex align-items-center gap-2 text-primary btn-visualizar-prestador"
+                                        <a href="javascript:void(0)" 
+                                            class="dropdown-item d-flex align-items-center gap-2 view-dados"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#viewDataModalprestador"
-
+                                            data-bs-target="#viewDataModalPrestador"
                                             data-empresa="{{ $prestador->empresa ?? '-' }}"
                                             data-cnpj="{{ $prestador->cnpj ?? '-' }}"
                                             data-telefone="{{ $prestador->tel_fixo ?? '-' }}"
@@ -108,17 +102,41 @@
                                             data-marca="{{ optional($prestador->veiculo)->marca ?? '-' }}"
                                             data-modelo="{{ optional($prestador->veiculo)->modelo ?? '-' }}"
                                             data-cor="{{ optional($prestador->veiculo)->cor ?? '-' }}"
-                                            data-placa="{{ optional($prestador->veiculo)->placa ?? '-' }}"
-
-                                            data-tipo="Prestação de Serviço"
-                                        >
-                                            👁 Ver Detalhes
-                                        </button>
+                                            data-placa="{{ optional($prestador->veiculo)->placa ?? '-' }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#b45f06" class="bi bi-search" viewBox="0 0 16 16">
+                                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                </svg>
+                                            Ver Dados
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
                         </td>
                     </tr>
+
+                    {{-- Modal de Confirmação --}}
+                    <div class="modal fade" id="confirmDeleteModal{{ $prestador->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $prestador->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content shadow">
+                                <form action="{{ route('destroy.prestador', $prestador->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirmar Exclusão</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Tem certeza que deseja remover o prestador <strong>#{{ $prestador->id }}</strong> ({{ $prestador->empresa }})?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-danger">Remover</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     @empty
                     <tr>
                         <td colspan="15" class="text-center text-muted">Nenhum serviço cadastrado.</td>
@@ -135,7 +153,7 @@
 </div>
 
 <!-- Modal de Visualização -->
-<div class="modal fade" id="viewDataModalprestador" tabindex="-1" aria-labelledby="viewDataModalLabel" aria-hidden="true">
+<div class="modal fade" id="viewDataModalPrestador" tabindex="-1" aria-labelledby="viewDataModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content rounded-4 shadow-sm border-0">
             <div class="modal-header bg-primary text-white rounded-top-4 py-3 px-4">
@@ -144,24 +162,49 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
-            <div class="modal-body px-4 py-3">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item py-3"><strong class="text-secondary">Empresa:</strong> <span id="modal-empresa" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">CNPJ:</strong> <span id="modal-cnpj" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Funcionário:</strong> <span id="modal-funcionario" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">CPF:</strong> <span id="modal-cpf" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Acompanhantes:</strong> <span id="modal-acompanhantes" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Contato:</strong> <span id="modal-contato" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Email:</strong> <span id="modal-email" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Modelo do Veículo:</strong> <span id="modal-modelo" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Marca:</strong> <span id="modal-marca" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Cor:</strong> <span id="modal-cor" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Placa:</strong> <span id="modal-placa" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Responsável:</strong> <span id="modal-responsavel" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Apartamento:</strong> <span id="modal-apartamento" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Bloco:</strong> <span id="modal-bloco" class="ms-2"></span></li>
-                    <li class="list-group-item py-3"><strong class="text-secondary">Serviço:</strong> <span id="modal-prestador" class="ms-2"></span></li>
-                </ul>
+            <div class="modal-body px-4 py-4">
+                <div class="row g-4">
+                    <div class="col-md-8">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Empresa:</strong><span id="modal-empresa" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">CNPJ:</strong> <span id="modal-cnpj" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Telefone:</strong> <span id="modal-telefone" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Email:</strong> <span id="modal-email" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Responsável:</strong> <span id="modal-prestador" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">CPF:</strong> <span id="modal-cpf" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Acompanhantes:</strong> <span id="modal-acompanhante" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Celular:</strong> <span id="modal-celular" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Veículo:</strong> <span id="modal-modelo" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Marca:</strong> <span id="modal-marca" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Cor:</strong> <span id="modal-cor" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Placa:</strong> <span id="modal-placa" class="ms-2"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -47,6 +47,8 @@
                         <th>Placa</th>
                         <th>Contato</th>
                         <th>Tipo</th>
+                        <th>Criado em</th>
+                        <th>Atualizado em</th>
                         <th>Ações</th>
                     </tr>
                 </thead>

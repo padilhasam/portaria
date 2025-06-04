@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    ['viewDataModalMorador', 'viewDataModalVisitante'].forEach(modalId => {
+    ['viewDataModalMorador', 'viewDataModalVisitante', 'viewDataModalPrestador'].forEach(modalId => {
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.addEventListener('show.bs.modal', function (event) {
@@ -34,6 +34,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 preencherCampoModal('#modal-celular', button.getAttribute('data-celular'));
                 preencherCampoModal('#modal-email', button.getAttribute('data-email'), 'N/A');
                 preencherCampoModal('#modal-tipo', button.getAttribute('data-tipo'));
+                // Preenchendo os campos com verificação
+                preencherCampoModal('#modal-cnpj', button.getAttribute('data-cnpj'));
+                preencherCampoModal('#modal-telefone', button.getAttribute('data-telefone'));
+                preencherCampoModal('#modal-prestador', button.getAttribute('data-prestador'));
+                preencherCampoModal('#modal-acompanhante', button.getAttribute('data-acompanhante'));
+
             });
         }
     });

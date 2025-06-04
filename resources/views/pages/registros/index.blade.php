@@ -94,6 +94,7 @@
                             <th>Placa</th>
                             <th>Tipo Acesso</th>
                             <th>Observações</th>
+                            <th>Data</td>
                             <th>Entrada</th>
                             <th>Saída</th>
                             <th>Ações</th>

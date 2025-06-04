@@ -22,21 +22,19 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">CPF</th>
-                    <th scope="col">Data de Nascimento</th>
-                    <th scope="col">Celular</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Data Admissão</th>
-                    <th scope="col">Data Alteração</th>
-                    <th scope="col">Ações</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Data de Nascimento</th>
+                    <th>Celular</th>
+                    <th>Email</th>
+                    <th>Criado em</th>
+                    <th>Atualizado em</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($usuarios as $usuario)
                     <tr>
-                        <th scope="row">{{$usuario->id}}</th>
                         <td>{{$usuario->nome}}</td>
                         <td>{{$usuario->documento}}</td>
                         <td>{{$usuario->nascimento}}</td>
