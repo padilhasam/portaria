@@ -61,6 +61,8 @@
                         <td><span class="badge bg-primary text-white">{{ $prestador->prestador }}</td>
                         <td>{{ $prestador->documento }}</td>
                         <td>{{ $prestador->celular }}</td>
+                        <td>{{ $prestador->created_at->format('d/m/Y H:i') }}</td>
+                        <td>{{ $prestador->updated_at->format('d/m/Y H:i') }}</td>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">

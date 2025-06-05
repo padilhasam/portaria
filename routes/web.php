@@ -85,6 +85,7 @@ Route::controller(VeiculoController::class)->group(function(){
     Route::post('/veiculo/store', 'store')->name('store.veiculo');
     Route::get('/veiculo/edit/{id}', 'edit')->name('edit.veiculo');
     Route::put('/veiculo/update/{id}', 'update')->name('update.veiculo');
+    Route::delete('/veiculo/{id}', 'destroy')->name('destroy.veiculo');
     
     // Rota para preenchimento automático de veículos
     Route::get('/veiculo/search', 'search')->name('search.veiculo');

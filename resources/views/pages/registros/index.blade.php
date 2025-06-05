@@ -103,17 +103,18 @@
                     <tbody>
                         @forelse ($registros as $registro)
                             <tr>
-                                <td>{{ $registro->nome ?? '—' }}</td>
+                                <td><span class="badge bg-primary text-white">{{ $registro->nome ?? '—' }}</span></td>
                                 <td>{{ $registro->documento ?? '—' }}</td>
                                 <td>{{ $registro->empresa ?? '—' }}</td>
                                 <td>{{ $registro->veiculo ?? '—' }}</td>
                                 <td>{{ $registro->placa ?? '—' }}</td>
                                 <td>
-                                    <span class="badge bg-primary text-white">
+                                    <span class="badge bg-info text-white">
                                         {{ ucfirst($registro->tipo_acesso) }}
                                     </span>
                                 </td>
                                 <td>{{ $registro->observacoes }}</td>
+                                <td>{{ $registro->created_at->format('d/m/Y') }}</td>
                                 <td>
                                     @if ($registro->entrada)
                                         <span class="badge bg-success-subtle text-success">{{ \Carbon\Carbon::parse($registro->entrada)->format('H:i') }}</span>
