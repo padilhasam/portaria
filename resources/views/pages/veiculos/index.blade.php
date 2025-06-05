@@ -89,9 +89,31 @@
                             </div>
                         </td>
                     </tr>
+                     <!-- Modal para confirmação de remoção -->
+                    <div class="modal fade" id="removeItemModal-{{ $veiculo->id }}" tabindex="-1" aria-labelledby="removeItemModalLabel-{{ $veiculo->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="removeItemModalLabel-{{ $veiculo->id }}">Confirmar remoção</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Tem certeza que deseja remover o usuário <strong>{{ $veiculo->nome }}</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <form action="{{ route('destroy.veiculo', ['id' => $veiculo->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Remover</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     @empty
                     <tr>
-                        <td colspan="10" class="text-center text-muted">Nenhum veículo cadastrado.</td>
+                        <td colspan="13" class="text-center text-muted">Nenhum veículo cadastrado.</td>
                     </tr>
                     @endforelse
                 </tbody>
