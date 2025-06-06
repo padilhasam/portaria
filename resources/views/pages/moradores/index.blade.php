@@ -83,9 +83,9 @@
                             ->placa}}
                         </td>
                         <td>
-                            {{ $morador->celular }}
+                            📱{{ $morador->celular }}<br>
                             @if ($morador->email)
-                                <br><small class="text-muted">{{ $morador->email }}</small>
+                                📧 <small class="text-muted">{{ $morador->email }}</small>
                             @endif
                         </td>
                         <td>
@@ -127,7 +127,10 @@
                                             data-nome="{{ $morador->nome }}"
                                             data-cpf="{{ $morador->documento }}"
                                             data-apartamento="{{ optional($morador->apartamento)->numero }}{{ optional($morador->apartamento)->bloco ? ' - Bloco ' . optional($morador->apartamento)->bloco : '' }}"
-                                            data-veiculo="{{ optional($morador->veiculo)->placa }}{{ optional($morador->veiculo)->modelo ? ' - ' . optional($morador->veiculo)->modelo : '' }}"
+                                            data-marca="{{ $morador->veiculo->marca ?? 'Sem veículo' }}"
+                                            data-modelo="{{ $morador->veiculo->modelo ?? 'Sem veículo' }}"
+                                            data-cor="{{ $morador->veiculo->cor ?? 'Sem veículo' }}"
+                                            data-placa="{{ $morador->veiculo->placa ?? 'Sem veículo' }}"
                                             data-celular="{{ $morador->celular }}"
                                             data-email="{{ $morador->email }}"
                                             data-tipo="{{ $morador->tipo_morador === 'aluguel' ? 'Aluguel' : 'Própria' }}">
@@ -199,8 +202,17 @@
                     <li class="list-group-item py-3">
                         <strong class="text-secondary">Apartamento:</strong> <span id="modal-apartamento" class="ms-2"></span>
                     </li>
-                    <li class="list-group-item py-3">
-                        <strong class="text-secondary">Veículo:</strong> <span id="modal-veiculo" class="ms-2"></span>
+                    <li class="list-group-item">
+                        <strong class="text-secondary">Veículo:</strong> <span id="modal-marca" class="ms-2"></span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong class="text-secondary">Modelo:</strong> <span id="modal-modelo" class="ms-2"></span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong class="text-secondary">Cor:</strong> <span id="modal-cor" class="ms-2"></span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong class="text-secondary">Placa:</strong> <span id="modal-placa" class="ms-2"></span>
                     </li>
                     <li class="list-group-item py-3">
                         <strong class="text-secondary">Celular:</strong> <span id="modal-celular" class="ms-2"></span>

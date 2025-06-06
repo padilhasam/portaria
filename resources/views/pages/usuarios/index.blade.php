@@ -42,7 +42,7 @@
                         <tbody>
                             @forelse ($usuarios as $usuario)
                                 <tr>
-                                    <td>{{$usuario->nome}}</td>
+                                    <td><span class="badge bg-primary text-white">{{$usuario->nome}}</td>
                                     <td>{{$usuario->documento}}</td>
                                     <td>{{\Carbon\Carbon::parse($usuario->nascimento)->format('d/m/Y') }}</td>
                                     <td>{{$usuario->celular}}</td>

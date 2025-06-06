@@ -57,7 +57,7 @@
                 <tbody>
                     @forelse($agendamentos as $agendamento)
                         <tr class="border-t hover:bg-gray-50">
-                            <td><span class="badge bg-primary text-white">{{ $agendamento->morador->nome}}</td>
+                            <td><span class="badge bg-primary text-white">{{ $agendamento->morador?->nome ?? 'Não informado' }}</span></td>
                             <td>{{ $agendamento->nome_area }}</td>
                             <td>{{ \Carbon\Carbon::parse($agendamento->data_agendamento)->format('d/m/Y') }}</td>
                             <td><span class="badge bg-success-subtle text-success">{{ \Carbon\Carbon::parse($agendamento->horario_inicio)->format('H:i') }}</td>
@@ -68,6 +68,8 @@
                                     {{ ucfirst($agendamento->status) }}
                                 </span>
                             </td>
+                            <td>{{ $agendamento->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $agendamento->updated_at->format('d/m/Y H:i') }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">
@@ -110,7 +112,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                                         </div>
                                         <div class="modal-body">
-                                            Tem certeza que deseja remover o agendamento <strong>#{{ $agendamento->id }}</strong> ({{ $agendamento->morador->nome }})?
+                                            Tem certeza que deseja remover o agendamento <strong>#{{ $agendamento->id }}</strong> ({{ $agendamento->usuario?->nome ?? 'Não informado' }})?
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -122,7 +124,7 @@
                         </div>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center text-muted">Nenhum agendamento encontrado</td>
+                            <td colspan="13" class="text-center text-muted">Nenhum agendamento encontrado</td>
                         </tr>
                     @endforelse
                 </tbody>
