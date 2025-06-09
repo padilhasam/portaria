@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('celular');
             $table->string('empresa')->nullable();
             $table->string('image');
-            $table->string('tipo_acesso');
             $table->text('observacoes')->nullable();
             $table->timestamps();
         });

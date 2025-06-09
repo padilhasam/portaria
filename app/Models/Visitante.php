@@ -23,7 +23,6 @@ class Visitante extends Model
         'documento',
         'celular',
         'empresa',
-        'tipo_acesso',
         'image', // nome da imagem salva
         'observacoes',
     ];

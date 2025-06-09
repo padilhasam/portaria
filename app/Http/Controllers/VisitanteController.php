@@ -63,7 +63,6 @@ class VisitanteController extends Controller
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:15',
             'celular' => 'required|string|max:20',
-            'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'nullable|string|max:500',
             'image' => 'nullable|image|max:2048',
         ]);
@@ -116,7 +115,6 @@ class VisitanteController extends Controller
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:15',
             'celular' => 'required|string|max:20',
-            'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'nullable|string|max:500',
             'image' => 'nullable|image|max:2048',
         ]);

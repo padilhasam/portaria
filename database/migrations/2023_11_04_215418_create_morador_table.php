@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('celular');
             $table->string('email');
             $table->string('tipo_morador');
-            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
