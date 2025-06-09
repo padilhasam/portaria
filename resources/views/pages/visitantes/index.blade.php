@@ -58,24 +58,24 @@
                     @forelse ($visitantes as $visitante)
                         <tr>
                             <td><span class="badge bg-primary text-white">{{ $visitante->nome }}</span></td>
-                            <td>{{ $visitante->documento }}</td>
-                            <td>{{ $visitante->celular }}</td>
-                            <td>{{ $visitante->empresa }}</td>
+                            <td>{{ $visitante->documento ?? 'Não informado'}}</td>
+                            <td>{{ $visitante->celular ?? 'Não informado'}}</td>
+                            <td>{{$visitante->prestador->empresa ?? 'Não informado'}}</td>
                             <td>
                                 {{optional($visitante->veiculo)
-                                ->marca}}
+                                ->marca ?? 'Não informado'}}
                                 @if(optional($visitante->veiculo)->modelo)
                                 - {{optional($visitante->veiculo)
-                                ->modelo }}
+                                ->modelo ?? 'Não informado' }}
                             @endif
                             </td>
                             <td>
                                 {{optional($visitante->veiculo)
-                                ->cor}}
+                                ->cor ?? 'Não informado'}}
                             </td>
                             <td>
                                 {{optional($visitante->veiculo)
-                                ->placa}}
+                                ->placa ?? 'Não informado'}}
                             </td>
                             <td>{{ $visitante->created_at->format('d/m/Y H:i') }}</td>
                             <td>{{ $visitante->updated_at->format('d/m/Y H:i') }}</td>
@@ -110,14 +110,14 @@
                                                 class="dropdown-item d-flex align-items-center gap-2 view-dados" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#viewDataModalVisitante"
-                                                data-nome="{{ $visitante->nome }}"
-                                                data-cpf="{{ $visitante->documento }}"
-                                                data-empresa="{{ $visitante->empresa }}"
-                                                data-marca="{{ $visitante->veiculo->marca ?? 'Sem veículo' }}"
-                                                data-modelo="{{ $visitante->veiculo->modelo ?? 'Sem veículo' }}"
-                                                data-cor="{{ $visitante->veiculo->cor ?? 'Sem veículo' }}"
-                                                data-placa="{{ $visitante->veiculo->placa ?? 'Sem veículo' }}"
-                                                data-celular="{{ $visitante->celular }}"
+                                                data-nome="{{ $visitante->nome ?? 'Não informado'}}"
+                                                data-cpf="{{ $visitante->documento ?? 'Não informado'}}"
+                                                data-empresa="{{ $visitante->prestador->empresa ?? 'Não informado' }}"
+                                                data-marca="{{ $visitante->veiculo->marca ?? 'Não informado' }}"
+                                                data-modelo="{{ $visitante->veiculo->modelo ?? 'Não informado' }}"
+                                                data-cor="{{ $visitante->veiculo->cor ?? 'Não informado' }}"
+                                                data-placa="{{ $visitante->veiculo->placa ?? 'Não informado' }}"
+                                                data-celular="{{ $visitante->celular ?? 'Não informado' }}"
                                                 data-foto="{{ $visitante->image ? asset('storage/visitantes/'.$visitante->image) : Vite::asset('/resources/images/avatar2.png') }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#b45f06" class="bi bi-search" viewBox="0 0 16 16">
                                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use app\Helpers\DateHelper;
+use App\Helpers\DateHelper;
 use App\Models\Apartamento;
 use App\Models\Veiculo;
 use App\Models\Morador;
@@ -63,7 +63,6 @@ class MoradorController extends Controller
     public function store(Request $request)
     {
         $validated = $this->validateMorador($request);
-        $validated['nascimento'] = DateHelper::convertDateToUs($validated['nascimento']);
         $morador = Morador::create($validated);
 
         if ($morador) {
@@ -77,8 +76,6 @@ class MoradorController extends Controller
                 'message' => 'Erro ao registrar Morador!'
             ]);
         }
-
-        return redirect()->route('index.morador')->with('success', 'Morador cadastrado com sucesso!');
     }
 
     /**
@@ -88,7 +85,6 @@ class MoradorController extends Controller
     {
         $morador = Morador::with(['apartamento', 'veiculo'])->findOrFail($id); // Eager load relationships
         
-        $morador->nascimento = DateHelper::convertDateToUs($morador->nascimento);
         $apartamentos = Apartamento::orderBy('numero')->get();
         $veiculos = Veiculo::orderBy('placa')->get();
 
@@ -102,7 +98,6 @@ class MoradorController extends Controller
     {
         $morador = Morador::findOrFail($id);
         $validated = $this->validateMorador($request);
-        $validated['nascimento'] = DateHelper::convertDateToUs($validated['nascimento']);
 
         $morador->update($validated);
 
@@ -130,7 +125,7 @@ class MoradorController extends Controller
             'id_veiculo' => 'nullable|integer|exists:veiculos,id',
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:14|unique:moradores,documento,' . ($request->route('id') ?? ''),
-            'nascimento' => 'required|date_format:d/m/Y',
+            'nascimento' => 'required|date',
             'tel_fixo' => 'nullable|string|max:20',
             'celular' => 'required|string|max:20',
             'email' => 'nullable|string|email|max:255',

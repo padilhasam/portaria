@@ -61,14 +61,14 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="numero" class="form-label">Número Apartamento <span class="text-danger">*</span></label>
-                <input name="numero" type="text" class="form-control rounded-pill border-dark" id="numero" placeholder="Ex: 101" value="{{ old('numero', $edit ? $apartamento->numero : '') }}" required autofocus>
+                <input name="numero" type="text" class="form-control rounded-pill border-dark" id="numero" placeholder="Ex: 101" value="{{ old('numero', $edit ? $apartamento->numero : '') }}" placeholder="Apartamento" required autofocus>
                 @error('numero')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
             <div class="col-md-6">
                 <label for="bloco" class="form-label">Bloco <span class="text-danger">*</span></label>
-                <input name="bloco" type="text" class="form-control rounded-pill border-dark" id="bloco" placeholder="Bloco A" value="{{ old('bloco', $edit ? $apartamento->bloco : '')}}" required>
+                <input name="bloco" type="text" class="form-control rounded-pill border-dark" id="bloco" placeholder="Ex: A" value="{{ old('bloco', $edit ? $apartamento->bloco : '')}}" required>
                  @error('bloco')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -96,7 +96,7 @@
             <div class="col-md-6">
                 <label for="status_vaga" class="form-label">Status da vaga <span class="text-danger">*</span></label>
                 <select class="form-select rounded-pill border-dark" name="status_vaga" id="status_vaga">
-                    <option value="">Selecione</option>
+                    <option value="">Selecione o status da vaga...</option>
                     <option value="livre" {{ $edit && $apartamento->status_vaga == "livre" ? "selected" : "" }}>Livre</option>
                     <option value="ocupada" {{ $edit && $apartamento->status_vaga == "ocupada" ? "selected" : "" }}>Ocupada</option>
                     <option value="emprestada" {{ $edit && $apartamento->status_vaga == "emprestada" ? "selected" : "" }}>Emprestada</option>

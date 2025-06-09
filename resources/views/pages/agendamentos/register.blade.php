@@ -60,7 +60,7 @@
             <div class="col-md-6">
                 <label for="id_morador" class="form-label">Morador</label>
                 <select name="id_morador" id="id_morador" class="form-control rounded-pill border-dark">
-                    <option value="">Selecione</option>
+                    <option value="">Selecione o morador...</option>
                     @foreach($moradores as $morador)
                         <option value="{{ $morador->id }}"
                             {{ old('id_morador', $agendamento->id_morador ?? '') == $morador->id ? 'selected' : '' }}>
@@ -73,7 +73,7 @@
             <div class="col-md-6">
                 <label for="nome_area" class="form-label">Área Comum</label>
                 <select class="form-control rounded-pill border-dark" name="nome_area" id="nome_area" required>{{ old('nome_area') }}
-                    <option value="selecione">Selecione</option>
+                    <option value="selecione">Selecione a área...</option>
                     <option value="Churrasqueira">Churrasqueira</option>
                     <option value="Quadra">Quadra</option>
                     <option value="Piscina">Piscina</option>

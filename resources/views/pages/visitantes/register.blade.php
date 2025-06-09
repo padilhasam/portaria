@@ -66,39 +66,42 @@
                     {{-- Inputs à esquerda --}}
                     <div class="col-lg-9">
                         <div class="row g-3">
-                            <div class="col-md-4">
+                            <div class="col-md-8">
                                 <label for="nome" class="form-label">Nome</label>
-                                <input name="nome" type="text" class="form-control rounded-pill border-dark" id="nome" required
+                                <input name="nome" type="text" class="form-control rounded-pill border-dark" id="nome" placeholder="Nome Completo" required
                                     value="{{ old('nome', $edit ? $visitante->nome : '') }}">
                             </div>
                             <div class="col-md-4">
                                 <label for="documento" class="form-label">CPF</label>
-                                <input name="documento" type="text" class="form-control rounded-pill border-dark" id="documento" required
+                                <input name="documento" type="text" class="form-control rounded-pill border-dark" id="documento" placeholder="CPF" required
                                     value="{{ old('documento', $edit ? $visitante->documento : '') }}"
                                     >
                                 <div id="cpf-error" class="invalid-feedback d-none">CPF inválido</div>
                             </div>
                             <div class="col-md-4">
                                 <label for="celular" class="form-label">Telefone</label>
-                                <input name="celular" type="text" class="form-control rounded-pill border-dark" id="celular" required
-                                    value="{{ old('celular', $edit ? $visitante->celular : '') }}"
-                                    onkeyup="mascara(this, mtel)">
+                                <input name="celular" type="text" class="form-control rounded-pill border-dark" id="celular" placeholder="Whatsapp" value="{{ old('celular', $edit ? $visitante->celular : '') }}">
                             </div>
-                            <div class="col-md-6">
-                                <label for="empresa" class="form-label">Empresa</label>
-                                <input name="empresa" type="text" class="form-control rounded-pill border-dark" id="empresa" required
-                                    value="{{ old('empresa', $edit ? $visitante->empresa : '') }}">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="tipo_acesso" class="form-label">Tipo de Acesso</label>
-                                <select class="form-select rounded-pill border-dark" name="tipo_acesso" id="tipo_acesso">
-                                    <option value="">Selecione...</option>
-                                    @foreach (['Visita', 'Entrega', 'Mudança', 'Manutenção', 'Abastecimento', 'Limpeza', 'Dedetização'] as $tipo)
-                                        <option value="{{ $tipo }}" {{ old('tipo_acesso', $visitante->tipo_acesso ?? '') == $tipo ? 'selected' : '' }}>
-                                            {{ ucfirst($tipo) }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="col-md-8">
+                                <label for="id_prestador" class="form-label">Empresa</label>
+                                <div class="d-flex align-items-end gap-2">
+                                    <select class="form-select rounded-pill border-dark" id="id_prestador_visitantes" name="id_prestador">
+                                        <option value="">Selecione a empresa prestadora...</option>
+                                        @foreach ($prestadores as $prestador)
+                                            <option value="{{ $prestador->id }}"
+                                                {{ old('id_prestador', $edit ? $prestador->id_prestador : '') == $prestador->id ? 'selected' : '' }}>
+                                                {{ $prestador->empresa }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <a href="{{ route('create.prestador', ['from' => 'visitante']) }}" class="btn btn-primary align-items-center justify-content-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
                             <div class="col-12">
                                 <label for="observacoes" class="form-label">Observação</label>
@@ -158,7 +161,7 @@
                     <label for="id_veiculo" class="form-label">Placa</label>
                     <div class="d-flex gap-2">
                         <select name="id_veiculo" id="id_veiculo" class="form-select rounded-pill border-dark" required>
-                            <option value="">Selecione</option>
+                            <option value="">Selecione a placa do veículo...</option>
                             @foreach ($veiculos as $veiculo)
                                 <option value="{{ $veiculo->id }}"
                                     {{ old('id_veiculo', $edit ? $visitante->id_veiculo : '') == $veiculo->id ? 'selected' : '' }}>
@@ -170,17 +173,17 @@
                 </div>
                 <div class="col-md-3">
                     <label for="modelo" class="form-label">Modelo</label>
-                    <input type="text" name="modelo" id="modelo" class="form-control rounded-pill border-dark" readonly required
+                    <input type="text" name="modelo" id="modelo" class="form-control rounded-pill border-dark" placeholder="Modelo do veículo" readonly required
                         value="{{ $edit ? optional($visitante->veiculo)->modelo : '' }}">
                 </div>
                 <div class="col-md-3">
                     <label for="marca" class="form-label">Marca</label>
-                    <input type="text" name="marca" id="marca" class="form-control rounded-pill border-dark" readonly required
+                    <input type="text" name="marca" id="marca" class="form-control rounded-pill border-dark" placeholder="Marca do veículo" readonly required
                         value="{{ $edit ? optional($visitante->veiculo)->marca : '' }}">
                 </div>
                 <div class="col-md-3">
                     <label for="cor" class="form-label">Cor</label>
-                    <input type="text" name="cor" id="cor" class="form-control rounded-pill border-dark" readonly required
+                    <input type="text" name="cor" id="cor" class="form-control rounded-pill border-dark" placeholder="Cor do veículo" readonly required
                         value="{{ $edit ? optional($visitante->veiculo)->cor : '' }}">
                 </div>
             </div>

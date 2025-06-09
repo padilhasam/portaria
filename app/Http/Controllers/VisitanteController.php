@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Visitante;
 use App\Models\Veiculo;
+use App\Models\Prestador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,7 +21,7 @@ class VisitanteController extends Controller
                 return $query->where('nome', 'like', "%{$search}%")
                              ->orWhere('documento', 'like', "%{$this->unmask($search)}%");
             })
-            ->with(['veiculo']) // Eager load relationships
+            ->with(['veiculo', 'prestador']) // Eager load relationships
             ->latest()
             ->paginate(10); // Paginação de resultados
 
@@ -47,7 +48,8 @@ class VisitanteController extends Controller
     public function create()
     {
         $veiculos = Veiculo::orderBy('placa')->get();
-        return view('pages.visitantes.register', compact('veiculos'));
+        $prestadores = Prestador::orderBy('empresa')->get();
+        return view('pages.visitantes.register', compact('veiculos','prestadores'));
     }
 
     /**
@@ -57,10 +59,10 @@ class VisitanteController extends Controller
     {
         $data = $request->validate([
             'id_veiculo' => 'nullable|integer|exists:veiculos,id',
+            'id_prestador' => 'nullable|integer|exists:prestadores,id',
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:15',
             'celular' => 'required|string|max:20',
-            'empresa' => 'nullable|string|max:50',
             'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'nullable|string|max:500',
             'image' => 'nullable|image|max:2048',
@@ -96,8 +98,9 @@ class VisitanteController extends Controller
     {
         $visitante = Visitante::findOrFail($id);
         $veiculos = Veiculo::orderBy('placa')->get();
+        $prestadores = Prestador::orderBy('empresa')->get();
 
-        return view('pages.visitantes.register', compact('visitante', 'veiculos'));
+        return view('pages.visitantes.register', compact('visitante', 'veiculos', 'prestadores'));
     }
 
     /**
@@ -109,10 +112,10 @@ class VisitanteController extends Controller
 
         $data = $request->validate([
             'id_veiculo' => 'nullable|exists:veiculos,id',
+            'id_prestador' => 'nullable|exists:prestadores,id',
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:15',
             'celular' => 'required|string|max:20',
-            'empresa' => 'nullable|string|max:50',
             'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'nullable|string|max:500',
             'image' => 'nullable|image|max:2048',

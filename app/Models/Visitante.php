@@ -18,6 +18,7 @@ class Visitante extends Model
      */
     protected $fillable = [
         'id_veiculo',  // Agora é id_veiculo, que é a chave estrangeira
+        'id_prestador',
         'nome',
         'documento',
         'celular',
@@ -33,5 +34,13 @@ class Visitante extends Model
     public function veiculo()
     {
         return $this->belongsTo(Veiculo::class, 'id_veiculo'); // 'id_veiculo' é a chave estrangeira
+    }
+
+    /**
+     * Relacionamento com o modelo Veiculo
+     */
+    public function prestador()
+    {
+        return $this->belongsTo(Prestador::class, 'id_prestador');
     }
 }

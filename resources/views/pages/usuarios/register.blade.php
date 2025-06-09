@@ -91,7 +91,7 @@
                 @enderror
                 <div class="col-md-4">
                     <label for="celular">Celular</label>
-                    <input name="celular" type="text" class="form-control rounded-pill border-dark" @error('celular') is-invalid @enderror id="celular" placeholder="WhatsApp" value="{{ old('celular', $edit ? $usuario->celular : '') }}">
+                    <input name="celular" type="text" class="form-control rounded-pill border-dark" @error('celular') is-invalid @enderror id="celular" placeholder="Whatsapp" value="{{ old('celular', $edit ? $usuario->celular : '') }}">
                 </div>
                 @error('celular')
                     <div class="invalid-feedback">
