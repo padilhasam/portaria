@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Config;
 use Carbon\Carbon;
 
 class Agendamento extends Model
@@ -25,36 +26,34 @@ class Agendamento extends Model
     {
         parent::boot();
 
-        static::creating(function ($agendamento) {
-            $agendamento->validarAgendamento();
-        });
-
-        static::updating(function ($agendamento) {
-            $agendamento->validarAgendamento();
-        });
+        static::creating(fn($agendamento) => $agendamento->validarAgendamento());
+        static::updating(fn($agendamento) => $agendamento->validarAgendamento());
     }
 
     public function validarAgendamento()
     {
         $agora = Carbon::now();
         $dataAgendamento = Carbon::parse($this->data_agendamento);
-        $horaInicio = Carbon::createFromFormat('H:i', $this->horario_inicio);
-        $horaFim = Carbon::createFromFormat('H:i', $this->horario_fim);
+        $horaInicio = Carbon::parse($this->horario_inicio);
+        $horaFim = Carbon::parse($this->horario_fim);
 
+        // Valida data passada
         if ($dataAgendamento->isBefore($agora->startOfDay())) {
             throw ValidationException::withMessages([
-                'data_agendamento' => 'Não é possível agendar uma data passada.'
+                'data_agendamento' => 'Não é possível agendar uma data no passado.'
             ]);
         }
 
+        // Valida ordem de horários
         if ($horaInicio->gte($horaFim)) {
             throw ValidationException::withMessages([
-                'horario_inicio' => 'A hora de início deve ser antes da hora de fim.'
+                'horario_inicio' => 'O horário de início deve ser anterior ao horário de fim.'
             ]);
         }
 
-        $horaInicioPermitida = config('agendamento.horario_inicio', 8);
-        $horaFimPermitida = config('agendamento.horario_fim', 22);
+        // Horários permitidos (com fallback)
+        $horaInicioPermitida = Config::get('agendamento.horario_inicio', 8);
+        $horaFimPermitida = Config::get('agendamento.horario_fim', 22);
 
         if ($horaInicio->hour < $horaInicioPermitida) {
             throw ValidationException::withMessages([
@@ -62,28 +61,27 @@ class Agendamento extends Model
             ]);
         }
 
-        if (
-            $horaFim->hour > $horaFimPermitida ||
-            ($horaFim->hour == $horaFimPermitida && $horaFim->minute > 0)
-        ) {
+        if ($horaFim->hour > $horaFimPermitida || 
+            ($horaFim->hour == $horaFimPermitida && $horaFim->minute > 0)) {
             throw ValidationException::withMessages([
                 'horario_fim' => "O horário de fim deve ser até {$horaFimPermitida}:00."
             ]);
         }
 
+        // Verifica conflitos com outros agendamentos
         $query = self::where('nome_area', $this->nome_area)
             ->where('data_agendamento', $this->data_agendamento)
-            ->where(function ($query) {
-                $query->whereBetween('horario_inicio', [$this->horario_inicio, $this->horario_fim])
-                    ->orWhereBetween('horario_fim', [$this->horario_inicio, $this->horario_fim])
-                    ->orWhere(function ($query) {
-                        $query->where('horario_inicio', '<=', $this->horario_inicio)
-                            ->where('horario_fim', '>=', $this->horario_fim);
-                    });
+            ->where(function ($q) {
+                $q->whereBetween('horario_inicio', [$this->horario_inicio, $this->horario_fim])
+                  ->orWhereBetween('horario_fim', [$this->horario_inicio, $this->horario_fim])
+                  ->orWhere(function ($subq) {
+                      $subq->where('horario_inicio', '<=', $this->horario_inicio)
+                           ->where('horario_fim', '>=', $this->horario_fim);
+                  });
             });
 
         if ($this->exists) {
-            $query->where('id', '!=', $this->id);
+            $query->where('id', '!=', $this->id); // Evita conflito com o próprio registro
         }
 
         if ($query->exists()) {
@@ -93,6 +91,7 @@ class Agendamento extends Model
         }
     }
 
+    // Relacionamentos
     public function usuario()
     {
         return $this->belongsTo(User::class, 'id_usuario');
