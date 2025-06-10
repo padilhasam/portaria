@@ -1,0 +1,58 @@
+/* Toolbar com melhor espaçamento e visual mais limpo */
+.fc-header-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsividade aprimorada para dispositivos menores */
+@media (max-width: 576px) {
+    .fc-header-toolbar {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem 0;
+    }
+}
+
+/* Estilo geral do calendário */
+#calendar {
+    font-size: 0.94rem;
+    --fc-border-color: #dee2e6; /* bordas mais suaves */
+}
+
+/* Reduz o espaçamento interno dos dias no grid mensal */
+.fc-daygrid-day-frame {
+    padding: 0.35rem;
+}
+
+/* Destaque mais sutil para os dias atuais */
+.fc-day-today {
+    background-color: #e8f5e9 !important;
+    border-radius: 0.25rem;
+}
+
+/* Aparência mais clean na borda e fundo */
+.calendar-wrapper {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* Estiliza botões de navegação do calendário */
+.fc .fc-button {
+    border-radius: 50px !important;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.75rem;
+}
+
+/* Suaviza títulos */
+.fc-toolbar-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #343a40;
+}

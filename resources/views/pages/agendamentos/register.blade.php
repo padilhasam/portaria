@@ -4,6 +4,8 @@
 
 @php
     $edit = isset($agendamento) ? true : false;
+    $inicioPermitido = config('agendamento.horario_inicio', 7);
+    $fimPermitido = config('agendamento.horario_fim', 22);
 @endphp
 
 @if(session('success'))
@@ -59,7 +61,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="id_morador" class="form-label">Morador</label>
-                <select name="id_morador" id="id_morador" class="form-control rounded-pill border-dark">
+                <select name="id_morador" id="id_morador" class="form-control rounded-pill border-dark" required>
                     <option value="">Selecione o morador...</option>
                     @foreach($moradores as $morador)
                         <option value="{{ $morador->id }}"
@@ -72,40 +74,44 @@
 
             <div class="col-md-6">
                 <label for="nome_area" class="form-label">Área Comum</label>
-                <select class="form-control rounded-pill border-dark" name="nome_area" id="nome_area" required>{{ old('nome_area') }}
-                    <option value="selecione">Selecione a área...</option>
-                    <option value="Churrasqueira">Churrasqueira</option>
-                    <option value="Quadra">Quadra</option>
-                    <option value="Piscina">Piscina</option>
-                    <option value="Academia">Academia</option>
-                    <option value="Sala de Jogos">Sala de Jogos</option>
-                    <option value="Biblioteca">Biblioteca</option>
+                <select class="form-control rounded-pill border-dark" name="nome_area" id="nome_area" required>
+                    <option value="">Selecione a área...</option>
+                    <option value="Churrasqueira" {{ old('nome_area', $agendamento->nome_area ?? '') == 'Churrasqueira' ? 'selected' : '' }}>Churrasqueira</option>
+                    <option value="Quadra" {{ old('nome_area', $agendamento->nome_area ?? '') == 'Quadra' ? 'selected' : '' }}>Quadra</option>
+                    <option value="Piscina" {{ old('nome_area', $agendamento->nome_area ?? '') == 'Piscina' ? 'selected' : '' }}>Piscina</option>
+                    <option value="Academia" {{ old('nome_area', $agendamento->nome_area ?? '') == 'Academia' ? 'selected' : '' }}>Academia</option>
+                    <option value="Sala de Jogos" {{ old('nome_area', $agendamento->nome_area ?? '') == 'Sala de Jogos' ? 'selected' : '' }}>Sala de Jogos</option>
+                    <option value="Biblioteca" {{ old('nome_area', $agendamento->nome_area ?? '') == 'Biblioteca' ? 'selected' : '' }}>Biblioteca</option>
                 </select>
             </div>
+
             <div class="col-md-4">
                 <label for="data_agendamento" class="form-label">Data do Agendamento</label>
-                <input type="date" class="form-control rounded-pill border-dark" name="data_agendamento" id="data_agendamento" value="{{ old('data_agendamento') }}" required>
+                <input type="date" class="form-control rounded-pill border-dark" name="data_agendamento" id="data_agendamento" value="{{ old('data_agendamento', $agendamento->data_agendamento ?? '') }}" required>
             </div>
 
             <div class="col-md-4">
                 <div>
                     <label for="horario_inicio" class="form-label">Horário de Início</label>
-                    <input type="time" class="form-control rounded-pill border-dark" name="horario_inicio" id="hora_inicio" min="08:00" max="22:00" value="{{ old('hora_inicio') }}" required>
+                    <input type="time" class="form-control rounded-pill border-dark" name="horario_inicio" id="horario_inicio" min="{{ sprintf('%02d:00', $inicioPermitido) }}" max="{{ sprintf('%02d:00', $fimPermitido) }}" value="{{ old('horario_inicio', $agendamento->horario_inicio ?? '') }}" required>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div>
                     <label for="horario_fim" class="form-label">Horário de Término</label>
-                    <input type="time" class="form-control rounded-pill border-dark" name="horario_fim" id="hora_fim" min="08:00" max="22:00" value="{{ old('hora_fim') }}" required>
+                    <input type="time" class="form-control rounded-pill border-dark" name="horario_fim" id="horario_fim" min="{{ sprintf('%02d:00', $inicioPermitido) }}" max="{{ sprintf('%02d:00', $fimPermitido) }}" value="{{ old('horario_fim', $agendamento->horario_fim ?? '') }}" required>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                     <label for="observacoes">Observações</label>
-                    <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" cols="50" style="resize: none">{{ old('observacoes') }}</textarea>
+                    <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" cols="50" style="resize: none">{{ old('observacoes', $agendamento->observacoes ?? '') }}</textarea>
                 </div>
             </div>
+
+        </div>
 
         <div class="mt-4">
             <button type="submit" class="btn btn-success rounded-pill px-4 me-2">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
