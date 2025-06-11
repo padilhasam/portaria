@@ -31,7 +31,7 @@
                 <ul class="list-unstyled d-flex flex-column gap-2 small">
                     <li class="d-flex align-items-center gap-2">
                         <span class="rounded" style="width: 14px; height: 14px; background-color: #0d6efd;"></span>
-                        Salão de Festas
+                        Sala de Jogos
                     </li>
                     <li class="d-flex align-items-center gap-2">
                         <span class="rounded" style="width: 14px; height: 14px; background-color: #198754;"></span>
@@ -48,6 +48,10 @@
                     <li class="d-flex align-items-center gap-2">
                         <span class="rounded" style="width: 14px; height: 14px; background-color: #3c0386;"></span>
                         Quadra
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <span class="rounded" style="width: 14px; height: 14px; background-color: #dd4e0c;"></span>
+                        Biblioteca  
                     </li>
                 </ul>
             </div>

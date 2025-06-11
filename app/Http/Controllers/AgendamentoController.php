@@ -134,11 +134,12 @@ class AgendamentoController extends Controller
     {
         return $agendamentos->map(function ($agendamento) {
             $cor = match ($agendamento->nome_area) {
-                'Salão de Festas' => '#0d6efd',
+                'Sala de Jogos' => '#0d6efd',
                 'Churrasqueira' => '#198754',
                 'Piscina' => '#0dcaf0',
                 'Academia' => '#ffc107',
                 'Quadra' => '#3c0386',
+                'Biblioteca' => '#dd4e0c',
                 default => '#6c757d',
             };
 

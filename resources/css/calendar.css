@@ -81,7 +81,7 @@
     color: #fff;
 }
 
-.fc-event.salao-de-festas {
+.fc-event.sala-de-jogos {
     background-color: #198754 !important; /* verde */
     border: none;
     color: #fff;
@@ -101,6 +101,11 @@
 
 .fc-event.quadra {
     background-color: #3c0386 !important; /* roxo escuro */
+    border: none;
+    color: #fff;
+}
+.fc-event.biblioteca {
+    background-color: #dd4e0c !important; /* roxo escuro */
     border: none;
     color: #fff;
 }
