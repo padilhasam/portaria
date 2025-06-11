@@ -22,6 +22,7 @@
 #calendar {
     font-size: 0.94rem;
     --fc-border-color: #dee2e6; /* bordas mais suaves */
+    color: #212529 !important; /* cor escura para o texto */
 }
 
 /* Reduz o espaçamento interno dos dias no grid mensal */
@@ -45,14 +46,80 @@
 
 /* Estiliza botões de navegação do calendário */
 .fc .fc-button {
-    border-radius: 50px !important;
     font-size: 0.85rem;
     padding: 0.4rem 0.75rem;
 }
 
-/* Suaviza títulos */
+/* Suaviza títulos da toolbar */
 .fc-toolbar-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #343a40;
+    color: #212529 !important;
+}
+
+/* Cor escura para os números dos dias no dayGrid */
+.fc-daygrid-day-number {
+    color: #212529 !important;
+}
+
+/* Cor escura para o texto dos dias da semana (header) */
+.fc-col-header-cell-cushion {
+    color: #212529 !important;
+    font-weight: 600;
+}
+
+/* Cor escura para o texto das horas no timeGrid (agenda vertical) */
+.fc-timegrid-axis-cushion {
+    color: #212529 !important;
+    font-weight: 600;
+}
+
+/* Estilização dos eventos - cores de fundo específicas por área */
+.fc-event.churrasqueira {
+    background-color: #0d6efd !important; /* azul */
+    border: none;
+    color: #fff;
+}
+
+.fc-event.salao-de-festas {
+    background-color: #198754 !important; /* verde */
+    border: none;
+    color: #fff;
+}
+
+.fc-event.academia {
+    background-color: #dc3545 !important; /* vermelho */
+    border: none;
+    color: #fff;
+}
+
+.fc-event.piscina {
+    background-color: #0dcaf0 !important; /* ciano */
+    border: none;
+    color: #212529;
+}
+
+.fc-event.quadra {
+    background-color: #3c0386 !important; /* roxo escuro */
+    border: none;
+    color: #fff;
+}
+
+/* Estilização geral dos eventos */
+.fc-daygrid-event, .fc-event {
+    border-radius: 0.5rem;
+    font-weight: 500;
+    padding: 2px 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Ajusta cor do texto dos eventos para legibilidade */
+.fc-daygrid-event, .fc-event {
+    color: inherit !important;
+}
+
+/* Efeitos ao passar o mouse nos eventos */
+.fc-daygrid-event:hover, .fc-event:hover {
+    transform: scale(1.02);
+    filter: brightness(1.05);
 }

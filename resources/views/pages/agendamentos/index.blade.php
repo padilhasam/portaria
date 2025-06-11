@@ -17,26 +17,70 @@
     </a>
 </header>
 
-<!-- Alertas -->
 @include('components.alerts', [
     'success' => session('success'), 
     'message' => session('message')
 ])
 
-<div class="card shadow-sm border-0 rounded-4">
-    <div class="card-body flex-column">
-        <h5 class="card-title mb-3 fw-semibold">Lista de Apartamentos</h5>
-            <!-- Legenda de Cores das Áreas -->
-
-            <!-- Calendário -->
-            <div aria-labelledby="titulo-calendario">
-                <div class="card border-0 shadow-sm rounded-4 bg-light-subtle">
-                    <div class="card-body p-4">
-                        <div id="calendar" aria-live="polite" aria-label="Calendário de agendamentos"></div>
-                    </div>
-                </div>
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <!-- Legenda à esquerda -->
+        <div class="col-12 col-md-3 col-lg-3 mb-4 mb-md-0">
+            <div class="bg-light rounded p-3 border shadow-sm h-100">
+                <h6 class="text-muted mb-3">Legenda</h6>
+                <ul class="list-unstyled d-flex flex-column gap-2 small">
+                    <li class="d-flex align-items-center gap-2">
+                        <span class="rounded" style="width: 14px; height: 14px; background-color: #0d6efd;"></span>
+                        Salão de Festas
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <span class="rounded" style="width: 14px; height: 14px; background-color: #198754;"></span>
+                        Churrasqueira
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <span class="rounded" style="width: 14px; height: 14px; background-color: #ffc107;"></span>
+                        Academia
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <span class="rounded" style="width: 14px; height: 14px; background-color: #0dcaf0;"></span>
+                        Piscina
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <span class="rounded" style="width: 14px; height: 14px; background-color: #3c0386;"></span>
+                        Quadra
+                    </li>
+                </ul>
             </div>
+        </div>
+
+        <!-- Calendário -->
+        <div class="col-12 col-md-9 col-lg-9">
+            <div id="calendar" aria-live="polite" aria-label="Calendário de agendamentos" style="min-height: 600px;"></div>
+        </div>
     </div>
+</div>
+
+<!-- Modal de Detalhes do Evento -->
+<div class="modal fade" id="eventoModal" tabindex="-1" aria-labelledby="eventoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content rounded-3 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eventoModalLabel">Detalhes do Agendamento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Morador:</strong> <span id="modalMorador"></span></p>
+        <p><strong>Área:</strong> <span id="modalArea"></span></p>
+        <p><strong>Início:</strong> <span id="modalInicio"></span></p>
+        <p><strong>Fim:</strong> <span id="modalFim"></span></p>
+        <p><strong>Observações:</strong> <span id="modalObs"></span></p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" id="modalLinkEditar" class="btn btn-primary">Editar</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 @endsection
