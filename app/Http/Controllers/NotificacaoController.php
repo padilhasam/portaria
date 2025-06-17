@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class NotificacaoController extends Controller
 {
     /**
-     * Lista todas as notificações.
+     * Exibe a lista de notificações com paginação.
      */
     public function index()
     {
@@ -17,13 +17,13 @@ class NotificacaoController extends Controller
     }
 
     /**
-     * Exibe uma notificação específica.
+     * Exibe os detalhes de uma notificação específica.
      */
     public function show(string $id)
     {
         $notificacao = Notificacao::findOrFail($id);
 
-        // Marca como lida se ainda não foi
+        // Marca como lida automaticamente ao visualizar
         if (!$notificacao->read) {
             $notificacao->update(['read' => true]);
         }
@@ -32,15 +32,15 @@ class NotificacaoController extends Controller
     }
 
     /**
-     * Exibe o formulário de criação.
+     * Formulário para criar uma nova notificação.
      */
     public function create()
     {
-        return view('pages.notificacoes.create');
+        return view('pages.notificacoes.register');
     }
 
     /**
-     * Salva uma nova notificação.
+     * Armazena uma nova notificação.
      */
     public function store(Request $request)
     {
@@ -55,11 +55,11 @@ class NotificacaoController extends Controller
             'read' => false,
         ]);
 
-        return redirect()->route('pages.notificacoes.index')->with('success', 'Notificação criada com sucesso!');
+        return redirect()->route('index.notificacao')->with('success', 'Notificação criada com sucesso!');
     }
 
     /**
-     * Exibe o formulário de edição.
+     * Formulário para editar uma notificação.
      */
     public function edit(string $id)
     {
@@ -82,7 +82,7 @@ class NotificacaoController extends Controller
 
         $notificacao->update($request->only(['title', 'message', 'read']));
 
-        return redirect()->route('pages.notificacoes.index')->with('success', 'Notificação atualizada!');
+        return redirect()->route('index.notificacao')->with('success', 'Notificação atualizada!');
     }
 
     /**
@@ -93,6 +93,26 @@ class NotificacaoController extends Controller
         $notificacao = Notificacao::findOrFail($id);
         $notificacao->delete();
 
-        return redirect()->route('pages.notificacoes.index')->with('success', 'Notificação excluída.');
+        return redirect()->route('index.notificacao')->with('success', 'Notificação excluída.');
+    }
+
+    /**
+     * Marca uma notificação como lida.
+     */
+    public function marcarComoLida(string $id)
+    {
+        $notificacao = Notificacao::findOrFail($id);
+        $notificacao->marcarComoLida();
+
+        return redirect()->back()->with('success', 'Notificação marcada como lida.');
+    }
+
+    /**
+     * Marca todas as notificações como lidas.
+     */
+    public function marcarTodasComoLidas()
+    {
+        Notificacao::naoLidas()->update(['read' => true]);
+        return redirect()->back()->with('success', 'Todas as notificações foram marcadas como lidas.');
     }
 }

@@ -102,12 +102,16 @@ Route::controller(AgendamentoController::class)->group(function() {
     Route::delete('/agendamento/{id}', 'destroy')->name('destroy.agendamento');
 })->middleware(['auth'])->name('dashboard');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/notificacao', [NotificacaoController::class, 'all'])->name('index.notificacoes');
-    Route::post('/notificacao', [NotificacaoController::class, 'store'])->name('store.notificacoes');
-    Route::post('/notificacao/{id}/ler', [NotificacaoController::class, 'marcarComoLida'])->name('ler.notificacoes');
-    Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('destroy.notificacoes');
-});
+Route::controller(NotificacaoController::class)->group(function() {
+    Route::get('/notificacao', 'index')->name('index.notificacao');
+    Route::get('/notificacao/create', 'create')->name('create.notificacao');
+    Route::post('/notificacao', 'store')->name('store.notificacao');
+    Route::get('/notificacao/edit/{id}', 'edit')->name('edit.notificacao');
+    Route::get('/notificacao/{id}', 'show')->name('show.notificacao');
+    Route::patch('/notificacao/{id}/ler', 'marcarComoLida')->name('notificacoes.marcar_como_lida');
+    Route::patch('/notificacoes/marcar-todas', 'marcarTodasComoLidas')->name('notificacoes.marcar_todas_como_lidas');
+    Route::delete('/notificacao/{id}', 'destroy')->name('destroy.notificacao');
+})->middleware(['auth'])->name('dashboard.');
 
 Route::controller(PrestadorController::class)->group(function () {
     Route::get('/prestador', 'index')->name('index.prestador');

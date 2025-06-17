@@ -43,7 +43,7 @@
                     <a href="{{ route('index.agendamento') }}" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('agendamento*') ? 'active' : '' }}">
                         {{ svg('hugeicons-calendar-01') }} Agendamentos
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('ocorrencia*') ? 'active' : '' }}">
+                    <a href="{{ route('index.notificacao') }}" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('notificacao*') ? 'active' : '' }}">
                         {{ svg('hugeicons-chatting-01') }} Ocorrências
                     </a>
                     <a href={{ route('index.relatorio') }} class="list-group-item list-group-item-action py-2 rounded {{ request()->is('relatorio*') ? 'active' : '' }}">
@@ -77,19 +77,33 @@
                 </a> 
             </a>
 
+            <!-- Notificações de Ocorrências -->
             <ul class="navbar-nav ms-auto d-flex flex-row align-items-center">
                 <li class="nav-item dropdown mx-3">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                     role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notificações">
                         {{ svg('hugeicons-notification-01', 'w-5 h-5') }}
-                        <span class="badge rounded-pill badge-notification bg-warning text-dark" aria-live="polite">{{ $dadosNotificacao['naoLidas'] }}</span>
+                        @if($dadosNotificacao['naoLidas'] > 0)
+                            <span class="badge rounded-pill badge-notification bg-warning text-dark">
+                                {{ $dadosNotificacao['naoLidas'] }}
+                            </span>
+                        @endif
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item fw-bold" href="#">Notificações</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        @foreach($dadosNotificacao['notificacoes'] as $notificacao)
-                            <li><a class="dropdown-item" href="#">{{ $notificacao->title }}</a></li>
-                        @endforeach
+                        @if($dadosNotificacao['notificacoes']->isEmpty())
+                            <li class="dropdown-item text-muted small">Nenhuma nova notificação</li>
+                        @else
+                            @foreach($dadosNotificacao['notificacoes'] as $notificacao)
+                                <li>
+                                    <a class="dropdown-item d-flex flex-column small" href="{{ route('show.notificacao', $notificacao->id) }}">
+                                        <strong>{{ $notificacao->title }}</strong>
+                                        <span class="text-muted">{{ Str::limit($notificacao->message, 50) }}</span>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endif
                         {{-- <li><a class="dropdown-item" href="#">Nova solicitação de acesso</a></li>
                         <li><a class="dropdown-item" href="#">Registro de saída pendente</a></li> --}}
                     </ul>
@@ -98,8 +112,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
                     id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Perfil">
-                        <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle me-2" height="30"
-                            alt="Avatar" loading="lazy" />
+                        <img src="{{ Auth::user()->avatar ?? 'https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg' }}" class="rounded-circle me-2" height="30" alt="Avatar" loading="lazy" />
                         @if (auth()->check())
                             <span class="text-white d-none d-md-inline">{{ Auth::user()->user }}</span>
                         @endif
