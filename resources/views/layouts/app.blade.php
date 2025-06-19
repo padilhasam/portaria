@@ -49,8 +49,27 @@
     @vite('resources/js/app.js')
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
+    @if (session('notificacoes_nao_lidas'))
+        <script>
+            toastr.options = {
+                "positionClass": "toast-bottom-right",
+                "timeOut": "6000",
+                "progressBar": true,
+                "onclick": function () {
+                    window.location.href = "{{ route('index.notificacao') }}";
+                }
+            };
+
+            toastr.info(
+                "Você tem {{ session('notificacoes_nao_lidas') }} nova(s) notificação(ões) não lida(s). Clique aqui para abrir.",
+                "📬 Caixa de Notificações"
+            );
+        </script>
+    @endif
+
 
     {{-- Scripts adicionais --}}
     @stack('scripts')
+
 </body>
 </html>

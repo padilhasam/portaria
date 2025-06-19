@@ -61,10 +61,7 @@ class AgendamentoController extends Controller
             'observacoes' => $validated['observacoes'] ?? '',
         ]);
 
-        return redirect()->route('index.agendamento')->with([
-            'success' => true,
-            'message' => 'Agendamento realizado com sucesso!'
-        ]);
+        return redirect()->route('index.agendamento')->with('success', 'Agendamento realizado com sucesso!');
     }
 
     // Mostrar formulário de edição
@@ -87,7 +84,7 @@ class AgendamentoController extends Controller
 
         $agendamento->update($validated);
 
-        return redirect()->route('index.agendamento')->with('success', 'Agendamento atualizado com sucesso!');
+        return redirect()->route('index.agendamento')->with('success', 'Agendamento realizado com sucesso!');
     }
 
     // Deletar agendamento

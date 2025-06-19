@@ -158,4 +158,29 @@ class NotificacaoController extends Controller
 
         return back()->with('success', 'Todas as notificações foram marcadas como lidas.');
     }
+
+    public function responder(Request $request, string $id)
+    {
+        $request->validate([
+            'resposta' => 'required|string|max:1000',
+        ]);
+
+        $notificacao = Notificacao::findOrFail($id);
+        $destinatario = $notificacao->creator; // Criador da notificação
+        $remetente = auth()->user(); // Quem está respondendo
+
+        // Envia uma nova notificação para o criador com a resposta
+        $resposta = Notificacao::create([
+            'title' => 'Resposta à sua notificação: ' . $notificacao->title,
+            'message' => "Resposta de {$remetente->name}:\n\n" . $request->resposta,
+            'user_id' => $remetente->id, // quem criou a resposta
+        ]);
+
+        // Associa somente o criador original como destinatário da resposta
+        $resposta->destinatarios()->attach([
+            $destinatario->id => ['read' => false],
+        ]);
+
+        return redirect()->back()->with('success', 'Sua resposta foi enviada com sucesso!');
+    }
 }

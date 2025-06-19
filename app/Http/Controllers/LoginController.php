@@ -18,20 +18,23 @@ class LoginController extends Controller
     }
 
     public function store(LoginRequest $request){
-        $request->only('email', 'password');
+         $request->only('email', 'password');
         $user = User::where('email', $request->email)->first();
 
-        if(!$user){
-            return redirect()->route('login.index')->withErrors(['error' => 'Email ou senha inválidos']);
-        }
-
-        if(!password_verify($request->password, $user->password)){
+        if (!$user || !password_verify($request->password, $user->password)) {
             return redirect()->route('login.index')->withErrors(['error' => 'Email ou senha inválidos']);
         }
 
         Auth::loginUsingId($user->id);
 
-        return redirect()->route('index.registro')->withErrors(['success' => 'Logado']);
+        // Contar notificações não lidas
+        $naoLidasCount = $user->notificacoesRecebidas()->wherePivot('read', false)->count();
+
+        if ($naoLidasCount > 0) {
+            session()->flash('notificacoes_nao_lidas', $naoLidasCount);
+        }
+
+        return redirect()->route('index.registro')->with('success', 'Logado com sucesso!');
     }
 
     public function destroy(){
@@ -39,3 +42,4 @@ class LoginController extends Controller
         return redirect()->route('login.index');
     }
 }
+

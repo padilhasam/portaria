@@ -36,15 +36,9 @@ class VeiculoController extends Controller
 
         // Verifica se o redirecionamento vem da página do morador
         if ($veiculo) {
-            return redirect()->route('index.veiculo')->with([
-                'success' => true,
-                'message' => 'Veículo registrado com sucesso!'
-            ]);
+            return redirect()->route('index.veiculo')->with('success', 'Veículo registrado com sucesso!');
         } else {
-            return redirect()->route('index.veiculo')->with([
-                'success' => false,
-                'message' => 'Erro ao registrar veículo!'
-            ]);
+            return redirect()->route('index.veiculo')->with('error', 'Erro ao registrar veículo!');
         }
     }
 

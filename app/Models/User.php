@@ -61,4 +61,9 @@ class User extends Authenticatable
             ->withPivot('read')
             ->withTimestamps();
     }
+
+    public function notificacoesCriadas()
+    {
+        return $this->hasMany(Notificacao::class, 'user_id');
+    }
 }

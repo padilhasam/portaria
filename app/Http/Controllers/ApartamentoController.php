@@ -45,15 +45,9 @@ class ApartamentoController extends Controller
 
         // Verifica se o redirecionamento vem da página do morador
         if ($apartamento) {
-            return redirect()->route('index.apartamento')->with([
-                'success' => true,
-                'message' => 'Apartamento registrado com sucesso!'
-            ]);
+            return redirect()->route('index.apartamento')->with('success', 'Apartamento registrado com sucesso!');
         } else {
-            return redirect()->route('index.apartamento')->with([
-                'success' => false,
-                'message' => 'Erro ao registrar apartamento!'
-            ]);
+            return redirect()->route('index.apartamento')->with('error', 'Erro ao registrar apartamento!');
         }
     }
 

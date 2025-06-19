@@ -1,5 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// Importar toastr e atribuir ao global
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
+
+window.toastr = toastr; // Torna acessível globalmente (opcional)
+
 // Importar jQuery e atribuir ao global
 import $ from 'jquery';
 window.$ = $;

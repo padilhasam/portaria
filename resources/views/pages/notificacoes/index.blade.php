@@ -101,6 +101,32 @@
                                                 🗑 Remover
                                             </a>
                                         </li>
+                                        {{-- <li>
+                                            <a href="javascript:void(0)" 
+                                            class="dropdown-item d-flex align-items-center gap-2 view-notificacao" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#viewDataModalNotificacao"
+                                            data-titulo="{{ $notificacao->title }}"
+                                            data-mensagem="{{ $notificacao->message }}"
+                                            data-status="{{ $notificacao->pivot->read ? 'Lida' : 'Não lida' }}"
+                                            data-criador="{{ $notificacao->criador->user ?? 'N/D' }}"
+                                            data-data="{{ $notificacao->created_at->format('d/m/Y H:i') }}">
+                                                {{ svg('hugeicons-eye') }} Ver Dados
+                                            </a>
+                                        </li> --}}
+                                        <a href="javascript:void(0)" 
+                                            class="dropdown-item view-notificacao" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#viewDataModalNotificacao"
+                                            data-id="{{ $notificacao->id }}"
+                                            data-title="{{ $notificacao->title }}"
+                                            data-message="{{ $notificacao->message }}"
+                                            data-status="{{ $notificacao->pivot->read ? 'Lida' : 'Não lida' }}"
+                                            data-criador="{{ $notificacao->criador->user ?? '—' }}"
+                                            data-data="{{ $notificacao->created_at->format('d/m/Y H:i') }}"
+                                            data-url="{{ route('notificacoes.marcar_como_lida', $notificacao->id) }}">
+                                            🔍 Visualizar
+                                        </a>
                                     </ul>
                                 </div>
                             </td>
@@ -142,6 +168,80 @@
         {{-- Paginação --}}
         <div class="mt-4 d-flex justify-content-center">
             {{ $notificacoes->links('pagination::bootstrap-5') }}
+        </div>
+    </div>
+</div>
+
+{{-- Modal Notificação --}}
+<div class="modal fade" id="viewDataModalNotificacao" tabindex="-1" aria-labelledby="viewDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 shadow border-0">
+            <!-- Cabeçalho -->
+            <div class="modal-header bg-primary text-white rounded-top-4 px-4 py-3">
+                <h5 class="modal-title d-flex align-items-center gap-2">
+                    {{ svg('hugeicons-notification-01', 'me-1') }} Detalhes da Notificação
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <!-- Corpo -->
+            <div class="modal-body px-4 py-4">
+                <div class="row g-4">
+                    <!-- Ícone -->
+                    <div class="col-md-4 text-center d-flex align-items-center justify-content-center">
+                        <div class="bg-light p-4 rounded shadow-sm w-100">
+                            {{ svg('hugeicons-eye', 'w-50 h-50 text-primary') }}
+                        </div>
+                    </div>
+
+                    <!-- Dados -->
+                    <div class="col-md-8">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Título:</strong> <span id="modal-titulo" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary d-block mb-2">Mensagem:</strong>
+                                <div id="modal-mensagem" class="border rounded p-3 bg-light"
+                                    style="max-height: 250px; overflow-y: auto; white-space: pre-wrap;">
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Status:</strong>
+                                <span id="modal-status" class="ms-2 badge"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Criador:</strong> <span id="modal-criador" class="ms-2"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong class="text-secondary">Data de Envio:</strong> <span id="modal-data" class="ms-2"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Campo de resposta -->
+                <div class="mt-4">
+                    <form id="form-resposta-notificacao" method="POST" action="">
+                        @csrf
+                        <label for="resposta" class="form-label fw-semibold">Responder ao remetente:</label>
+                        <textarea name="resposta" id="modal-resposta" rows="3" class="form-control" placeholder="Digite sua resposta..."></textarea>
+                        <button type="submit" class="btn btn-primary btn-sm mt-2">📩 Enviar Resposta</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Rodapé -->
+            <div class="modal-footer bg-light rounded-bottom-4 px-4 py-3 d-flex justify-content-between">
+                <small class="text-muted">Você pode marcar como lida caso ainda não tenha sido lida.</small>
+                <form id="form-marcar-lida-modal" method="POST" action="">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="btn btn-outline-success btn-sm">
+                        ✅ Marcar como Lida
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

@@ -71,9 +71,9 @@ class RegistroController extends Controller
         $registro = Registro::create($data);
     
         if ($registro) {
-            return redirect(route('index.registro'))->with(['success' => true, 'message' => 'Entrada registrada com sucesso!']);
+            return redirect(route('index.registro'))->with('success', 'Entrada registrada com sucesso!');
         } else {
-            return redirect(route('index.registro'))->with(['success' => false, 'message' => 'Erro ao registrar entrada!']);
+            return redirect(route('index.registro'))->with('error', 'Erro ao registrar entrada!');
         }
     }
 
@@ -112,7 +112,7 @@ class RegistroController extends Controller
 
         $registro->update($data);
 
-        return redirect()->route('index.registro')->with(['success', 'Registro atualizado com sucesso!', 'message' => 'Atualizado com sucesso!']);
+        return redirect()->route('index.registro')->with('success', 'Registro atualizado com sucesso!');
     }
 
     /**
@@ -173,6 +173,6 @@ class RegistroController extends Controller
             $registro->save();
         }
 
-        return redirect(route('index.registro'))->with('success', 'Saída registrada com sucesso!');
+       return redirect(route('index.registro'))->with('success', 'Saída registrada com sucesso!');
     }
 }

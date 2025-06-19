@@ -32,16 +32,16 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nome' => 'required|string|max:255',
-            'documento' => 'required|string|min:11|max:15',
-            'nascimento' => 'required|date',
-            'celular' => 'required|string|max:20',
-            'user' => 'required|string|max:255|unique:users,user',
-            'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|confirmed|min:6',
-            'acesso_tipo' => 'required|string',
-        ]);
+         $validated = $request->validate([
+        'nome' => 'required|string|max:255',
+        'documento' => 'required|string|min:11|max:15',
+        'nascimento' => 'required|date',
+        'celular' => 'required|string|max:20',
+        'user' => 'required|string|max:255|unique:users,user',
+        'email' => 'required|email|max:255|unique:users,email',
+        'password' => 'required|confirmed|min:6',
+        'acesso_tipo' => 'required|string',
+    ]);
 
         $user = User::create([
             'nome' => $validated['nome'],
@@ -56,15 +56,9 @@ class UsuarioController extends Controller
         ]);
 
         if ($user) {
-            return redirect()->route('index.usuario')->with([
-                'success' => true,
-                'message' => 'Usuário registrado com sucesso!'
-            ]);
+            return redirect()->route('index.usuario')->with('success', 'Usuário registrado com sucesso!');
         } else {
-            return redirect()->route('index.usuario')->with([
-                'success' => false,
-                'message' => 'Erro ao registrar usuário!'
-            ]);
+            return redirect()->route('index.usuario')->with('error', 'Erro ao registrar usuário!');
         }
     }
 

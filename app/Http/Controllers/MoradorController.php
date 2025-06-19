@@ -66,15 +66,9 @@ class MoradorController extends Controller
         $morador = Morador::create($validated);
 
         if ($morador) {
-            return redirect()->route('index.morador')->with([
-                'success' => true,
-                'message' => 'Morador registrado com sucesso!'
-            ]);
+            return redirect()->route('index.morador')->with('success', 'Morador registrado com sucesso!');
         } else {
-            return redirect()->route('index.morador')->with([
-                'success' => false,
-                'message' => 'Erro ao registrar Morador!'
-            ]);
+            return redirect()->route('index.morador')->with('error', 'Erro ao registrar Morador!');
         }
     }
 

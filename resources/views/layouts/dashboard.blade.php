@@ -5,6 +5,19 @@
     $dadosNotificacao = NotificacaoHelper::carregarNotificacoes();
 @endphp
 
+@if(session('tem_notificacoes_nao_lidas') || $dadosNotificacao['naoLidas'] > 0)
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            toastr.info("Você tem {{ $dadosNotificacao['naoLidas'] }} notificações não lidas.", 'Notificações', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-bottom-right',
+                timeOut: 7000
+            });
+        });
+    </script>
+@endif
+
 @section('dashboard')
     @vite(['resources/css/nav.css'])
 
