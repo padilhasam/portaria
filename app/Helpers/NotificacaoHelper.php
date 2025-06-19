@@ -2,20 +2,36 @@
 
 namespace App\Helpers;
 
-use App\Models\Notificacao;
+use Illuminate\Support\Facades\Auth;
 
 class NotificacaoHelper
 {
     public static function carregarNotificacoes()
     {
-        $naoLidas = Notificacao::where('read', false)
-            ->latest()
+        $user = Auth::user();
+
+        if (!$user) {
+            return [
+                'notificacoes' => collect(),
+                'naoLidas' => 0,
+            ];
+        }
+
+        // Carregar últimas 5 notificações não lidas, ordenadas por data do pivot
+        $notificacoes = $user->notificacoesRecebidas()
+            ->wherePivot('read', false)
+            ->orderByPivot('created_at', 'desc') // mais seguro
             ->take(5)
             ->get();
 
+        // Número total de não lidas
+        $naoLidas = $user->notificacoesRecebidas()
+            ->wherePivot('read', false)
+            ->count();
+
         return [
-            'notificacoes' => $naoLidas,
-            'naoLidas' => $naoLidas->count(),
+            'notificacoes' => $notificacoes,
+            'naoLidas' => $naoLidas,
         ];
     }
 }

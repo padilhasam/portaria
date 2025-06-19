@@ -3,33 +3,34 @@
 @section('page_dashboard')
 
 @php
+    $notificacao = $notificacao ?? null;
     $edit = isset($notificacao);
 @endphp
 
 {{-- Alertas de feedback --}}
 @if(session('success'))
-<div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-</div>
+    <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
 @endif
 
 @if(session('error'))
-<div id="error-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-</div>
+    <div id="error-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
 @endif
 
 @if($errors->any())
-<div id="validation-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
-    <ul class="mb-0">
-        @foreach($errors->all() as $erro)
-            <li>{{ $erro }}</li>
-        @endforeach
-    </ul>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-</div>
+    <div id="validation-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <ul class="mb-0">
+            @foreach($errors->all() as $erro)
+                <li>{{ $erro }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
 @endif
 
 {{-- Cabeçalho --}}
@@ -53,7 +54,7 @@
 
 {{-- Formulário --}}
 <div class="container py-4">
-    <form method="POST" action="{{ $edit ? route('update.notificacao', $notificacao->id) : route('store.notificacao') }}">
+    <form action="{{ $edit ? route('update.notificacao', $notificacao->id) : route('store.notificacao') }}" method="POST">
         @csrf
         @if($edit)
             @method('PUT')
@@ -66,11 +67,15 @@
 
         <div class="mb-3">
             <label for="message" class="form-label">Mensagem</label>
-            <textarea id="message" name="message" class="form-control" rows="4" required>{{ old('message', $notificacao->message ?? '') }}</textarea>
+            <textarea id="message" name="message" class="form-control" rows="4" style="resize: none" required>{{ old('message', $notificacao->message ?? '') }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary rounded-pill">
-            {{ $edit ? 'Atualizar Notificação' : 'Gerar Notificação' }}
+        <div class="alert alert-info fw-semibold">
+            Esta notificação será enviada automaticamente para <u>todos os usuários cadastrados</u>.
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            {{ $edit ? 'Atualizar Notificação' : 'Enviar Notificação' }}
         </button>
     </form>
 </div>

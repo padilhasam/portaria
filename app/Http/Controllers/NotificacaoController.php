@@ -3,39 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notificacao;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class NotificacaoController extends Controller
 {
     /**
-     * Exibe a lista de notificações com paginação.
+     * Lista de notificações para o usuário autenticado.
      */
     public function index()
     {
-        $notificacoes = Notificacao::latest()->paginate(10);
+        $user = auth()->user();
+
+        $notificacoes = $user->notificacoesRecebidas()
+            ->latest()
+            ->paginate(10);
+
         return view('pages.notificacoes.index', compact('notificacoes'));
     }
 
     /**
-     * Exibe os detalhes de uma notificação específica.
+     * Detalhes da notificação e marca como lida.
      */
     public function show(string $id)
     {
-        $notificacao = Notificacao::findOrFail($id);
+        $user = auth()->user();
 
-        // Marca como lida automaticamente ao visualizar
-        if (!$notificacao->read) {
-            $notificacao->update(['read' => true]);
-        }
+        $notificacao = $user->notificacoesRecebidas()->findOrFail($id);
 
-        return view('pages.notificacoes.show', compact('notificacao'));
+        $user->notificacoesRecebidas()
+            ->updateExistingPivot($notificacao->id, ['read' => true]);
+
+        return redirect()->route('index.notificacao')
+            ->with('success', 'Notificação marcada como lida.');
     }
 
     /**
-     * Formulário para criar uma nova notificação.
+     * Formulário de criação de notificação.
      */
     public function create()
     {
+        // Não precisamos mais passar usuários para a view
         return view('pages.notificacoes.register');
     }
 
@@ -44,27 +52,43 @@ class NotificacaoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'message' => 'required|string',
         ]);
 
-        Notificacao::create([
-            'title' => $request->title,
-            'message' => $request->message,
-            'read' => false,
+        // Cria a notificação com o criador vinculado
+        $notificacao = Notificacao::create([
+            'title' => $validated['title'],
+            'message' => $validated['message'],
+            'id_criador' => auth()->id(), // Associa o criador
         ]);
 
-        return redirect()->route('index.notificacao')->with('success', 'Notificação criada com sucesso!');
+        // Pega todos os usuários, exceto o criador
+        $usuarios = User::where('id', '!=', auth()->id())->get();
+
+        // Prepara dados para o attach na tabela pivot, com 'read' = false
+        $attachData = [];
+        foreach ($usuarios as $usuario) {
+            $attachData[$usuario->id] = ['read' => false];
+        }
+
+        // Associa todos os usuários (exceto o criador) à notificação
+        $notificacao->destinatarios()->attach($attachData);
+
+        return redirect()->route('index.notificacao')
+            ->with('success', 'Notificação enviada para todos os usuários, exceto você.');
     }
 
     /**
-     * Formulário para editar uma notificação.
+     * Formulário de edição.
      */
     public function edit(string $id)
     {
         $notificacao = Notificacao::findOrFail($id);
-        return view('pages.notificacoes.edit', compact('notificacao'));
+
+        // Não passamos usuários, pois não editamos destinatários mais
+        return view('pages.notificacoes.register', compact('notificacao'));
     }
 
     /**
@@ -74,15 +98,19 @@ class NotificacaoController extends Controller
     {
         $notificacao = Notificacao::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'message' => 'required|string',
-            'read' => 'required|boolean',
         ]);
 
-        $notificacao->update($request->only(['title', 'message', 'read']));
+        $notificacao->update([
+            'title' => $validated['title'],
+            'message' => $validated['message'],
+        ]);
 
-        return redirect()->route('index.notificacao')->with('success', 'Notificação atualizada!');
+        // Não atualizamos destinatários, pois é para todos sempre
+
+        return redirect()->route('index.notificacao')->with('success', 'Notificação atualizada com sucesso!');
     }
 
     /**
@@ -99,20 +127,35 @@ class NotificacaoController extends Controller
     /**
      * Marca uma notificação como lida.
      */
-    public function marcarComoLida(string $id)
+    public function marcarComoLida($notificacaoId)
     {
-        $notificacao = Notificacao::findOrFail($id);
-        $notificacao->marcarComoLida();
+        auth()->user()
+            ->notificacoesRecebidas()
+            ->updateExistingPivot($notificacaoId, ['read' => true]);
 
-        return redirect()->back()->with('success', 'Notificação marcada como lida.');
+        return back()->with('success', 'Notificação marcada como lida.');
     }
 
     /**
-     * Marca todas as notificações como lidas.
+     * Marca todas como lidas.
      */
     public function marcarTodasComoLidas()
     {
-        Notificacao::naoLidas()->update(['read' => true]);
-        return redirect()->back()->with('success', 'Todas as notificações foram marcadas como lidas.');
+        $user = auth()->user();
+
+        $ids = $user->notificacoesRecebidas()
+            ->wherePivot('read', false)
+            ->pluck('notificacoes.id');
+
+        if ($ids->isEmpty()) {
+            return back()->with('info', 'Nenhuma notificação para marcar como lida.');
+        }
+
+        foreach ($ids as $id) {
+            $user->notificacoesRecebidas()
+                ->updateExistingPivot($id, ['read' => true]);
+        }
+
+        return back()->with('success', 'Todas as notificações foram marcadas como lidas.');
     }
 }

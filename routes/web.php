@@ -111,7 +111,7 @@ Route::controller(NotificacaoController::class)->group(function() {
     Route::patch('/notificacao/{id}/ler', 'marcarComoLida')->name('notificacoes.marcar_como_lida');
     Route::patch('/notificacoes/marcar-todas', 'marcarTodasComoLidas')->name('notificacoes.marcar_todas_como_lidas');
     Route::delete('/notificacao/{id}', 'destroy')->name('destroy.notificacao');
-})->middleware(['auth'])->name('dashboard.');
+})->middleware(['auth']);
 
 Route::controller(PrestadorController::class)->group(function () {
     Route::get('/prestador', 'index')->name('index.prestador');

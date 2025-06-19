@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User; // Importa User para o relacionamento
 
 class Notificacao extends Model
 {
@@ -13,35 +14,24 @@ class Notificacao extends Model
 
     protected $fillable = [
         'title', 
-        'message', 
-        'read',
+        'message',
     ];
-
-    protected $casts = [
-        'read' => 'boolean',
-    ];
-
-    public $timestamps = true; // ou false, se não usa
 
     // Scopes
-    public function scopeNaoLidas($query)
-    {
-        return $query->where('read', false);
-    }
-
-    public function scopeLidas($query)
-    {
-        return $query->where('read', true);
-    }
-
     public function scopeMaisRecentes($query)
     {
         return $query->orderByDesc('created_at');
     }
 
-    // Ações
-    public function marcarComoLida()
+    // Relação com usuários (destinatários)
+    public function destinatarios()
     {
-        $this->update(['read' => true]);
+        return $this->belongsToMany(User::class, 'notificacao_user', 'id_notificacao', 'id_user')
+                    ->withPivot('read')
+                    ->withTimestamps();
+    }
+    public function criador()
+    {
+        return $this->belongsTo(User::class, 'id_criador');
     }
 }

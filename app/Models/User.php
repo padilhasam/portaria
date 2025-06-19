@@ -8,6 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @method \Illuminate\Database\Eloquent\Relations\BelongsToMany notificacoesRecebidas()
+ */
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -50,4 +54,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         //'password' => 'hashed',
     ];
+
+    public function notificacoesRecebidas()
+    {
+        return $this->belongsToMany(Notificacao::class, 'notificacao_user', 'id_user', 'id_notificacao')
+            ->withPivot('read')
+            ->withTimestamps();
+    }
 }
