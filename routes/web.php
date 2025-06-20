@@ -111,7 +111,8 @@ Route::controller(NotificacaoController::class)->group(function() {
     Route::patch('/notificacao/{id}/ler', 'marcarComoLida')->name('notificacoes.marcar_como_lida');
     Route::patch('/notificacoes/marcar-todas', 'marcarTodasComoLidas')->name('notificacoes.marcar_todas_como_lidas');
     Route::delete('/notificacao/{id}', 'destroy')->name('destroy.notificacao');
-    Route::post('/notificacoes/{id}/responder', 'responder')->name('notificacoes.responder');
+    Route::get('/notificacoes/{id}/respostas', 'verRespostas')->name('notificacoes.respostas');
+    Route::post('notificacoes/{id}/responder', 'responder')->name('notificacoes.enviar_resposta');
 })->middleware(['auth']);
 
 Route::controller(PrestadorController::class)->group(function () {

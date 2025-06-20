@@ -34,4 +34,9 @@ class NotificacaoHelper
             'naoLidas' => $naoLidas,
         ];
     }
+
+    public function notificacoesNaoLidas()
+    {
+        return $this->notificacoesRecebidas()->wherePivot('read', false);
+    }
 }

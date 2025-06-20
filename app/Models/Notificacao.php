@@ -14,8 +14,10 @@ class Notificacao extends Model
 
     protected $fillable = [
         'id_criador',
+        'id_resposta_de',
         'title', 
         'message',
+        'arquivo',
     ];
 
     // Scopes
@@ -31,8 +33,19 @@ class Notificacao extends Model
                     ->withPivot('read')
                     ->withTimestamps();
     }
+    
     public function criador()
     {
         return $this->belongsTo(User::class, 'id_criador');
+    }
+
+        public function respostaDe()
+    {
+        return $this->belongsTo(Notificacao::class, 'id_resposta_de');
+    }
+
+    public function respostas()
+    {
+        return $this->hasMany(Notificacao::class, 'id_resposta_de');
     }
 }

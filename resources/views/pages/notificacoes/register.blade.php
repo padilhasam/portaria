@@ -54,7 +54,7 @@
 
 {{-- Formulário --}}
 <div class="container py-4">
-    <form action="{{ $edit ? route('update.notificacao', $notificacao->id) : route('store.notificacao') }}" method="POST">
+    <form action="{{ $edit ? route('update.notificacao', $notificacao->id) : route('store.notificacao') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @if($edit)
             @method('PUT')
@@ -68,6 +68,18 @@
         <div class="mb-3">
             <label for="message" class="form-label">Mensagem</label>
             <textarea id="message" name="message" class="form-control" rows="4" style="resize: none" required>{{ old('message', $notificacao->message ?? '') }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="arquivo" class="form-label">Anexar Evidência (opcional)</label>
+            <input type="file" class="form-control" id="arquivo" name="arquivo" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx,.zip">
+            @if ($edit && $notificacao->arquivo)
+                <div class="mt-2">
+                    <a href="{{ asset('storage/notificacoes/' . $notificacao->arquivo) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                        Ver Anexo Atual
+                    </a>
+                </div>
+            @endif
         </div>
 
         <div class="alert alert-info fw-semibold">

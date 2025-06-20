@@ -6,14 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 const button = event.relatedTarget;
                 if (!button) return;
 
-                // Função auxiliar para verificar e preencher os campos
+                // Função auxiliar para preencher campos do modal
                 function preencherCampoModal(seletor, valor, padrao = '') {
                     const elemento = modal.querySelector(seletor);
-                    
                     if (elemento) {
-                        if(elemento.id == "modal-foto"){
+                        if (elemento.id == "modal-foto") {
                             elemento.src = valor || padrao;
-                        }else{
+                        } else {
                             elemento.textContent = valor || padrao;
                         }
                     } else {
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
 
-                 // Campos comuns
+                // Campos comuns
                 preencherCampoModal('#modal-foto', button.getAttribute('data-foto'));
                 preencherCampoModal('#modal-nome', button.getAttribute('data-nome'));
                 preencherCampoModal('#modal-cpf', button.getAttribute('data-cpf'));
@@ -45,6 +44,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 preencherCampoModal('#modal-criador', button.getAttribute('data-criador'));
                 preencherCampoModal('#modal-data', button.getAttribute('data-data'));
 
+                // Evidência / Arquivo anexo
+                const arquivoUrl = button.getAttribute('data-arquivo');
+                const containerArquivo = modal.querySelector('#arquivo-container');
+                const linkArquivo = modal.querySelector('#modal-arquivo');
+
+                if (arquivoUrl) {
+                    containerArquivo.classList.remove('d-none');
+                    linkArquivo.href = arquivoUrl;
+                    linkArquivo.textContent = '📎 Visualizar Arquivo';
+                } else {
+                    containerArquivo.classList.add('d-none');
+                    linkArquivo.href = '#';
+                    linkArquivo.textContent = '';
+                }
+
                 // Status
                 const badge = modal.querySelector('#modal-status');
                 const status = button.getAttribute('data-status') || 'Desconhecido';
@@ -63,14 +77,30 @@ document.addEventListener('DOMContentLoaded', function () {
                         botaoLer?.classList.remove('d-none');
                     }
                 }
+
+                // Define a action do form de resposta para enviar ao endpoint correto
+                const formResposta = modal.querySelector('#form-resposta-notificacao');
+                const idNotificacao = button.getAttribute('data-id');
+                if (formResposta && idNotificacao) {
+                    formResposta.action = `/notificacoes/${idNotificacao}/responder`;
+                }
+
+                // Corrigir link "Ver Respostas" para abrir a página correta
+                const btnVerRespostas = modal.querySelector('#btn-ver-respostas');
+                const respostasUrl = button.getAttribute('data-respostas-url');
+                if (btnVerRespostas) {
+                    btnVerRespostas.href = respostasUrl || '#';
+                    btnVerRespostas.classList.toggle('disabled', !respostasUrl); // Opcional: desabilita se URL ausente
+                }
+
             });
         }
     });
 
-    // Função para preencher Placa e Vaga ao selecionar o Veículo
+    // Função para preencher Placa ao selecionar o Veículo
     const veiculoSelect = document.getElementById('id_veiculo');
     const placaInput = document.getElementById('placa');
-    //const vagaInput = document.getElementById('vaga');
+    // const vagaInput = document.getElementById('vaga');
 
     if (veiculoSelect) {
         veiculoSelect.addEventListener('change', function () {
@@ -81,23 +111,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 $.ajax({
                     url: `/veiculos/${selectedId}/details`,
                     dataType: 'json',
-                    data: {_token: token},
+                    data: { _token: token },
                     type: 'POST',
-                    success: function(data) {
-                        placaInput.value = data.placa || ''
+                    success: function (data) {
+                        placaInput.value = data.placa || '';
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log('Erro ao carregar dados:', error);
                         // Limpa os campos se der erro
-                        $.each(fieldMap, function(fieldId) {
-                            $('#' + fieldId).val('');
-                        });
+                        // $.each(fieldMap, function(fieldId) {
+                        //     $('#' + fieldId).val('');
+                        // });
                     }
                 });
 
             } else {
                 placaInput.value = '';
-                //vagaInput.value = '';
+                // vagaInput.value = '';
             }
         });
     }

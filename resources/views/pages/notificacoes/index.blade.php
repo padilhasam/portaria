@@ -13,19 +13,65 @@
         Ocorrências
     </h3>
 
-    <div class="d-flex align-items-center gap-3">
-        <form method="GET" action="{{ route('index.notificacao') }}" class="d-flex align-items-center" role="search">
-            <input type="text" name="search" class="form-control form-control-sm me-2 rounded-pill border-dark" placeholder="Buscar..." value="{{ request('search') }}">
-            <button class="btn btn-outline-dark btn-sm rounded-pill" type="submit">
-                <span class="d-none d-sm-inline">Buscar</span>
-                <span class="d-inline d-sm-none">🔍</span>
-            </button>
-        </form>
+    <form method="GET" action="{{ route('index.notificacao') }}" class="d-flex flex-wrap align-items-end gap-3">
 
-        <a href="{{ route('create.notificacao') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
-            Nova Ocorrência
-        </a>
-    </div>
+        {{-- Data de Início --}}
+        <div>
+            <label for="data_inicio" class="form-label mb-1 small">De:</label>
+            <input type="date" name="data_inicio" id="data_inicio" class="form-control form-control-sm"
+                value="{{ request('data_inicio') }}">
+        </div>
+
+        {{-- Data de Fim --}}
+        <div>
+            <label for="data_fim" class="form-label mb-1 small">Até:</label>
+            <input type="date" name="data_fim" id="data_fim" class="form-control form-control-sm"
+                value="{{ request('data_fim') }}">
+        </div>
+
+        {{-- Criador --}}
+        <div>
+            <label for="criador" class="form-label mb-1 small">Criador:</label>
+            <select name="criador" id="criador" class="form-select form-select-sm">
+                <option value="">Todos</option>
+                @foreach($usuariosCriadores as $usuario)
+                    <option value="{{ $usuario->id }}" {{ request('criador') == $usuario->id ? 'selected' : '' }}>
+                        {{ $usuario->nome }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        {{-- Status --}}
+        <div>
+            <label for="status" class="form-label mb-1 small">Status:</label>
+            <select name="status" id="status" class="form-select form-select-sm">
+                <option value="">Todos</option>
+                <option value="lida" {{ request('status') == 'lida' ? 'selected' : '' }}>Lidas</option>
+                <option value="nao_lida" {{ request('status') == 'nao_lida' ? 'selected' : '' }}>Não Lidas</option>
+            </select>
+        </div>
+
+        {{-- Busca por texto --}}
+        <div>
+            <label for="search" class="form-label mb-1 small">Buscar:</label>
+            <input type="text" name="search" id="search" class="form-control form-control-sm rounded-pill"
+                placeholder="Título ou Mensagem" value="{{ request('search') }}">
+        </div>
+
+        {{-- Ações --}}
+        <div class="d-flex gap-2 align-items-end">
+            <button type="submit" class="btn btn-outline-dark btn-sm rounded-pill">🔍 Filtrar</button>
+            <a href="{{ route('index.notificacao') }}" class="btn btn-outline-secondary btn-sm rounded-pill">❌ Limpar</a>
+        </div>
+
+        {{-- Nova Ocorrência --}}
+        <div class="ms-auto">
+            <a href="{{ route('create.notificacao') }}" class="btn btn-success btn-sm text-white rounded-pill">
+                Nova Ocorrência
+            </a>
+        </div>
+    </form>
 </header>
 
 {{-- Alertas --}}
@@ -101,19 +147,7 @@
                                                 🗑 Remover
                                             </a>
                                         </li>
-                                        {{-- <li>
-                                            <a href="javascript:void(0)" 
-                                            class="dropdown-item d-flex align-items-center gap-2 view-notificacao" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#viewDataModalNotificacao"
-                                            data-titulo="{{ $notificacao->title }}"
-                                            data-mensagem="{{ $notificacao->message }}"
-                                            data-status="{{ $notificacao->pivot->read ? 'Lida' : 'Não lida' }}"
-                                            data-criador="{{ $notificacao->criador->user ?? 'N/D' }}"
-                                            data-data="{{ $notificacao->created_at->format('d/m/Y H:i') }}">
-                                                {{ svg('hugeicons-eye') }} Ver Dados
-                                            </a>
-                                        </li> --}}
+                                        <li>
                                         <a href="javascript:void(0)" 
                                             class="dropdown-item view-notificacao" 
                                             data-bs-toggle="modal" 
@@ -122,12 +156,16 @@
                                             data-title="{{ $notificacao->title }}"
                                             data-message="{{ $notificacao->message }}"
                                             data-status="{{ $notificacao->pivot->read ? 'Lida' : 'Não lida' }}"
-                                            data-criador="{{ $notificacao->criador->user ?? '—' }}"
+                                            data-criador="{{ $notificacao->criador->nome ?? '—' }}"
                                             data-data="{{ $notificacao->created_at->format('d/m/Y H:i') }}"
-                                            data-url="{{ route('notificacoes.marcar_como_lida', $notificacao->id) }}">
-                                            🔍 Visualizar
+                                            data-url="{{ route('notificacoes.marcar_como_lida', $notificacao->id) }}"
+                                            data-arquivo="{{ $notificacao->arquivo ? asset('storage/notificacoes/' . $notificacao->arquivo) : '' }}"
+                                            data-respostas-url="{{ route('notificacoes.respostas', $notificacao->id) }}"
+                                            data-url-resposta-enviar="{{ route('notificacoes.enviar_resposta', $notificacao->id) }}"
+                                            >
+                                                🔍 Visualizar
                                         </a>
-                                    </ul>
+                                    </li>
                                 </div>
                             </td>
                         </tr>
@@ -206,6 +244,12 @@
                                     style="max-height: 250px; overflow-y: auto; white-space: pre-wrap;">
                                 </div>
                             </li>
+                            <li class="list-group-item d-none" id="arquivo-container">
+                                <strong class="text-secondary">Anexo:</strong>
+                                <a id="modal-arquivo" class="ms-2" href="#" target="_blank" download>
+                                    📎 Visualizar Arquivo
+                                </a>
+                            </li>
                             <li class="list-group-item">
                                 <strong class="text-secondary">Status:</strong>
                                 <span id="modal-status" class="ms-2 badge"></span>
@@ -220,15 +264,22 @@
                     </div>
                 </div>
 
-                <!-- Campo de resposta -->
-                <div class="mt-4">
-                    <form id="form-resposta-notificacao" method="POST" action="">
-                        @csrf
-                        <label for="resposta" class="form-label fw-semibold">Responder ao remetente:</label>
-                        <textarea name="resposta" id="modal-resposta" rows="3" class="form-control" placeholder="Digite sua resposta..."></textarea>
-                        <button type="submit" class="btn btn-primary btn-sm mt-2">📩 Enviar Resposta</button>
-                    </form>
-                </div>
+            <!-- Campo de resposta -->
+            <div class="mt-4">
+                <form id="form-resposta-notificacao" method="POST" action="">
+                    @csrf
+                    <label for="resposta" class="form-label fw-semibold">Responder ao remetente:</label>
+                    <textarea name="resposta" id="modal-resposta" rows="3" class="form-control" placeholder="Digite sua resposta..."></textarea>
+
+                    <div class="d-flex justify-content gap-2 my-2">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            📩 Enviar Resposta
+                        </button>
+                        <a href="{{ route('notificacoes.respostas', $notificacao->id ?? 0) }}" target="_blank" rel="noopener" id="btn-ver-respostas" class="btn btn-info btn-sm">
+                            📨 Ver Respostas
+                        </a>
+                    </div>
+                </form>
             </div>
 
             <!-- Rodapé -->
