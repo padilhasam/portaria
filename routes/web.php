@@ -113,6 +113,7 @@ Route::controller(NotificacaoController::class)->group(function() {
     Route::delete('/notificacao/{id}', 'destroy')->name('destroy.notificacao');
     Route::get('/notificacoes/{id}/respostas', 'verRespostas')->name('notificacoes.respostas');
     Route::post('notificacoes/{id}/responder', 'responder')->name('notificacoes.enviar_resposta');
+    Route::get('/notificacoes/{id}/respostas-json', 'respostasJson')->name('notificacoes.respostas_json');
 })->middleware(['auth']);
 
 Route::controller(PrestadorController::class)->group(function () {
@@ -124,6 +125,7 @@ Route::controller(PrestadorController::class)->group(function () {
     Route::delete('/prestador/{id}', 'destroy')->name('destroy.prestador');
 })->middleware(['auth'])->name('dashboard');
 
-// routes/web.php
-Route::get('/relatorios', [RelatorioController::class, 'index'])->name('index.relatorio');
-Route::get('/relatorios/export', [RelatorioController::class, 'export'])->name('export.relatorio');
+Route::controller(RelatorioController::class)->group(function () {
+    Route::get('/relatorios', [RelatorioController::class, 'index'])->name('index.relatorio');
+    Route::get('/relatorios/export', [RelatorioController::class, 'export'])->name('export.relatorio');
+})->middleware(['auth'])->name('dashboard');

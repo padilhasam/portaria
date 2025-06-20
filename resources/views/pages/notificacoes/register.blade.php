@@ -72,13 +72,17 @@
 
         <div class="mb-3">
             <label for="arquivo" class="form-label">Anexar Evidência (opcional)</label>
-            <input type="file" class="form-control" id="arquivo" name="arquivo" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx,.zip">
+            <input type="file" class="form-control" id="arquivo" name="arquivo" 
+       accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx,.zip">
+            <small class="form-text text-muted">Formatos permitidos: PDF, imagens, DOC, XLS, ZIP. Máx: 5MB.</small>
             @if ($edit && $notificacao->arquivo)
                 <div class="mt-2">
                     <a href="{{ asset('storage/notificacoes/' . $notificacao->arquivo) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                        Ver Anexo Atual
+                        📎 Ver Anexo Atual
                     </a>
                 </div>
+            @elseif($edit)
+                <div class="text-muted mt-1">Nenhum anexo atual.</div>
             @endif
         </div>
 
@@ -87,8 +91,9 @@
         </div>
 
         <button type="submit" class="btn btn-success">
-            {{ $edit ? 'Atualizar Notificação' : 'Enviar Notificação' }}
+            <i class="bi bi-send-fill me-1"></i> {{ $edit ? 'Atualizar Notificação' : 'Enviar Notificação' }}
         </button>
+        <a href="{{ route('create.notificacao') }}" class="btn btn-outline-secondary ms-2">Limpar</a>
     </form>
 </div>
 

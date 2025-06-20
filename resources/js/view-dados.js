@@ -85,14 +85,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     formResposta.action = `/notificacoes/${idNotificacao}/responder`;
                 }
 
-                // Corrigir link "Ver Respostas" para abrir a página correta
-                const btnVerRespostas = modal.querySelector('#btn-ver-respostas');
-                const respostasUrl = button.getAttribute('data-respostas-url');
-                if (btnVerRespostas) {
-                    btnVerRespostas.href = respostasUrl || '#';
-                    btnVerRespostas.classList.toggle('disabled', !respostasUrl); // Opcional: desabilita se URL ausente
-                }
-
             });
         }
     });
@@ -132,3 +124,47 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+    //Função para exibir respostas das mensagens
+    document.querySelectorAll('.view-notificacao').forEach(button => {
+        button.addEventListener('click', () => {
+            const idNotificacao = button.getAttribute('data-id');
+
+            // Define a action do form de resposta
+            const formResposta = document.querySelector('#form-resposta-notificacao');
+            if (formResposta) {
+                formResposta.action = button.getAttribute('data-url-resposta-enviar');
+            }
+
+            // Define a action do botão "Ver Respostas"
+            const btnVerRespostas = document.querySelector('#btn-ver-respostas');
+            if (btnVerRespostas) {
+                btnVerRespostas.href = button.getAttribute('data-respostas-url');
+            }
+
+            // Define os outros campos como título, mensagem, status etc.
+            document.querySelector('#modal-titulo').textContent = button.getAttribute('data-title') || '';
+            document.querySelector('#modal-mensagem').textContent = button.getAttribute('data-message') || '';
+            document.querySelector('#modal-status').textContent = button.getAttribute('data-status') || '';
+            document.querySelector('#modal-criador').textContent = button.getAttribute('data-criador') || '';
+            document.querySelector('#modal-data').textContent = button.getAttribute('data-data') || '';
+
+            // Arquivo (condicional)
+            const arquivo = button.getAttribute('data-arquivo');
+            const containerArquivo = document.querySelector('#arquivo-container');
+            const linkArquivo = document.querySelector('#modal-arquivo');
+            if (arquivo) {
+                containerArquivo.classList.remove('d-none');
+                linkArquivo.href = arquivo;
+            } else {
+                containerArquivo.classList.add('d-none');
+                linkArquivo.href = '#';
+            }
+
+            // Define a action do form de marcar como lida
+            const formMarcarLida = document.querySelector('#form-marcar-lida-modal');
+            if (formMarcarLida) {
+                formMarcarLida.action = button.getAttribute('data-url');
+            }
+        });
+    });

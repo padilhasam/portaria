@@ -101,6 +101,7 @@
                         <th>Status</th>
                         <th>Enviado por</th>
                         <th>Criada em</th>
+                        <th>Anexo</th> <!-- NOVA COLUNA -->
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -122,6 +123,15 @@
                             </td>
                             <td>{{ $notificacao->criador->nome ?? 'Sistema' }}</td>
                             <td>{{ $notificacao->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="text-center">
+                                @if ($notificacao->arquivo)
+                                    <a href="{{ asset('storage/notificacoes/' . $notificacao->arquivo) }}" target="_blank" download title="Baixar anexo">
+                                        📎
+                                    </a>
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">
@@ -275,7 +285,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">
                             📩 Enviar Resposta
                         </button>
-                        <a href="{{ route('notificacoes.respostas', $notificacao->id ?? 0) }}" target="_blank" rel="noopener" id="btn-ver-respostas" class="btn btn-info btn-sm">
+                        <a href="#" id="btn-ver-respostas" class="btn btn-info btn-sm">
                             📨 Ver Respostas
                         </a>
                     </div>

@@ -129,3 +129,10 @@
 .bell-alert {
     animation: bellShake 0.6s ease;
 }
+
+.card-body {
+        font-size: 0.95rem;
+    }
+    .card-header small {
+        font-size: 0.85rem;
+    }

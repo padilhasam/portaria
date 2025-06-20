@@ -8,15 +8,12 @@ use Illuminate\Http\Request;
 
 class NotificacaoController extends Controller
 {
-    /**
-     * Lista de notificações para o usuário autenticado.
-     */
     public function index(Request $request)
     {
-         $user = auth()->user();
+        $user = auth()->user();
 
         $query = $user->notificacoesRecebidas()
-            ->with('criador') // já traz o nome do criador
+            ->with('criador')
             ->when($request->filled('search'), function ($q) use ($request) {
                 $q->where(function ($sub) use ($request) {
                     $sub->where('title', 'like', '%' . $request->search . '%')
@@ -43,7 +40,6 @@ class NotificacaoController extends Controller
 
         $notificacoes = $query->paginate(10)->withQueryString();
 
-        // Para popular o filtro de criadores
         $usuariosCriadores = User::whereIn('id', function ($q) {
             $q->select('id_criador')->from('notificacoes')->distinct();
         })->get();
@@ -51,119 +47,91 @@ class NotificacaoController extends Controller
         return view('pages.notificacoes.index', compact('notificacoes', 'usuariosCriadores'));
     }
 
-    /**
-     * Detalhes da notificação e marca como lida.
-     */
     public function show(string $id)
     {
         $user = auth()->user();
-
         $notificacao = $user->notificacoesRecebidas()->findOrFail($id);
 
         $user->notificacoesRecebidas()
             ->updateExistingPivot($notificacao->id, ['read' => true]);
 
-        return redirect()->route('index.notificacao')
-            ->with('success', 'Notificação marcada como lida.');
+        return redirect()->route('index.notificacao')->with('success', 'Notificação marcada como lida.');
     }
 
-    /**
-     * Formulário de criação de notificação.
-     */
     public function create()
     {
-        // Não precisamos mais passar usuários para a view
         return view('pages.notificacoes.register');
     }
 
-    /**
-     * Armazena uma nova notificação.
-     */
     public function store(Request $request)
     {
-         $validated = $request->validate([
-        'title' => 'required|string|max:255',
-        'message' => 'required|string',
-        'arquivo' => 'nullable|file|max:5120', // até 5MB
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'message' => 'required|string',
+            'arquivo' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png,zip|max:5120',
         ]);
 
-        // Adiciona id_criador ao array
-        $validated['id_criador'] = auth()->id();
+        $data = $request->only(['title', 'message']);
+        $data['id_criador'] = auth()->id();
 
-        // Se houver arquivo, faz upload e adiciona ao array
         if ($request->hasFile('arquivo')) {
             $nomeArquivo = $request->file('arquivo')->hashName();
             $request->file('arquivo')->storeAs('notificacoes', $nomeArquivo, 'public');
-            $validated['arquivo'] = $nomeArquivo;
+            $data['arquivo'] = $nomeArquivo;
         }
 
-        // Cria a notificação com todos os dados validados
-        $notificacao = Notificacao::create($validated);
+        $notificacao = Notificacao::create($data);
 
-        // Seleciona todos os usuários, exceto o criador
         $usuarios = User::where('id', '!=', auth()->id())->get();
 
-        // Cria os dados para a tabela pivot notificacao_user
         $attachData = [];
         foreach ($usuarios as $usuario) {
             $attachData[$usuario->id] = ['read' => false];
         }
 
-        // Associa usuários à notificação
         $notificacao->destinatarios()->attach($attachData);
 
         return redirect()->route('index.notificacao')
             ->with('success', 'Notificação enviada para todos os usuários, exceto você.');
     }
 
-    /**
-     * Formulário de edição.
-     */
     public function edit(string $id)
     {
         $notificacao = Notificacao::findOrFail($id);
-
-        // Não passamos usuários, pois não editamos destinatários mais
         return view('pages.notificacoes.register', compact('notificacao'));
     }
 
-    /**
-     * Atualiza uma notificação existente.
-     */
     public function update(Request $request, string $id)
     {
-        $notificacao = Notificacao::findOrFail($id);
-
-        $validated = $request->validate([
+        $request->validate([
             'title' => 'required|string|max:255',
             'message' => 'required|string',
-            'arquivo' => 'nullable|file|max:5120', // até 5MB
+            'arquivo' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png,zip|max:5120',
         ]);
+
+        $notificacao = Notificacao::findOrFail($id);
 
         $notificacao->update([
-            'title' => $validated['title'],
-            'message' => $validated['message'],
+            'title' => $request->title,
+            'message' => $request->message,
         ]);
-
-        // Não atualizamos destinatários, pois é para todos sempre
 
         return redirect()->route('index.notificacao')->with('success', 'Notificação atualizada com sucesso!');
     }
 
-    /**
-     * Remove uma notificação.
-     */
     public function destroy(string $id)
     {
         $notificacao = Notificacao::findOrFail($id);
+
+        if ($notificacao->id_criador !== auth()->id()) {
+            abort(403, 'Você não tem permissão para excluir essa notificação.');
+        }
+
         $notificacao->delete();
 
         return redirect()->route('index.notificacao')->with('success', 'Notificação excluída.');
     }
 
-    /**
-     * Marca uma notificação como lida.
-     */
     public function marcarComoLida($notificacaoId)
     {
         auth()->user()
@@ -173,9 +141,6 @@ class NotificacaoController extends Controller
         return back()->with('success', 'Notificação marcada como lida.');
     }
 
-    /**
-     * Marca todas como lidas.
-     */
     public function marcarTodasComoLidas()
     {
         $user = auth()->user();
@@ -189,8 +154,7 @@ class NotificacaoController extends Controller
         }
 
         foreach ($ids as $id) {
-            $user->notificacoesRecebidas()
-                ->updateExistingPivot($id, ['read' => true]);
+            $user->notificacoesRecebidas()->updateExistingPivot($id, ['read' => true]);
         }
 
         return back()->with('success', 'Todas as notificações foram marcadas como lidas.');
@@ -203,18 +167,16 @@ class NotificacaoController extends Controller
         ]);
 
         $notificacao = Notificacao::findOrFail($id);
-        $destinatario = $notificacao->criador; // Criador da notificação
-        $remetente = auth()->user(); // Quem está respondendo
+        $destinatario = $notificacao->criador;
+        $remetente = auth()->user();
 
-        // Envia uma nova notificação para o criador com a resposta
         $resposta = Notificacao::create([
             'title' => 'Resposta à sua notificação: ' . $notificacao->title,
             'message' => "Resposta de {$remetente->name}:\n\n" . $request->resposta,
-            'id_criador' => $remetente->id, // quem criou a resposta
+            'id_criador' => $remetente->id,
             'id_resposta_de' => $notificacao->id,
         ]);
 
-        // Associa somente o criador original como destinatário da resposta
         $resposta->destinatarios()->attach([
             $destinatario->id => ['read' => false],
         ]);
@@ -224,10 +186,27 @@ class NotificacaoController extends Controller
 
     public function verRespostas($id)
     {
-        $notificacao = Notificacao::with(['respostas.criador']) // já carrega quem respondeu
-            ->where('id_criador', auth()->id()) // só o criador pode ver
+        $notificacao = Notificacao::with(['respostas.criador'])
+            ->where('id_criador', auth()->id())
             ->findOrFail($id);
 
         return view('pages.notificacoes.respostas', compact('notificacao'));
+    }
+
+    public function respostasJson($id)
+    {
+        $notificacao = Notificacao::with(['respostas.criador'])->findOrFail($id);
+
+        return response()->json([
+            'respostas' => $notificacao->respostas->map(function ($resposta) {
+                return [
+                    'id' => $resposta->id,
+                    'mensagem' => $resposta->mensagem,
+                    'usuario' => $resposta->criador->nome ?? '—',
+                    'data' => $resposta->created_at->format('d/m/Y H:i'),
+                    'sou_eu' => auth()->id() === $resposta->id_criador,
+                ];
+            }),
+        ]);
     }
 }
