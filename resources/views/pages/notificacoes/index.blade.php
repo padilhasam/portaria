@@ -158,9 +158,9 @@
                                             </a>
                                         </li>
                                         <li>
-                                        <a href="javascript:void(0)" 
-                                            class="dropdown-item view-notificacao" 
-                                            data-bs-toggle="modal" 
+                                        <a href="javascript:void(0)"
+                                            class="dropdown-item view-notificacao"
+                                            data-bs-toggle="modal"
                                             data-bs-target="#viewDataModalNotificacao"
                                             data-id="{{ $notificacao->id }}"
                                             data-title="{{ $notificacao->title }}"
@@ -235,15 +235,8 @@
             <!-- Corpo -->
             <div class="modal-body px-4 py-4">
                 <div class="row g-4">
-                    <!-- Ícone -->
-                    <div class="col-md-4 text-center d-flex align-items-center justify-content-center">
-                        <div class="bg-light p-4 rounded shadow-sm w-100">
-                            {{ svg('hugeicons-eye', 'w-50 h-50 text-primary') }}
-                        </div>
-                    </div>
-
                     <!-- Dados -->
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
                                 <strong class="text-secondary">Título:</strong> <span id="modal-titulo" class="ms-2"></span>
@@ -285,10 +278,13 @@
                         <button type="submit" class="btn btn-primary btn-sm">
                             📩 Enviar Resposta
                         </button>
-                        <a href="#" id="btn-ver-respostas" class="btn btn-info btn-sm">
-                            📨 Ver Respostas
-                        </a>
                     </div>
+                </form>
+                <form method="POST" action="#" id="form-ver-respostas" class="d-flex">
+                    @csrf
+                    <button type="submit" id="btn-ver-respostas" class="btn btn-info btn-sm">
+                        📨 Ver Respostas
+                    </button>
                 </form>
             </div>
 

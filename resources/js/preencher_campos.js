@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             type: 'POST',
             success: function(data) {
                 if (!data) throw new Error('Dados vazios');
-                
+
                 if(prefix === "id_veiculo"){
                     marca.value = data.marca;
                     modelo.value = data.modelo;
@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('empresa').value = data.empresa;
                     document.getElementById('veiculo').value = data.modelo;
                     document.getElementById('placa').value = data.placa;
+                    document.getElementById('image').src = `${window.location.origin}/storage/visitantes/${data.image}`;
                 }
 
                 if(prefix === "id_apartamento"){

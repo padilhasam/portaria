@@ -137,9 +137,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Define a action do botão "Ver Respostas"
-            const btnVerRespostas = document.querySelector('#btn-ver-respostas');
+            const btnVerRespostas = document.querySelector('#form-ver-respostas');
             if (btnVerRespostas) {
-                btnVerRespostas.href = button.getAttribute('data-respostas-url');
+                btnVerRespostas.action = button.getAttribute('data-respostas-url');
             }
 
             // Define os outros campos como título, mensagem, status etc.

@@ -53,7 +53,7 @@ class RegistroController extends Controller
             'img' => 'nullable|image|max:2048'
         ]);
 
-    
+
         if ($request->hasFile('img')) {
             $caminho = $request->file('img')->store('registros', 'public');
             $data['img'] = Storage::url($caminho); // retorna o caminho acessível via URL
@@ -64,12 +64,12 @@ class RegistroController extends Controller
                 $data['img'] = Storage::url($caminho);
             }
         }
-    
+
         // Define a entrada atual
         $data['entrada'] = now();
-    
+
         $registro = Registro::create($data);
-    
+
         if ($registro) {
             return redirect(route('index.registro'))->with('success', 'Entrada registrada com sucesso!');
         } else {
@@ -126,7 +126,7 @@ class RegistroController extends Controller
         return redirect()->route('index.registro')->with('success', 'Registro excluído com sucesso!');
     }
 
-    
+
     /**
      * Retorna os detalhes do visitante em formato JSON para uso em formulários.
      */
@@ -144,6 +144,7 @@ class RegistroController extends Controller
             'empresa' => $visitante->empresa,
             'modelo' => $visitante->veiculo->modelo ?? '',
             'placa' => $visitante->veiculo->placa ?? '',
+            'image' => $visitante->image ?? ''
         ]);
     }
 

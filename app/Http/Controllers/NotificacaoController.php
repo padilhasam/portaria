@@ -186,10 +186,7 @@ class NotificacaoController extends Controller
 
     public function verRespostas($id)
     {
-        $notificacao = Notificacao::with(['respostas.criador'])
-            ->where('id_criador', auth()->id())
-            ->findOrFail($id);
-
+        $notificacao = Notificacao::select("*")->find($id);
         return view('pages.notificacoes.respostas', compact('notificacao'));
     }
 

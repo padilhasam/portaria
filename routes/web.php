@@ -15,12 +15,8 @@ use App\Http\Controllers\{
 };
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function(){
-    return view('pages.welcome');
-})->name('welcome');
-
 Route::controller(LoginController::class)->group(function(){
-    Route::get('/login', 'index')->name('login.index');
+    Route::get('/', 'index')->name('login.index');
     Route::get('/logout', 'destroy')->name('login.destroy');
     Route::post('/login', 'store')->name('login.store');
 });
@@ -64,7 +60,7 @@ Route::controller(MoradorController::class)->group(function(){
     Route::get('/morador/{id}/edit', 'edit')->name('edit.morador');
     Route::put('/morador/{id}', 'update')->name('update.morador');
     Route::delete('/morador/{id}', 'destroy')->name('destroy.morador');
-    
+
     // Rota para preenchimento automático de moradores
     Route::get('/morador/search', 'search')->name('search.morador');
 })->middleware(['auth'])->name('dashboard');
@@ -86,7 +82,7 @@ Route::controller(VeiculoController::class)->group(function(){
     Route::get('/veiculo/edit/{id}', 'edit')->name('edit.veiculo');
     Route::put('/veiculo/update/{id}', 'update')->name('update.veiculo');
     Route::delete('/veiculo/{id}', 'destroy')->name('destroy.veiculo');
-    
+
     // Rota para preenchimento automático de veículos
     Route::get('/veiculo/search', 'search')->name('search.veiculo');
 
@@ -111,7 +107,7 @@ Route::controller(NotificacaoController::class)->group(function() {
     Route::patch('/notificacao/{id}/ler', 'marcarComoLida')->name('notificacoes.marcar_como_lida');
     Route::patch('/notificacoes/marcar-todas', 'marcarTodasComoLidas')->name('notificacoes.marcar_todas_como_lidas');
     Route::delete('/notificacao/{id}', 'destroy')->name('destroy.notificacao');
-    Route::get('/notificacoes/{id}/respostas', 'verRespostas')->name('notificacoes.respostas');
+    Route::post('/notificacoes/{id}/respostas', 'verRespostas')->name('notificacoes.respostas');
     Route::post('notificacoes/{id}/responder', 'responder')->name('notificacoes.enviar_resposta');
     Route::get('/notificacoes/{id}/respostas-json', 'respostasJson')->name('notificacoes.respostas_json');
 })->middleware(['auth']);
