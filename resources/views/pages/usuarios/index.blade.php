@@ -2,20 +2,83 @@
 
 @section('page_dashboard')
 
-<header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
-        <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-car-front-fill" viewBox="0 0 16 16">
-            <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679q.05.242.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.8.8 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2m10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2M6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2zM2.906 5.189a.51.51 0 0 0 .497.731c.91-.073 3.35-.17 4.597-.17s3.688.097 4.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 11.691 3H4.309a.5.5 0 0 0-.447.276L2.906 5.19Z"/>
-            </svg>
+<header class="mb-4 px-4 py-3 bg-white border rounded shadow-sm">
+
+    {{-- Linha do título + botão --}}
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-3">
+        <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3" style="font-size: 1.75rem;">
+            <span class="icon-container d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px; background: linear-gradient(135deg, #4e73df, #224abe); border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-car-front-fill" viewBox="0 0 16 16">
+                    <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679q.05.242.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.8.8 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2m10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2M6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2zM2.906 5.189a.51.51 0 0 0 .497.731c.91-.073 3.35-.17 4.597-.17s3.688.097 4.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 11.691 3H4.309a.5.5 0 0 0-.447.276L2.906 5.19Z"/>
+                </svg>
+            </span>
             Controle de Usuários
         </h3>
-        <a href="{{route('create.usuario')}}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">Novo Usuário</a>
+
+        <a href="{{ route('create.usuario') }}" class="btn btn-primary btn-sm rounded-pill text-white">
+            Novo Usuário
+        </a>
+    </div>
+
+    {{-- Linha dos filtros --}}
+    <form method="GET" action="{{ route('index.usuario') }}" class="row g-3 align-items-end">
+
+        {{-- Buscar --}}
+        <div class="col-12 col-md-4">
+            <label for="search" class="form-label mb-1 small text-secondary">Buscar</label>
+            <input type="text" name="search" id="search" class="form-control form-control-sm rounded-pill w-100"
+                placeholder="Nome, CPF, e-mail..." value="{{ request('search') }}">
+        </div>
+
+        {{-- Perfil --}}
+        <div class="col-6 col-md-2">
+            <label for="perfil" class="form-label mb-1 small text-secondary">Perfil</label>
+            <select name="tipo" id="perfil" class="form-select form-select-sm rounded w-100">
+                <option value="">Todos</option>
+                <option value="administrador" @selected(request('tipo') == 'administrador')>Administrador</option>
+                <option value="padrao" @selected(request('tipo') == 'padrao')>Usuário</option>
+            </select>
+        </div>
+
+        {{-- Status --}}
+        <div class="col-6 col-md-2">
+            <label for="status" class="form-label mb-1 small text-secondary">Status</label>
+            <select name="status" id="status" class="form-select form-select-sm rounded w-100">
+                <option value="">Todos</option>
+                <option value="ATIVO" @selected(request('status') == 'ATIVO')>Ativo</option>
+                <option value="BLOQUEADO" @selected(request('status') == 'BLOQUEADO')>Bloqueado</option>
+                <option value="FÉRIAS" @selected(request('status') == 'FÉRIAS')>Férias</option>
+            </select>
+        </div>
+
+        {{-- Data de Criação Início --}}
+        <div class="col-6 col-md-1">
+            <label for="data_inicio" class="form-label mb-1 small text-secondary">De</label>
+            <input type="date" name="data_inicio" id="data_inicio" class="form-control form-control-sm w-100"
+                value="{{ request('data_inicio') }}">
+        </div>
+
+        {{-- Data de Criação Fim --}}
+        <div class="col-6 col-md-1">
+            <label for="data_fim" class="form-label mb-1 small text-secondary">Até</label>
+            <input type="date" name="data_fim" id="data_fim" class="form-control form-control-sm w-100"
+                value="{{ request('data_fim') }}">
+        </div>
+
+        {{-- Botões --}}
+        <div class="col-12 col-md-2 d-flex gap-2 justify-content-md-end justify-content-start flex-wrap">
+            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 mb-2 mb-md-0">🔍 Filtrar</button>
+            <a href="{{ route('index.usuario') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4 mb-2 mb-md-0">❌ Limpar</a>
+        </div>
+
+    </form>
 </header>
 
 <!-- Exibição de mensagens de sucesso ou erro -->
 <div>
     @include('components.alerts', [
-        'success' => session()->get('success'), 
+        'success' => session()->get('success'),
         'message' => session()->get('message')
     ])
 </div>
@@ -34,6 +97,7 @@
                                 <th>Data de Nascimento</th>
                                 <th>Celular</th>
                                 <th>Email</th>
+                                <th>Status</th>
                                 <th>Criado em</th>
                                 <th>Atualizado em</th>
                                 <th>Ações</th>
@@ -47,6 +111,7 @@
                                     <td>{{\Carbon\Carbon::parse($usuario->nascimento)->format('d/m/Y') }}</td>
                                     <td>{{$usuario->celular}}</td>
                                     <td>{{$usuario->email}}</td>
+                                    <td>{{$usuario->status}}</td>
                                     <td>{{ $usuario->created_at ? $usuario->created_at->format('d/m/Y') : '-' }}</td>
                                     <td>{{ $usuario->updated_at ? $usuario->updated_at->format('d/m/Y') : '-' }}</td>
                                     <td>

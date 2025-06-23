@@ -53,48 +53,55 @@
 </header>
 
 {{-- Formulário --}}
-<div class="container py-4">
-    <form action="{{ $edit ? route('update.notificacao', $notificacao->id) : route('store.notificacao') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @if($edit)
-            @method('PUT')
-        @endif
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-light fw-bold">Dados do Usuário</div>
+        <div class="card-body">
 
-        <div class="mb-3">
-            <label for="title" class="form-label">Título</label>
-            <input type="text" id="title" name="title" class="form-control" value="{{ old('title', $notificacao->title ?? '') }}" required>
+            <div class="card shadow-sm p-4">
+                <form action="{{ $edit ? route('update.notificacao', $notificacao->id) : route('store.notificacao') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @if($edit)
+                        @method('PUT')
+                    @endif
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-semibold">Título<span class="text-danger">*</span></label>
+                        <input type="text" id="title" name="title" class="form-control" value="{{ old('title', $notificacao->title ?? '') }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message" class="form-label fw-semibold">Mensagem<span class="text-danger">*</span></label>
+                        <textarea id="message" name="message" class="form-control" rows="4" style="resize: none" required>{{ old('message', $notificacao->message ?? '') }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="arquivo" class="form-label fw-semibold">Anexar Evidência (opcional)</label>
+                        <input type="file" class="form-control" id="arquivo" name="arquivo"
+                accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx,.zip">
+                        <small class="form-text text-muted">Formatos permitidos: PDF, imagens, DOC, XLS, ZIP. Máx: 5MB.</small>
+                        @if ($edit && $notificacao->arquivo)
+                            <div class="mt-2">
+                                <a href="{{ asset('storage/notificacoes/' . $notificacao->arquivo) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    📎 Ver Anexo Atual
+                                </a>
+                            </div>
+                        @elseif($edit)
+                            <div class="text-muted mt-1">Nenhum anexo atual.</div>
+                        @endif
+                    </div>
+
+                    <div class="alert alert-info fw-semibold">
+                        Esta notificação será enviada automaticamente para <u>todos os usuários cadastrados</u>.
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-send-fill me-1"></i> {{ $edit ? 'Atualizar Notificação' : 'Enviar Notificação' }}
+                    </button>
+                    <a href="{{ route('create.notificacao') }}" class="btn btn-outline-danger ms-2">Limpar</a>
+                </form>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label for="message" class="form-label">Mensagem</label>
-            <textarea id="message" name="message" class="form-control" rows="4" style="resize: none" required>{{ old('message', $notificacao->message ?? '') }}</textarea>
-        </div>
-
-        <div class="mb-3">
-            <label for="arquivo" class="form-label">Anexar Evidência (opcional)</label>
-            <input type="file" class="form-control" id="arquivo" name="arquivo" 
-       accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx,.zip">
-            <small class="form-text text-muted">Formatos permitidos: PDF, imagens, DOC, XLS, ZIP. Máx: 5MB.</small>
-            @if ($edit && $notificacao->arquivo)
-                <div class="mt-2">
-                    <a href="{{ asset('storage/notificacoes/' . $notificacao->arquivo) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                        📎 Ver Anexo Atual
-                    </a>
-                </div>
-            @elseif($edit)
-                <div class="text-muted mt-1">Nenhum anexo atual.</div>
-            @endif
-        </div>
-
-        <div class="alert alert-info fw-semibold">
-            Esta notificação será enviada automaticamente para <u>todos os usuários cadastrados</u>.
-        </div>
-
-        <button type="submit" class="btn btn-success">
-            <i class="bi bi-send-fill me-1"></i> {{ $edit ? 'Atualizar Notificação' : 'Enviar Notificação' }}
-        </button>
-        <a href="{{ route('create.notificacao') }}" class="btn btn-outline-secondary ms-2">Limpar</a>
-    </form>
+    </div>
 </div>
 
 @endsection

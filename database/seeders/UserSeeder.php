@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'user'=>'Admin',
             'email' => 'admin@admin.com.br',
             'password' => Hash::make('admin1234'),
-            'acesso_tipo' =>'liberado',
+            'status' =>'ativo',
             'user_verified' => true
         ]);
 
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             'user'=>'Padilhajeff',
             'email' => 'jeferson_death@yahoo.com.br',
             'password' => Hash::make('samuca06'),
-            'acesso_tipo' =>'liberado',
+            'status' =>'ativo',
             'user_verified' => true
         ]);
 
@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
             'user'=>'Santosjeff',
             'email' => 'jeffersonsantos@gmail.com.br',
             'password' => Hash::make('12345678'),
-            'acesso_tipo' => 'bloqueado',
+            'status' =>'ativo',
             'user_verified' => true
         ]);
 

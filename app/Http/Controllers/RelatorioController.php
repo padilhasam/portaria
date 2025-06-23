@@ -3,62 +3,103 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Registro;
 
 class RelatorioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pages.relatorios.index');
+        $dataInicio = $request->input('data_inicio');
+        $dataFim = $request->input('data_fim');
+        $tipo = $request->input('tipo');
+        $apartamento = $request->input('apartamento');
+
+        $query = Registro::with('visitante.morador.apartamento');
+
+        if ($dataInicio) {
+            $query->whereDate('entrada', '>=', $dataInicio);
+        }
+
+        if ($dataFim) {
+            $query->whereDate('saida', '<=', $dataFim);
+        }
+
+        if ($tipo) {
+            $query->where('tipo_acesso', $tipo);
+        }
+
+        if ($apartamento) {
+            $query->whereHas('visitante.morador.apartamento', function ($q) use ($apartamento) {
+                $q->where('numero', 'like', "%{$apartamento}%");
+            });
+        }
+
+        $registros = $query->latest()->get();
+
+        // KPIs
+        $total = $registros->count();
+        $entradas = $registros->where('tipo_acesso', 'entrada')->count();
+        $saidas = $registros->where('tipo_acesso', 'saida')->count();
+        $negados = $registros->where('status', 'negado')->count(); // Se existir
+
+        return view('pages.relatorios.index', compact('registros', 'total', 'entradas', 'saidas', 'negados'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    private function filtrarRegistros(Request $request)
     {
-        //
+        $dataInicio = $request->input('data_inicio');
+        $dataFim = $request->input('data_fim');
+        $tipo = $request->input('tipo');
+        $apartamento = $request->input('apartamento');
+
+        $query = Registro::with('visitante.morador.apartamento');
+
+        if ($dataInicio) {
+            $query->whereDate('entrada', '>=', $dataInicio);
+        }
+
+        if ($dataFim) {
+            $query->whereDate('saida', '<=', $dataFim);
+        }
+
+        if ($tipo) {
+            $query->where('tipo_acesso', $tipo);
+        }
+
+        if ($apartamento) {
+            $query->whereHas('visitante.morador.apartamento', function ($q) use ($apartamento) {
+                $q->where('numero', 'like', "%{$apartamento}%");
+            });
+        }
+
+        return $query->latest()->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function export(Request $request)
     {
-        //
-    }
+        $registros = $this->filtrarRegistros($request);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="relatorio-acessos.csv"',
+        ];
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $callback = function () use ($registros) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['ID', 'Tipo', 'Data/Hora', 'Apartamento']);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            foreach ($registros as $registro) {
+                fputcsv($handle, [
+                    $registro->id,
+                    ucfirst($registro->tipo_acesso),
+                    $registro->created_at->format('d/m/Y H:i'),
+                    $registro->visitante->morador->apartamento->numero ?? '—',
+                ]);
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

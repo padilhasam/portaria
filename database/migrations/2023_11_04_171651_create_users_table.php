@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('user')->nullable(false);
             $table->string('email')->nullable(false);
             $table->string('password')->nullable(false);
-            $table->string('acesso_tipo');
             $table->boolean('user_verified');
             $table->timestamps();
         });

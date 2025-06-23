@@ -2,31 +2,74 @@
 
 @section('page_dashboard')
 
-<header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
-    <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
-        </svg>
-        Cadastro de Prestadores
-    </h3>
-    <div class="d-flex align-items-center gap-3">
-        <form method="GET" action="{{ route('index.prestador') }}" class="d-flex align-items-center" role="search">
-            <input type="text" name="search" class="form-control form-control-sm me-2 rounded-pill border-dark" placeholder="Buscar por nome, CPF..." value="{{ request('search') }}">
-            <button class="btn btn-outline-dark btn-sm rounded-pill" type="submit">
-                <span class="d-none d-sm-inline">Buscar</span>
-                <span class="d-inline d-sm-none">🔍</span>
-            </button>
-        </form>
-        <a href="{{ route('create.prestador') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
+<header class="mb-4 px-4 py-3 bg-white border rounded shadow-sm">
+
+    {{-- Linha do título + botão --}}
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-3">
+        <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3" style="font-size: 1.75rem;">
+            <span class="icon-container d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px; background: linear-gradient(135deg, #0d6efd, #0a58ca); border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                     class="bi bi-people-fill" viewBox="0 0 16 16">
+                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                </svg>
+            </span>
+            Cadastro de Prestadores
+        </h3>
+
+        <a href="{{ route('create.prestador') }}" class="btn btn-primary btn-sm rounded-pill text-white">
             Novo Prestador
         </a>
     </div>
+
+    {{-- Linha dos filtros --}}
+    <form method="GET" action="{{ route('index.prestador') }}" class="row g-3 align-items-end">
+
+        {{-- Buscar --}}
+        <div class="col-12 col-md-4">
+            <label for="search" class="form-label mb-1 small text-secondary">Buscar</label>
+            <input type="text" name="search" id="search" class="form-control form-control-sm rounded-pill w-100"
+                   placeholder="Nome, CNPJ..." value="{{ request('search') }}">
+        </div>
+
+        {{-- Empresa - Select --}}
+        <div class="col-12 col-md-2">
+            <label for="empresa" class="form-label mb-1 small text-secondary">Empresa</label>
+            <select name="empresa" id="empresa" class="form-select form-select-sm rounded w-100">
+                <option value="">Todas</option>
+                @foreach($empresas as $empresa)
+                    <option value="{{ $empresa }}" @selected(request('empresa') == $empresa)>{{ $empresa }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        {{-- Data Início --}}
+        <div class="col-6 col-md-2">
+            <label for="data_inicio" class="form-label mb-1 small text-secondary">Criado de</label>
+            <input type="date" name="data_inicio" id="data_inicio" class="form-control form-control-sm w-100"
+                   value="{{ request('data_inicio') }}">
+        </div>
+
+        {{-- Data Fim --}}
+        <div class="col-6 col-md-2">
+            <label for="data_fim" class="form-label mb-1 small text-secondary">Até</label>
+            <input type="date" name="data_fim" id="data_fim" class="form-control form-control-sm w-100"
+                   value="{{ request('data_fim') }}">
+        </div>
+
+        {{-- Botões alinhados à direita e responsivos --}}
+        <div class="col-12 col-md-2 d-flex gap-2 justify-content-md-end justify-content-start flex-wrap">
+            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 mb-2 mb-md-0">🔍 Filtrar</button>
+            <a href="{{ route('index.prestador') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4 mb-2 mb-md-0">❌ Limpar</a>
+        </div>
+
+    </form>
 </header>
 
 <!-- Exibição de mensagens de sucesso ou erro -->
 <div>
     @include('components.alerts', [
-        'success' => session()->get('success'), 
+        'success' => session()->get('success'),
         'message' => session()->get('message')
     ])
 </div>
@@ -45,9 +88,9 @@
                         <th>Email</th>
                         <th>Prestador</th>
                         <th>CPF</th>
-                        <th>Celular</th> 
+                        <th>Celular</th>
                         <th>Criado em</th>
-                        <th>Atualizado em</th>                       
+                        <th>Atualizado em</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -89,7 +132,7 @@
                                         </a>
                                     </li>
                                    <li>
-                                        <a href="javascript:void(0)" 
+                                        <a href="javascript:void(0)"
                                             class="dropdown-item d-flex align-items-center gap-2 view-dados"
                                             data-bs-toggle="modal"
                                             data-bs-target="#viewDataModalPrestador"

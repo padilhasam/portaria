@@ -36,10 +36,26 @@ class Visitante extends Model
     }
 
     /**
-     * Relacionamento com o modelo Veiculo
+     * Relacionamento com o modelo Prestador
      */
     public function prestador()
     {
         return $this->belongsTo(Prestador::class, 'id_prestador');
+    }
+
+    /**
+     * Relacionamento com o modelo Registro
+     */
+        public function registros()
+    {
+        return $this->hasMany(Registro::class, 'id_visitante');
+    }
+
+    /**
+     * Relacionamento com o modelo Morador
+     */
+        public function morador()
+    {
+        return $this->belongsTo(Morador::class, 'id_morador');
     }
 }

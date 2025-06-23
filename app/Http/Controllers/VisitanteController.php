@@ -16,18 +16,28 @@ class VisitanteController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $id_veiculo = $request->input('id_veiculo');
+        $id_prestador = $request->input('id_prestador');
+
         $visitantes = Visitante::query()
             ->when($search, function ($query, $search) {
                 return $query->where('nome', 'like', "%{$search}%")
-                             ->orWhere('documento', 'like', "%{$this->unmask($search)}%");
+                            ->orWhere('documento', 'like', "%{$this->unmask($search)}%");
             })
-            ->with(['veiculo', 'prestador']) // Eager load relationships
+            ->when($id_veiculo, function ($query, $id_veiculo) {
+                return $query->where('id_veiculo', $id_veiculo);
+            })
+            ->when($id_prestador, function ($query, $id_prestador) {
+                return $query->where('id_prestador', $id_prestador);
+            })
+            ->with(['veiculo', 'prestador'])
             ->latest()
-            ->paginate(10); // Paginação de resultados
+            ->paginate(10);
 
-        /* $visitantes = Visitante::orderBy('created_at', 'desc')->paginate(10); */
+        $veiculos = Veiculo::orderBy('placa')->get();
+        $prestadores = Prestador::orderBy('empresa')->get();
 
-        return view('pages.visitantes.index', compact('visitantes','search'));
+        return view('pages.visitantes.index', compact('visitantes', 'search', 'veiculos', 'prestadores', 'id_veiculo', 'id_prestador'));
     }
 
     public function search(Request $request)
@@ -67,7 +77,7 @@ class VisitanteController extends Controller
             'image' => 'nullable|image|max:2048',
         ]);
 
- 
+
         if ($request->hasFile('image')) {
             $nomeArquivo = $request->file('image')->hashName();
             $request->file('image')->storeAs('visitantes', $nomeArquivo, 'public');

@@ -90,7 +90,15 @@
 
                                 <div class="col-md-6">
                                     <label for="empresa" class="form-label">Empresa</label>
-                                    <input type="text" class="form-control rounded-pill border-dark" id="empresa" name="empresa" value="{{ old('empresa', $edit ? $registro->empresa : '') }}" placeholder="Empresa Prestadora">
+                                    <input
+                                        type="text"
+                                        class="form-control rounded-pill border-dark bg-light"
+                                        id="empresa"
+                                        name="empresa"
+                                        value="{{ old('empresa', $edit && $registro->visitante ? $registro->visitante->prestador->nome : '') }}"
+                                        placeholder="Empresa Prestadora"
+                                        readonly
+                                    >
                                 </div>
 
                                 <div class="col-md-6">

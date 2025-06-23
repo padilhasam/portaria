@@ -49,59 +49,66 @@
     </div>
 </header>
 
-<div class="card shadow-sm p-4">
-    <form action="{{ $edit ? route('update.veiculo', ['id' => $veiculo->id, 'from' => request()->query('from')]) : route('store.veiculo', ['from' => request()->query('from')]) }}" method="POST">
-        @csrf
-        @if ($edit)
-            @method('PUT')
-        @endif
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-light fw-bold">Dados do Veículo</div>
+        <div class="card-body">
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="placa" class="form-label">Placa</label>
-                <input name="placa" type="text" class="form-control rounded-pill border-dark" id="placa" placeholder="Placa do veículo" value="{{ $edit ? $veiculo->placa : '' }}">
-            </div>
-            <div class="col-md-6">
-                <label for="tipo" class="form-label">Tipo do Veículo</label>
-                <select class="form-control rounded-pill border-dark" name="tipo" id="tipo">
-                    <option value="">Selecione...</option>
-                    <option value="Carro" {{ $edit && $veiculo->tipo == "Carro" ? "selected" : "" }}>Carro</option>
-                    <option value="Moto" {{ $edit && $veiculo->tipo == "Moto" ? "selected" : "" }}>Moto</option>
-                    <option value="Caminhão" {{ $edit && $veiculo->tipo == "Caminhão" ? "selected" : "" }}>Caminhão</option>
-                </select>
+            <div class="card shadow-sm p-4">
+                <form action="{{ $edit ? route('update.veiculo', ['id' => $veiculo->id, 'from' => request()->query('from')]) : route('store.veiculo', ['from' => request()->query('from')]) }}" method="POST">
+                    @csrf
+                    @if ($edit)
+                        @method('PUT')
+                    @endif
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="placa" class="form-label fw-semibold">Placa<span class="text-danger">*</span></label>
+                            <input name="placa" type="text" class="form-control rounded-pill border-dark" id="placa" placeholder="Placa do veículo" value="{{ $edit ? $veiculo->placa : '' }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tipo" class="form-label fw-semibold">Tipo do Veículo<span class="text-danger">*</span></label>
+                            <select class="form-control rounded-pill border-dark" name="tipo" id="tipo" required>
+                                <option value="">Selecione...</option>
+                                <option value="Carro" {{ $edit && $veiculo->tipo == "Carro" ? "selected" : "" }}>Carro</option>
+                                <option value="Moto" {{ $edit && $veiculo->tipo == "Moto" ? "selected" : "" }}>Moto</option>
+                                <option value="Caminhão" {{ $edit && $veiculo->tipo == "Caminhão" ? "selected" : "" }}>Caminhão</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="marca" class="form-label fw-semibold">Marca<span class="text-danger">*</span></label>
+                            <input name="marca" type="text" class="form-control rounded-pill border-dark" id="marca" placeholder="Marca do veículo" value="{{ $edit ? $veiculo->marca : '' }}" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="modelo" class="form-label fw-semibold">Modelo<span class="text-danger">*</span></label>
+                            <input name="modelo" type="text" class="form-control rounded-pill border-dark" id="modelo" placeholder="Modelo do veículo" value="{{ $edit ? $veiculo->modelo : '' }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="cor" class="form-label fw-semibold">Cor<span class="text-danger">*</span></label>
+                            <input name="cor" type="text" class="form-control rounded-pill border-dark" id="cor" placeholder="Cor do veículo" value="{{ $edit ? $veiculo->cor : '' }}" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="observacoes" class="form-label fw-semibold">Observação</label>
+                            <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" style="resize: none">{{ old('observacoes', $edit ? $veiculo->observacoes : '') }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-flex gap-2 justify-content-end mt-3">
+                        <button type="submit" class="btn btn-success rounded-pill px-4 me-2">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
+                        <button type="reset" class="btn btn-outline-danger rounded-pill px-4 me-2">Limpar</button>
+                        <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Cancelar</a>
+                    </div>
+                </form>
             </div>
         </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="marca" class="form-label">Marca</label>
-                <input name="marca" type="text" class="form-control rounded-pill border-dark" id="marca" placeholder="Marca do veículo" value="{{ $edit ? $veiculo->marca : '' }}">
-            </div>
-
-            <div class="col-md-6">
-                <label for="modelo" class="form-label">Modelo</label>
-                <input name="modelo" type="text" class="form-control rounded-pill border-dark" id="modelo" placeholder="Modelo do veículo" value="{{ $edit ? $veiculo->modelo : '' }}">
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="cor" class="form-label">Cor</label>
-                <input name="cor" type="text" class="form-control rounded-pill border-dark" id="cor" placeholder="Cor do veículo" value="{{ $edit ? $veiculo->cor : '' }}">
-            </div>
-
-            <div class="col-md-6">
-                <label for="observacoes" class="form-label">Observação</label>
-                <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" style="resize: none">{{ old('observacoes', $edit ? $veiculo->observacoes : '') }}</textarea>
-            </div>
-        </div>
-
-        <div class="col-12 d-flex gap-2 justify-content-end mt-3">
-            <button type="submit" class="btn btn-success rounded-pill px-4 me-2">{{ $edit ? "Alterar" : "Cadastrar" }}</button>
-            <button type="reset" class="btn btn-outline-danger rounded-pill px-4 me-2">Limpar</button>
-            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Cancelar</a>
-        </div>
-    </form>
+    </div>
 </div>
 
 @endsection

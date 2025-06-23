@@ -11,9 +11,32 @@ class VeiculoController extends Controller
     /**
      * Exibe a lista de veículos com paginação.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $veiculos = Veiculo::latest()->paginate(10); // Adicionada paginação
+        $query = Veiculo::query();
+
+        // Filtro de busca: placa, marca ou modelo (contém)
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('placa', 'like', "%{$search}%")
+                ->orWhere('marca', 'like', "%{$search}%")
+                ->orWhere('modelo', 'like', "%{$search}%");
+            });
+        }
+
+        // Filtro por cor (exato ou parcial, ajusta se quiser)
+        if ($cor = $request->input('cor')) {
+            $query->where('cor', 'like', "%{$cor}%");
+        }
+
+        // Filtro por tipo (exato)
+        if ($tipo = $request->input('tipo')) {
+            $query->where('tipo', $tipo);
+        }
+
+        // Ordena por último criado e pagina
+        $veiculos = $query->latest()->paginate(10)->withQueryString();
+
         return view('pages.veiculos.index', compact('veiculos'));
     }
 

@@ -13,18 +13,56 @@ class RegistroController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $registros = Registro::with('visitante')->orderBy('entrada', 'desc')->paginate(10);
-        //$registros = Registro::orderBy('entrada', 'desc')->paginate(10);
-        //$registros = Registro::orderBy('entrada', 'asc')->paginate(10);
+        $query = Registro::with('visitante')->orderBy('entrada', 'desc');
 
-        // Totais calculados com base em todos os registros
+        // Filtro por data de entrada
+        if ($request->filled('entrada_inicio')) {
+            $query->whereDate('entrada', '>=', $request->entrada_inicio);
+        }
+
+        if ($request->filled('entrada_fim')) {
+            $query->whereDate('entrada', '<=', $request->entrada_fim);
+        }
+
+        // Filtro por visitante
+        if ($request->filled('visitante_id')) {
+            $query->where('id_visitante', $request->visitante_id);
+        }
+
+        // Filtro por tipo de acesso
+        if ($request->filled('tipo')) {
+            if ($request->tipo == 'entrada') {
+                $query->whereNotNull('entrada')->whereNull('saida');
+            } elseif ($request->tipo == 'saida') {
+                $query->whereNotNull('saida');
+            }
+        }
+
+        // Filtro por busca textual (nome, documento, bloco, apartamento...)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nome', 'like', "%{$search}%")
+                ->orWhere('documento', 'like', "%{$search}%")
+                ->orWhere('empresa', 'like', "%{$search}%")
+                ->orWhere('placa', 'like', "%{$search}%")
+                ->orWhere('veiculo', 'like', "%{$search}%");
+            });
+        }
+
+        $registros = $query->paginate(10);
+
+        // Totais gerais
         $totalAcessos = Registro::count();
         $entradasHoje = Registro::whereDate('entrada', Carbon::today())->count();
         $saidasHoje = Registro::whereDate('saida', Carbon::today())->count();
 
-        return view('pages.registros.index', compact('registros', 'totalAcessos', 'entradasHoje', 'saidasHoje'));
+        // Visitantes para o filtro
+        $visitantes = Visitante::orderBy('nome')->get();
+
+        return view('pages.registros.index', compact('registros', 'visitantes', 'totalAcessos', 'entradasHoje', 'saidasHoje'));
     }
 
     /**
@@ -132,7 +170,7 @@ class RegistroController extends Controller
      */
     public function getRegisterByVisitante($id)
     {
-        $visitante = Visitante::with('veiculo')->find($id);
+        $visitante = Visitante::with(['veiculo', 'prestador'])->find($id);
 
         if (!$visitante) {
             return response()->json(['error' => 'Visitante não encontrado'], 404);
@@ -141,7 +179,7 @@ class RegistroController extends Controller
         return response()->json([
             'nome' => $visitante->nome,
             'documento' => $visitante->documento,
-            'empresa' => $visitante->empresa,
+            'empresa' => $visitante->prestador->nome ?? '', // Corrigido para vir do relacionamento
             'modelo' => $visitante->veiculo->modelo ?? '',
             'placa' => $visitante->veiculo->placa ?? '',
             'image' => $visitante->image ?? ''

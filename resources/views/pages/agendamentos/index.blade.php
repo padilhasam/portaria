@@ -12,13 +12,13 @@
         </span>
         Agendamentos de Áreas Comuns
     </h3>
-    <a href="{{ route('create.agendamento') }}" class="btn btn-success btn-sm text-white rounded-pill shadow-sm">
+    <a href="{{ route('create.agendamento') }}" class="btn btn-primary btn-sm rounded-pill text-white">
         <i class="bi bi-plus-circle me-1"></i> Novo Agendamento
     </a>
 </header>
 
 @include('components.alerts', [
-    'success' => session('success'), 
+    'success' => session('success'),
     'message' => session('message')
 ])
 
@@ -51,7 +51,7 @@
                     </li>
                     <li class="d-flex align-items-center gap-2">
                         <span class="rounded" style="width: 14px; height: 14px; background-color: #dd4e0c;"></span>
-                        Biblioteca  
+                        Biblioteca
                     </li>
                 </ul>
             </div>

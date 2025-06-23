@@ -11,29 +11,26 @@ class Registro extends Model
 
     protected $table = 'registros';
 
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'nome',
-        'documento',
-        'empresa',
+        'id_visitante',   // FK para visitante
+        'tipo_acesso',    // entrada, saida, etc
+        'observacoes',
+        'entrada',        // datetime
+        'saida',          // datetime
         'veiculo',
         'placa',
-        'img', // nome da imagem salva
-        'tipo_acesso',
-        'observacoes',
-        'entrada',
-        'saida',
-        'id_visitante' // adicionado aqui
+        'empresa',
+        'img',
+        // outros campos que achar necessário
+    ];
+
+    protected $casts = [
+        'entrada' => 'datetime',
+        'saida' => 'datetime',
     ];
 
     public function visitante()
     {
         return $this->belongsTo(Visitante::class, 'id_visitante');
     }
-    
 }

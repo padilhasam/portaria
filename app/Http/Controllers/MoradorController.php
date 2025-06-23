@@ -12,24 +12,35 @@ use Illuminate\Http\Request;
 class MoradorController extends Controller
 {
 
-    
+
 
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
+       $search = $request->input('search');
+        $tipo = $request->input('tipo_morador');
+
         $moradores = Morador::query()
             ->when($search, function ($query, $search) {
-                return $query->where('nome', 'like', "%{$search}%")
-                             ->orWhere('documento', 'like', "%{$search}%");
+                return $query->where(function ($q) use ($search) {
+                    $q->where('nome', 'like', "%{$search}%")
+                    ->orWhere('documento', 'like', "%{$search}%")
+                    ->orWhereHas('apartamento', function ($q2) use ($search) {
+                        $q2->where('bloco', 'like', "%{$search}%")
+                            ->orWhere('numero', 'like', "%{$search}%");
+                    });
+                });
             })
-            ->with(['apartamento', 'veiculo']) // Eager load relationships
+            ->when($tipo, function ($query, $tipo) {
+                return $query->where('tipo_morador', $tipo);
+            })
+            ->with(['apartamento', 'veiculo']) // Eager load
             ->latest()
-            ->paginate(10); // Paginação de resultados
+            ->paginate(10);
 
-        return view('pages.moradores.index', compact('moradores', 'search'));
+        return view('pages.moradores.index', compact('moradores', 'search', 'tipo'));
     }
 
     /**
@@ -78,7 +89,7 @@ class MoradorController extends Controller
     public function edit(string $id)
     {
         $morador = Morador::with(['apartamento', 'veiculo'])->findOrFail($id); // Eager load relationships
-        
+
         $apartamentos = Apartamento::orderBy('numero')->get();
         $veiculos = Veiculo::orderBy('placa')->get();
 

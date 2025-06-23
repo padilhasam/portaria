@@ -8,10 +8,42 @@ use Illuminate\Http\Request;
 
 class PrestadorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $prestadores = Prestador::with('veiculo')->orderBy('created_at', 'desc')->paginate(10);
-        return view('pages.prestadores.index', compact('prestadores'));
+        $search = $request->input('search');
+    $empresa = $request->input('empresa');
+    $dataInicio = $request->input('data_inicio');
+    $dataFim = $request->input('data_fim');
+
+    // Buscar empresas distintas para popular o select
+    $empresas = Prestador::select('empresa')
+                ->distinct()
+                ->orderBy('empresa')
+                ->pluck('empresa');
+
+    // Montar query principal com filtros
+    $prestadores = Prestador::with('veiculo')
+        ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('empresa', 'like', "%{$search}%")
+                  ->orWhere('documento', 'like', "%{$search}%")
+                  ->orWhere('cnpj', 'like', "%{$search}%")
+                  ->orWhere('prestador', 'like', "%{$search}%");
+            });
+        })
+        ->when($empresa, function ($query, $empresa) {
+            $query->where('empresa', $empresa);
+        })
+        ->when($dataInicio, function ($query, $dataInicio) {
+            $query->whereDate('created_at', '>=', $dataInicio);
+        })
+        ->when($dataFim, function ($query, $dataFim) {
+            $query->whereDate('created_at', '<=', $dataFim);
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+        return view('pages.prestadores.index', compact('prestadores', 'empresas'));
     }
 
     public function create()

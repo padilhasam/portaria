@@ -2,24 +2,83 @@
 
 @section('page_dashboard')
 
-<header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
-    <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
-        <span class="icon-container" style="width: 32px; height: 32px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-buildings-fill" viewBox="0 0 16 16">
-                <path d="M15 .5a.5.5 0 0 0-.724-.447l-8 4A.5.5 0 0 0 6 4.5v3.14L.342 9.526A.5.5 0 0 0 0 10v5.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V14h1v1.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5zM2 11h1v1H2zm2 0h1v1H4zm-1 2v1H2v-1zm1 0h1v1H4zm9-10v1h-1V3zM8 5h1v1H8zm1 2v1H8V7zM8 9h1v1H8zm2 0h1v1h-1zm-1 2v1H8v-1zm1 0h1v1h-1zm3-2v1h-1V9zm-1 2h1v1h-1zm-2-4h1v1h-1zm3 0v1h-1V7zm-2-2v1h-1V5zm1 0h1v1h-1z"/>
-            </svg>
-        </span>
-        Cadastro de Apartamentos
-    </h3>
-    <a href="{{ route('create.apartamento') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
-        Novo Apartamento
-    </a>
+<header class="mb-4 px-4 py-3 bg-white border rounded shadow-sm">
+
+    {{-- Linha do título + botão --}}
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
+        <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3" style="font-size: 1.75rem;">
+            <span class="icon-container d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px; background: linear-gradient(135deg, #0d6efd, #0a58ca); border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-buildings-fill" viewBox="0 0 16 16">
+                    <path d="M15 .5a.5.5 0 0 0-.724-.447l-8 4A.5.5 0 0 0 6 4.5v3.14L.342 9.526A.5.5 0 0 0 0 10v5.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V14h1v1.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5zM2 11h1v1H2zm2 0h1v1H4zm-1 2v1H2v-1zm1 0h1v1H4zm9-10v1h-1V3zM8 5h1v1H8zm1 2v1H8V7zM8 9h1v1H8zm2 0h1v1h-1zm-1 2v1H8v-1zm1 0h1v1h-1zm3-2v1h-1V9zm-1 2h1v1h-1zm-2-4h1v1h-1zm3 0v1h-1V7zm-2-2v1h-1V5zm1 0h1v1h-1z"/>
+                </svg>
+            </span>
+            Cadastro de Apartamentos
+        </h3>
+
+        <a href="{{ route('create.apartamento') }}" class="btn btn-primary btn-sm rounded-pill text-white" title="Adicionar novo apartamento" aria-label="Adicionar novo apartamento">
+            Novo Apartamento
+        </a>
+    </div>
+
+    {{-- Linha dos filtros --}}
+    <form method="GET" action="{{ route('index.apartamento') }}" class="d-flex flex-wrap gap-3 align-items-end justify-content-end">
+
+        {{-- Buscar --}}
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 300px; max-width: 400px;">
+            <label for="search" class="form-label mb-1 small text-secondary">Buscar</label>
+            <input type="text" name="search" id="search"
+                   class="form-control form-control-sm rounded-pill border-dark"
+                   placeholder="Bloco, Número, Proprietário..." value="{{ request('search') }}"
+                   aria-label="Buscar por bloco, número ou proprietário">
+        </div>
+
+        {{-- Bloco --}}
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 260px;">
+            <label for="bloco" class="form-label mb-1 small text-secondary">Bloco</label>
+            <input type="text" name="bloco" id="bloco"
+                   class="form-control form-control-sm rounded"
+                   placeholder="Ex: A, B, C" value="{{ request('bloco') }}"
+                   aria-label="Filtrar por bloco">
+        </div>
+
+        {{-- Número --}}
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 140px;">
+            <label for="numero" class="form-label mb-1 small text-secondary">Número</label>
+            <input type="text" name="numero" id="numero"
+                   class="form-control form-control-sm rounded"
+                   placeholder="Ex: 101, 202" value="{{ request('numero') }}"
+                   aria-label="Filtrar por número do apartamento">
+        </div>
+
+        {{-- Tipo de Moradia --}}
+        <div class="d-flex flex-column" style="min-width: 140px;">
+            <label for="tipo_moradia" class="form-label mb-1 small text-secondary">Tipo</label>
+            <select name="tipo_moradia" id="tipo_moradia" class="form-select form-select-sm rounded" aria-label="Filtrar por tipo de moradia">
+                <option value="">Todos</option>
+                <option value="propria" @selected(request('tipo_moradia') == 'propria')>Própria</option>
+                <option value="aluguel" @selected(request('tipo_moradia') == 'aluguel')>Aluguel</option>
+            </select>
+        </div>
+
+        {{-- Botões --}}
+        <div class="d-flex gap-2" style="min-width: 160px;">
+            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 mb-2 mb-md-0" title="Aplicar filtro" aria-label="Filtrar">
+                🔍 Filtrar
+            </button>
+            <a href="{{ route('index.apartamento') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4" title="Limpar filtros" aria-label="Limpar filtros">
+                ❌ Limpar
+            </a>
+        </div>
+
+    </form>
+
 </header>
 
 <!-- Exibição de mensagens de sucesso ou erro -->
 <div>
     @include('components.alerts', [
-        'success' => session()->get('success'), 
+        'success' => session()->get('success'),
         'message' => session()->get('message')
     ])
 </div>

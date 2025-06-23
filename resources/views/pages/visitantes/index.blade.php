@@ -2,34 +2,72 @@
 
 @section('page_dashboard')
 
-<header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
-    <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
-        <span class="icon-container" style="width: 32px; height: 32px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-badge-fill" viewBox="0 0 16 16">
-                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm4.5 0a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6m5 2.755C12.146 12.825 10.623 12 8 12s-4.146.826-5 1.755V14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1z"/>
-            </svg>
-        </span>
-        Cadastro de Visitantes
-    </h3>
-    <div class="d-flex align-items-center gap-3">
-        <form method="GET" action="{{ route('index.visitante') }}" class="d-flex align-items-center" role="search">
-            <input type="text" name="search" class="form-control form-control-sm me-2 rounded-pill border-dark" placeholder="Buscar por nome, CPF..." value="{{ request('search') }}">
-            <button class="btn btn-outline-dark btn-sm rounded-pill" type="submit">
-                <span class="d-none d-sm-inline">Buscar</span>
-                <span class="d-inline d-sm-none">🔍</span>
-            </button>
-        </form>
+<header class="mb-4 px-4 py-3 bg-white border rounded shadow-sm">
 
-        <a href="{{ route('create.visitante') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-3">
+        <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3" style="font-size: 1.75rem;">
+            <span class="icon-container d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px; background: linear-gradient(135deg, #4e73df, #224abe); border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-person-badge-fill" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm4.5 0a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6m5 2.755C12.146 12.825 10.623 12 8 12s-4.146.826-5 1.755V14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1z"/>
+                </svg>
+            </span>
+            Cadastro de Visitantes
+        </h3>
+
+        <a href="{{ route('create.visitante') }}" class="btn btn-primary btn-sm rounded-pill text-white" aria-label="Botão para criar novo visitante">
             Novo Visitante
         </a>
     </div>
+
+    <form method="GET" action="{{ route('index.visitante') }}" class="d-flex flex-wrap gap-3 align-items-end">
+
+        {{-- Campo de busca --}}
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 180px;">
+            <label for="search" class="form-label mb-1 small text-secondary">Buscar</label>
+            <input type="search" name="search" id="search" class="form-control form-control-sm rounded-pill border-dark" placeholder="Nome, CPF, Telefone..." value="{{ request('search') }}">
+        </div>
+
+        {{-- Filtro por Empresa Prestadora --}}
+        <div class="d-flex flex-column" style="min-width: 150px;">
+            <label for="id_prestador" class="form-label mb-1 small text-secondary">Empresa</label>
+            <select name="id_prestador" id="id_prestador" class="form-select form-select-sm rounded">
+                <option value="">Todas</option>
+                @foreach($prestadores as $prestador)
+                    <option value="{{ $prestador->id }}" {{ request('id_prestador') == $prestador->id ? 'selected' : '' }}>
+                        {{ $prestador->empresa }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        {{-- Filtro por Veículo --}}
+        <div class="d-flex flex-column" style="min-width: 150px;">
+            <label for="id_veiculo" class="form-label mb-1 small text-secondary">Carro</label>
+            <select name="id_veiculo" id="id_veiculo" class="form-select form-select-sm rounded">
+                <option value="">Todos</option>
+                @foreach($veiculos as $veiculo)
+                    <option value="{{ $veiculo->id }}" {{ request('id_veiculo') == $veiculo->id ? 'selected' : '' }}>
+                        {{ $veiculo->modelo }} - {{ $veiculo->placa }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        {{-- Botões --}}
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4">🔍 Filtrar</button>
+            <a href="{{ route('index.visitante') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">❌ Limpar</a>
+        </div>
+
+    </form>
+
 </header>
 
 <!-- Exibição de mensagens de sucesso ou erro -->
 <div>
     @include('components.alerts', [
-        'success' => session()->get('success'), 
+        'success' => session()->get('success'),
         'message' => session()->get('message')
     ])
 </div>
@@ -106,9 +144,9 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0)" 
-                                                class="dropdown-item d-flex align-items-center gap-2 view-dados" 
-                                                data-bs-toggle="modal" 
+                                            <a href="javascript:void(0)"
+                                                class="dropdown-item d-flex align-items-center gap-2 view-dados"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#viewDataModalVisitante"
                                                 data-nome="{{ $visitante->nome ?? 'Não informado'}}"
                                                 data-cpf="{{ $visitante->documento ?? 'Não informado'}}"

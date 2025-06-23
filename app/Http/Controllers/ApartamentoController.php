@@ -11,9 +11,33 @@ class ApartamentoController extends Controller
     /**
      * Exibe a lista de apartamentos com paginação.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $apartamentos = Apartamento::latest()->paginate(10);
+        $query = Apartamento::query();
+
+        // Filtro por busca geral (ex: número, bloco, ramal)
+        if ($search = $request->input('search')) {
+            $query->where(function($q) use ($search) {
+                $q->where('numero', 'like', "%{$search}%")
+                ->orWhere('bloco', 'like', "%{$search}%")
+                ->orWhere('ramal', 'like', "%{$search}%")
+                ->orWhere('vaga', 'like', "%{$search}%")
+                ->orWhere('status_vaga', 'like', "%{$search}%");
+            });
+        }
+
+        // Filtro por bloco específico
+        if ($bloco = $request->input('bloco')) {
+            $query->where('bloco', $bloco);
+        }
+
+        // Filtro por situação (ativo, inativo)
+        if ($situacao = $request->input('situacao')) {
+            $query->where('situacao', $situacao);
+        }
+
+        $apartamentos = $query->latest()->paginate(10)->withQueryString();
+
         return view('pages.apartamentos.index', compact('apartamentos'));
     }
 

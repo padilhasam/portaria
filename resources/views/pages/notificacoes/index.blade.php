@@ -3,34 +3,47 @@
 @section('page_dashboard')
 
 {{-- Cabeçalho --}}
-<header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
-    <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
-        <span class="icon-container" style="width: 32px; height: 32px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
-                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.628-14.885A1.5 1.5 0 0 1 10.5 2h.5a1.5 1.5 0 0 1 1.5 1.5v.086c0 .11.009.219.026.327C13.127 6.25 14 7.5 14 9v1l.447.894a.5.5 0 0 1-.447.75H2a.5.5 0 0 1-.447-.75L2 10V9c0-1.5.873-2.75 1.474-5.087A1.5 1.5 0 0 1 5.5 2h.5a1.5 1.5 0 0 1 1.372-.885z"/>
-            </svg>
-        </span>
-        Ocorrências
-    </h3>
+<header class="mb-4 px-4 py-3 bg-white border rounded shadow-sm">
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-3">
+        <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3" style="font-size: 1.75rem;">
+            <span class="icon-container d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px; background: linear-gradient(135deg, #0d6efd, #0a58ca); border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.628-14.885A1.5 1.5 0 0 1 10.5 2h.5a1.5 1.5 0 0 1 1.5 1.5v.086c0 .11.009.219.026.327C13.127 6.25 14 7.5 14 9v1l.447.894a.5.5 0 0 1-.447.75H2a.5.5 0 0 1-.447-.75L2 10V9c0-1.5.873-2.75 1.474-5.087A1.5 1.5 0 0 1 5.5 2h.5a1.5 1.5 0 0 1 1.372-.885z"/>
+                </svg>
+            </span>
+            Ocorrências
+        </h3>
+        <a href="{{ route('create.notificacao') }}" class="btn btn-primary btn-sm rounded-pill text-white">
+            Nova Ocorrência
+        </a>
+    </div>
 
-    <form method="GET" action="{{ route('index.notificacao') }}" class="d-flex flex-wrap align-items-end gap-3">
+    <form method="GET" action="{{ route('index.notificacao') }}" class="d-flex flex-wrap gap-3 align-items-end">
+
+        {{-- Busca por texto --}}
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 200px;">
+            <label for="search" class="form-label mb-1 small">Buscar:</label>
+            <input type="text" name="search" id="search" class="form-control form-control-sm rounded-pill"
+                placeholder="Título ou Mensagem" value="{{ request('search') }}">
+        </div>
 
         {{-- Data de Início --}}
-        <div>
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 150px;">
             <label for="data_inicio" class="form-label mb-1 small">De:</label>
             <input type="date" name="data_inicio" id="data_inicio" class="form-control form-control-sm"
                 value="{{ request('data_inicio') }}">
         </div>
 
         {{-- Data de Fim --}}
-        <div>
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 150px;">
             <label for="data_fim" class="form-label mb-1 small">Até:</label>
             <input type="date" name="data_fim" id="data_fim" class="form-control form-control-sm"
                 value="{{ request('data_fim') }}">
         </div>
 
         {{-- Criador --}}
-        <div>
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 180px;">
             <label for="criador" class="form-label mb-1 small">Criador:</label>
             <select name="criador" id="criador" class="form-select form-select-sm">
                 <option value="">Todos</option>
@@ -43,7 +56,7 @@
         </div>
 
         {{-- Status --}}
-        <div>
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 150px;">
             <label for="status" class="form-label mb-1 small">Status:</label>
             <select name="status" id="status" class="form-select form-select-sm">
                 <option value="">Todos</option>
@@ -52,25 +65,12 @@
             </select>
         </div>
 
-        {{-- Busca por texto --}}
-        <div>
-            <label for="search" class="form-label mb-1 small">Buscar:</label>
-            <input type="text" name="search" id="search" class="form-control form-control-sm rounded-pill"
-                placeholder="Título ou Mensagem" value="{{ request('search') }}">
-        </div>
-
         {{-- Ações --}}
-        <div class="d-flex gap-2 align-items-end">
-            <button type="submit" class="btn btn-outline-dark btn-sm rounded-pill">🔍 Filtrar</button>
-            <a href="{{ route('index.notificacao') }}" class="btn btn-outline-secondary btn-sm rounded-pill">❌ Limpar</a>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 mb-2 mb-md-0">🔍 Filtrar</button>
+            <a href="{{ route('index.notificacao') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4 mb-2 mb-md-0">❌ Limpar</a>
         </div>
 
-        {{-- Nova Ocorrência --}}
-        <div class="ms-auto">
-            <a href="{{ route('create.notificacao') }}" class="btn btn-success btn-sm text-white rounded-pill">
-                Nova Ocorrência
-            </a>
-        </div>
     </form>
 </header>
 

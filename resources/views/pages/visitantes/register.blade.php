@@ -19,7 +19,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
     </div>
     @endif
-    
+
     @if($errors->any())
     <div id="validation-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
         <ul class="mb-0">
@@ -30,7 +30,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
     </div>
     @endif
-    
+
 <header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
     <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
         <span class="icon-container" style="width: 32px; height: 32px;">
@@ -67,23 +67,23 @@
                     <div class="col-lg-9">
                         <div class="row g-3">
                             <div class="col-md-8">
-                                <label for="nome" class="form-label">Nome</label>
+                                <label for="nome" class="form-label fw-semibold">Nome<span class="text-danger">*</span></label>
                                 <input name="nome" type="text" class="form-control rounded-pill border-dark" id="nome" placeholder="Nome Completo" required
                                     value="{{ old('nome', $edit ? $visitante->nome : '') }}">
                             </div>
                             <div class="col-md-4">
-                                <label for="documento" class="form-label">CPF</label>
+                                <label for="documento" class="form-label fw-semibold">CPF<span class="text-danger">*</span></label>
                                 <input name="documento" type="text" class="form-control rounded-pill border-dark" id="documento" placeholder="CPF" required
                                     value="{{ old('documento', $edit ? $visitante->documento : '') }}"
                                     >
                                 <div id="cpf-error" class="invalid-feedback d-none">CPF inválido</div>
                             </div>
                             <div class="col-md-4">
-                                <label for="celular" class="form-label">Telefone</label>
-                                <input name="celular" type="text" class="form-control rounded-pill border-dark" id="celular" placeholder="Whatsapp" value="{{ old('celular', $edit ? $visitante->celular : '') }}">
+                                <label for="celular" class="form-label fw-semibold">Celular<span class="text-danger">*</span></label>
+                                <input name="celular" type="text" class="form-control rounded-pill border-dark" id="celular" placeholder="Whatsapp" value="{{ old('celular', $edit ? $visitante->celular : '') }}" required>
                             </div>
                             <div class="col-md-8">
-                                <label for="id_prestador" class="form-label">Empresa</label>
+                                <label for="id_prestador" class="form-label fw-semibold">Empresa</label>
                                 <div class="d-flex align-items-end gap-2">
                                     <select class="form-select rounded-pill border-dark" id="id_prestador_visitantes" name="id_prestador">
                                         <option value="">Selecione a empresa prestadora...</option>
@@ -104,7 +104,7 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <label for="observacoes" class="form-label">Observação</label>
+                                <label for="observacoes" class="form-label fw-semibold">Observação</label>
                                 <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" style="resize: none">{{ old('observacoes', $edit ? $visitante->observacoes : '') }}</textarea>
                             </div>
                         </div>
@@ -158,9 +158,9 @@
             </div>
             <div class="card-body row g-3">
                 <div class="col-md-3">
-                    <label for="id_veiculo" class="form-label">Placa</label>
+                    <label for="id_veiculo" class="form-label fw-semibold">Placa</label>
                     <div class="d-flex gap-2">
-                        <select name="id_veiculo" id="id_veiculo" class="form-select rounded-pill border-dark" required>
+                        <select name="id_veiculo" id="id_veiculo" class="form-select rounded-pill border-dark">
                             <option value="">Selecione a placa do veículo...</option>
                             @foreach ($veiculos as $veiculo)
                                 <option value="{{ $veiculo->id }}"
@@ -172,17 +172,17 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="modelo" class="form-label">Modelo</label>
+                    <label for="modelo" class="form-label fw-semibold">Modelo</label>
                     <input type="text" name="modelo" id="modelo" class="form-control rounded-pill border-dark" placeholder="Modelo do veículo" readonly required
                         value="{{ $edit ? optional($visitante->veiculo)->modelo : '' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="marca" class="form-label">Marca</label>
+                    <label for="marca" class="form-label fw-semibold">Marca</label>
                     <input type="text" name="marca" id="marca" class="form-control rounded-pill border-dark" placeholder="Marca do veículo" readonly required
                         value="{{ $edit ? optional($visitante->veiculo)->marca : '' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="cor" class="form-label">Cor</label>
+                    <label for="cor" class="form-label fw-semibold">Cor</label>
                     <input type="text" name="cor" id="cor" class="form-control rounded-pill border-dark" placeholder="Cor do veículo" readonly required
                         value="{{ $edit ? optional($visitante->veiculo)->cor : '' }}">
                 </div>
@@ -195,7 +195,7 @@
             <button type="reset" class="btn btn-outline-danger rounded-pill">Limpar</button>
             <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Cancelar</a>
         </div>
-        
+
         @include('components.modal-camera')
 
     </form>

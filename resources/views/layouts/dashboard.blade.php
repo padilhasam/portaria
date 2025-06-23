@@ -47,7 +47,7 @@
                         <a href="{{ route('index.veiculo') }}" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('veiculo*') ? 'active' : '' }}">
                             {{ svg('hugeicons-car-01') }} Veículos
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('correspondencia*') ? 'active' : '' }}">
+                        <a href="{{ route('index.correspondencia') }}" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('correspondencia*') ? 'active' : '' }}">
                             {{ svg('hugeicons-package-delivered') }} Correspondências
                         </a>
                         <a href="{{ route('index.prestador') }}" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('servicos*') ? 'active' : '' }}">

@@ -2,22 +2,84 @@
 
 @section('page_dashboard')
 
-<header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
-    <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
-       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-car-front-fill" viewBox="0 0 16 16">
-        <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679q.05.242.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.8.8 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2m10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2M6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2zM2.906 5.189a.51.51 0 0 0 .497.731c.91-.073 3.35-.17 4.597-.17s3.688.097 4.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 11.691 3H4.309a.5.5 0 0 0-.447.276L2.906 5.19Z"/>
-        </svg>
-        Cadastro de Veículos
-    </h3>
-    <a href="{{ route('create.veiculo') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
-        Novo Veículo
-    </a>
+<header class="mb-4 px-4 py-3 bg-white border rounded shadow-sm">
+
+    {{-- Linha do título + botão --}}
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-3">
+        <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3" style="font-size: 1.75rem;">
+            <span class="icon-container d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px; background: linear-gradient(135deg, #4e73df, #224abe); border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                <!-- SVG do ícone -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-car-front-fill" viewBox="0 0 16 16">
+                    <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679q.05.242.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.8.8 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2m10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2M6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2zM2.906 5.189a.51.51 0 0 0 .497.731c.91-.073 3.35-.17 4.597-.17s3.688.097 4.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 11.691 3H4.309a.5.5 0 0 0-.447.276L2.906 5.19Z"/>
+                </svg>
+            </span>
+            Cadastro de Veículos
+        </h3>
+        <a href="{{ route('create.veiculo') }}"
+           class="btn btn-primary btn-sm rounded-pill text-white"
+           title="Adicionar novo veículo" aria-label="Adicionar novo veículo">
+            Novo Veículo
+        </a>
+    </div>
+
+    <form method="GET" action="{{ route('index.veiculo') }}"
+        class="d-flex flex-wrap align-items-end gap-3 justify-content-end">
+
+        {{-- Buscar --}}
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 200px;">
+            <label for="search" class="form-label mb-1 small text-secondary">Buscar</label>
+            <input type="text" name="search" id="search"
+                class="form-control form-control-sm rounded-pill"
+                placeholder="Placa, Modelo, Marca..."
+                value="{{ request('search') }}"
+                aria-label="Buscar por placa, modelo ou marca">
+        </div>
+
+        {{-- Cor --}}
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 200px;">
+            <label for="cor" class="form-label mb-1 small text-secondary">Cor</label>
+            <input type="text" name="cor" id="cor"
+                class="form-control form-control-sm rounded"
+                placeholder="Ex: Vermelho"
+                value="{{ request('cor') }}"
+                aria-label="Filtrar por cor">
+        </div>
+
+        {{-- Tipo --}}
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 200px;">
+            <label for="tipo" class="form-label mb-1 small text-secondary">Tipo</label>
+            <select name="tipo" id="tipo"
+                    class="form-select form-select-sm rounded"
+                    aria-label="Filtrar por tipo de veículo">
+                <option value="">Todos</option>
+                <option value="Carro" @selected(request('tipo') == 'Carro')>Carro</option>
+                <option value="Moto" @selected(request('tipo') == 'Moto')>Moto</option>
+                <option value="Outro" @selected(request('tipo') == 'Outro')>Outro</option>
+            </select>
+        </div>
+
+        {{-- Ações --}}
+        <div class="d-flex gap-2" style="min-width: 160px;">
+            <button type="submit"
+                    class="btn btn-primary btn-sm rounded-pill px-4"
+                    title="Aplicar filtro" aria-label="Filtrar">
+                🔍 Filtrar
+            </button>
+            <a href="{{ route('index.veiculo') }}"
+            class="btn btn-outline-secondary btn-sm rounded-pill px-4"
+            title="Limpar filtros" aria-label="Limpar filtros">
+                ❌ Limpar
+            </a>
+        </div>
+
+    </form>
 </header>
 
 <!-- Exibição de mensagens de sucesso ou erro -->
 <div>
     @include('components.alerts', [
-        'success' => session()->get('success'), 
+        'success' => session()->get('success'),
         'message' => session()->get('message')
     ])
 </div>
@@ -44,7 +106,7 @@
                 <tbody>
                     @forelse ($veiculos as $veiculo)
                     <tr>
-                        <td>                        
+                        <td>
                             @if ($veiculo->tipo === 'Carro')
                                 <span class="badge bg-primary text-white">Carro</span>
                             @elseif ($veiculo->tipo === 'Moto')

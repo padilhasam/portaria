@@ -63,38 +63,38 @@
 
                 {{-- Empresa Prestadora --}}
                 <div class="col-md-6">
-                    <label for="empresa" class="form-label">Razão Social</label>
+                    <label for="empresa" class="form-label fw-semibold">Razão Social<span class="text-danger">*</span></label>
                     <input type="text" name="empresa" class="form-control rounded-pill border-dark" id="empresa" value="{{ old('empresa', $edit ? $prestador->empresa : '') }}" placeholder="Razão Social" required>
                 </div>
 
                 {{-- CNPJ --}}
                 <div class="col-md-3">
-                    <label for="cnpj" class="form-label">CNPJ</label>
+                    <label for="cnpj" class="form-label fw-semibold">CNPJ<span class="text-danger">*</span></label>
                     <input type="text" name="cnpj" class="form-control rounded-pill border-dark" value="{{ old('cnpj', $edit ? $prestador->cnpj : '') }}" placeholder="CNPJ" required>
                 </div>
-                
+
                 <div class="col-md-3">
-                    <label for="tel_fixo" class="form-label">Telefone Fixo</label>
+                    <label for="tel_fixo" class="form-label fw-semibold">Telefone Fixo<span class="text-danger">*</span></label>
                     <input name="tel_fixo" type="text" class="form-control rounded-pill border-dark" id="tel_fixo" placeholder="Telefone Fixo" required
                     value="{{ old('tel_fixo', $edit ? $prestador->tel_fixo : '') }}">
                 </div>
 
                 <div class="col-md-3">
-                    <label for="email" class="form-label">E-mail</label>
+                    <label for="email" class="form-label fw-semibold">E-mail<span class="text-danger">*</span></label>
                     <input name="email" type="email" class="form-control rounded-pill border-dark" id="email" placeholder="E-mail" required
                         value="{{ old('email', $edit ? $prestador->email : '') }}">
                 </div>
 
                 {{-- Nome da Pessoa que Prestará o Serviço --}}
                 <div class="col-md-3">
-                    <label for="prestador" class="form-label">Responsável Legal</label>
+                    <label for="prestador" class="form-label fw-semibold">Responsável Legal<span class="text-danger">*</span></label>
                     <input type="text" name="prestador" class="form-control rounded-pill border-dark"
                     value="{{ old('prestador', $edit ? $prestador->prestador : '') }}" placeholder="Responsável da empresa" required>
                 </div>
 
                 {{-- Nome da Pessoa que Prestará o Serviço --}}
                 <div class="col-md-3">
-                    <label for="documento" class="form-label">CPF</label>
+                    <label for="documento" class="form-label fw-semibold">CPF<span class="text-danger">*</span></label>
                     <input name="documento" type="text" class="form-control rounded-pill border-dark" id="documento" placeholder="CPF" required
                         value="{{ old('documento', $edit ? $prestador->documento : '') }}"
                         >
@@ -103,19 +103,19 @@
 
 
             <div class="col-md-3">
-                <label for="celular" class="form-label">Celular</label>
+                <label for="celular" class="form-label fw-semibold">Celular<span class="text-danger">*</span></label>
                 <input name="celular" type="text" class="form-control rounded-pill border-dark" id="celular" placeholder="Whatsapp" required
                 value="{{ old('celular', $edit ? $prestador->celular : '') }}">
             </div>
 
             {{-- Acompanhantes --}}
             <div class="col-md-3">
-                <label for="acompanhante" class="form-label">Acompanhante</label>
+                <label for="acompanhante" class="form-label fw-semibold">Acompanhante</label>
                 <input type="text" name="acompanhante" class="form-control rounded-pill border-dark" value="{{ old('acompanhante', $edit ? $prestador->acompanhante : '') }}" placeholder="Funcionário">
             </div>
 
             <div class="col-9">
-                <label for="observacoes" class="form-label">Observação</label>
+                <label for="observacoes" class="form-label fw-semibold">Observação</label>
                 <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="2" style="resize: none">{{ old('observacoes', $edit ? $prestador->observacoes : '') }}</textarea>
             </div>
 
@@ -136,7 +136,7 @@
             </div>
             <div class="card-body row g-3">
                 <div class="col-md-3">
-                    <label for="id_veiculo" class="form-label">Placa</label>
+                    <label for="id_veiculo" class="form-label fw-semibold">Placa<span class="text-danger">*</span></label>
                     <div class="d-flex gap-2">
                         <select name="id_veiculo" id="id_veiculo" class="form-select rounded-pill border-dark" required>
                             <option value="">Selecione a placa do veículo...</option>
@@ -150,17 +150,17 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="modelo" class="form-label">Modelo</label>
+                    <label for="modelo" class="form-label fw-semibold">Modelo</span></label>
                     <input type="text" name="modelo" id="modelo" class="form-control rounded-pill border-dark" placeholder="Modelo do veículo" readonly required
                         value="{{ $edit ? optional($prestador->veiculo)->modelo : '' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="marca" class="form-label">Marca</label>
+                    <label for="marca" class="form-label fw-semibold">Marca</label>
                     <input type="text" name="marca" id="marca" class="form-control rounded-pill border-dark" placeholder="Marca do veículo" readonly required
                         value="{{ $edit ? optional($prestador->veiculo)->marca : '' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="cor" class="form-label">Cor</label>
+                    <label for="cor" class="form-label fw-semibold">Cor</label>
                     <input type="text" name="cor" id="cor" class="form-control rounded-pill border-dark" placeholder="Cor do veículo" readonly required
                         value="{{ $edit ? optional($prestador->veiculo)->cor : '' }}">
                 </div>

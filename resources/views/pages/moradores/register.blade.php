@@ -61,45 +61,66 @@
         <div class="card shadow-sm mb-2">
             <div class="card-header bg-light fw-bold">Dados Pessoais</div>
             <div class="card-body row g-3">
-                <div class="col-md-4">
-                    <label for="nome" class="form-label">Nome</label>
-                    <input name="nome" type="text" class="form-control rounded-pill border-dark" id="nome" placeholder="Nome Completo" required
+                 <div class="col-md-4">
+                    <label for="nome" class="form-label fw-semibold">Nome <span class="text-danger">*</span></label>
+                    <input name="nome" type="text" class="form-control rounded-pill border-dark @error('nome') is-invalid @enderror" id="nome" placeholder="Nome Completo" required
                         value="{{ old('nome', $edit ? $morador->nome : '') }}">
+                    @error('nome')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-4">
-                    <label for="documento" class="form-label">CPF</label>
-                    <input name="documento" type="text" class="form-control rounded-pill border-dark" id="documento" placeholder="CPF" required
+                    <label for="documento" class="form-label fw-semibold">CPF <span class="text-danger">*</span></label>
+                    <input name="documento" type="text" class="form-control rounded-pill border-dark @error('documento') is-invalid @enderror" id="documento" placeholder="CPF" required
                         value="{{ old('documento', $edit ? $morador->documento : '') }}">
-                        <div id="cpf-error" class="invalid-feedback d-none">CPF inválido</div> {{-- Replicar este campo em  outros formulários--}}
+                    <div id="cpf-error" class="invalid-feedback d-none">CPF inválido</div>
+                    @error('documento')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-4">
-                    <label for="nascimento" class="form-label">Nascimento</label>
-                    <input name="nascimento" type="date" class="form-control rounded-pill border-dark" id="nascimento" required
+                    <label for="nascimento" class="form-label fw-semibold">Nascimento <span class="text-danger">*</span></label>
+                    <input name="nascimento" type="date" class="form-control rounded-pill border-dark @error('nascimento') is-invalid @enderror" id="nascimento" required
                         value="{{ old('nascimento', $edit ? $morador->nascimento : '') }}">
+                    @error('nascimento')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="col-md-4">
-                    <label for="tel_fixo" class="form-label">Telefone Fixo</label>
-                    <input name="tel_fixo" type="text" class="form-control rounded-pill border-dark" id="tel_fixo" placeholder="Telefone Fixo" required
+                    <label for="tel_fixo" class="form-label fw-semibold">Telefone Fixo <span class="text-danger">*</span></label>
+                    <input name="tel_fixo" type="text" class="form-control rounded-pill border-dark @error('tel_fixo') is-invalid @enderror" id="tel_fixo" placeholder="Telefone Fixo" required
                         value="{{ old('tel_fixo', $edit ? $morador->tel_fixo : '') }}">
+                    @error('tel_fixo')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-4">
-                    <label for="celular" class="form-label">Celular</label>
-                    <input name="celular" type="text" class="form-control rounded-pill border-dark" id="celular" placeholder="Whatsapp" required
+                    <label for="celular" class="form-label fw-semibold">Celular <span class="text-danger">*</span></label>
+                    <input name="celular" type="text" class="form-control rounded-pill border-dark @error('celular') is-invalid @enderror" id="celular" placeholder="Whatsapp" required
                         value="{{ old('celular', $edit ? $morador->celular : '') }}">
+                    @error('celular')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-4">
-                    <label for="email" class="form-label">E-mail</label>
-                    <input name="email" type="email" class="form-control rounded-pill border-dark" id="email" placeholder="E-mail" required
+                    <label for="email" class="form-label fw-semibold">E-mail <span class="text-danger">*</span></label>
+                    <input name="email" type="email" class="form-control rounded-pill border-dark @error('email') is-invalid @enderror" id="email" placeholder="E-mail" required
                         value="{{ old('email', $edit ? $morador->email : '') }}">
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-4">
-                    <label for="tipo_morador" class="form-label">Tipo Morador</label>
-                    <select name="tipo_morador" id="tipo_morador" class="form-select rounded-pill border-dark" required>
+                    <label for="tipo_morador" class="form-label fw-semibold">Tipo Morador <span class="text-danger">*</span></label>
+                    <select name="tipo_morador" id="tipo_morador" class="form-select rounded-pill border-dark @error('tipo_morador') is-invalid @enderror" required>
                         <option value="">Selecione o tipo de morador...</option>
                         <option value="aluguel" {{ old('tipo_morador', $edit ? $morador->tipo_morador : '') == "aluguel" ? "selected" : "" }}>Aluguel</option>
                         <option value="propria" {{ old('tipo_morador', $edit ? $morador->tipo_morador : '') == "propria" ? "selected" : "" }}>Própria</option>
                     </select>
+                    @error('tipo_morador')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
         </div>
@@ -118,31 +139,32 @@
             </div>
             <div class="card-body row g-3">
                 <div class="col-md-3">
-                    <label for="id_apartamento" class="form-label">Apartamento</label>
-                    <div class="d-flex gap-2">
-                        <select name="id_apartamento" id="id_apartamento" class="form-select rounded-pill border-dark" required>
-                            <option value="">Selecione o apartamento...</option>
-                            @foreach ($apartamentos as $apartamento)
-                                <option value="{{ $apartamento->id }}"
-                                    {{ old('id_apartamento', $edit ? $morador->id_apartamento : '') == $apartamento->id ? 'selected' : '' }}>
-                                    Apto {{ $apartamento->numero }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <label for="id_apartamento" class="form-label fw-semibold">Apartamento <span class="text-danger">*</span></label>
+                    <select name="id_apartamento" id="id_apartamento" class="form-select rounded-pill border-dark @error('id_apartamento') is-invalid @enderror" required>
+                        <option value="">Selecione o apartamento...</option>
+                        @foreach ($apartamentos as $apartamento)
+                            <option value="{{ $apartamento->id }}"
+                                {{ old('id_apartamento', $edit ? $morador->id_apartamento : '') == $apartamento->id ? 'selected' : '' }}>
+                                Apto {{ $apartamento->numero }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('id_apartamento')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-3">
-                    <label for="bloco" class="form-label">Bloco</label>
-                    <input type="text" name="bloco" id="bloco" class="form-control rounded-pill border-dark" placeholder="Bloco" readonly required
+                    <label for="bloco" class="form-label fw-semibold">Bloco</label>
+                    <input type="text" name="bloco" id="bloco" class="form-control rounded-pill border-dark" placeholder="Bloco" readonly
                         value="{{ $edit ? optional($morador->apartamento)->bloco : '' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="ramal" class="form-label">Ramal</label>
+                    <label for="ramal" class="form-label fw-semibold">Ramal</label>
                     <input type="text" name="ramal" id="ramal" class="form-control rounded-pill border-dark" placeholder="Ramal" readonly
                         value="{{ $edit ? optional($morador->apartamento)->ramal : '' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="vaga" class="form-label">Vaga</label>
+                    <label for="vaga" class="form-label fw-semibold">Vaga</label>
                     <input type="text" name="vaga" id="vaga" class="form-control rounded-pill border-dark" placeholder="Vaga" readonly
                         value="{{ $edit ? optional($morador->apartamento)->vaga : '' }}">
                 </div>
@@ -163,33 +185,34 @@
             </div>
             <div class="card-body row g-3">
                 <div class="col-md-3">
-                    <label for="id_veiculo" class="form-label">Placa</label>
-                    <div class="d-flex gap-2">
-                        <select name="id_veiculo" id="id_veiculo" class="form-select rounded-pill border-dark" required>
-                            <option value="">Selecione a placa do veículo...</option>
-                            @foreach ($veiculos as $veiculo)
-                                <option value="{{ $veiculo->id }}"
-                                    {{ old('id_veiculo', $edit ? $visitante->id_veiculo : '') == $veiculo->id ? 'selected' : '' }}>
-                                    {{ $veiculo->placa }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <label for="id_veiculo" class="form-label fw-semibold">Placa <span class="text-danger">*</span></label>
+                    <select name="id_veiculo" id="id_veiculo" class="form-select rounded-pill border-dark @error('id_veiculo') is-invalid @enderror" required>
+                        <option value="">Selecione a placa do veículo...</option>
+                        @foreach ($veiculos as $veiculo)
+                            <option value="{{ $veiculo->id }}"
+                                {{ old('id_veiculo', $edit ? $morador->id_veiculo : '') == $veiculo->id ? 'selected' : '' }}>
+                                {{ $veiculo->placa }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('id_veiculo')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-3">
-                    <label for="modelo" class="form-label">Modelo</label>
-                    <input type="text" name="modelo" id="modelo" class="form-control rounded-pill border-dark" placeholder="Modelo do veículo" readonly required
-                        value="{{ $edit ? optional($visitante->veiculo)->modelo : '' }}">
+                    <label for="modelo" class="form-label fw-semibold">Modelo</label>
+                    <input type="text" name="modelo" id="modelo" class="form-control rounded-pill border-dark" placeholder="Modelo do veículo" readonly
+                        value="{{ $edit ? optional($morador->veiculo)->modelo : '' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="marca" class="form-label">Marca</label>
-                    <input type="text" name="marca" id="marca" class="form-control rounded-pill border-dark" placeholder="Marca do veículo" readonly required
-                        value="{{ $edit ? optional($visitante->veiculo)->marca : '' }}">
+                    <label for="marca" class="form-label fw-semibold">Marca</label>
+                    <input type="text" name="marca" id="marca" class="form-control rounded-pill border-dark" placeholder="Marca do veículo" readonly
+                        value="{{ $edit ? optional($morador->veiculo)->marca : '' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="cor" class="form-label">Cor</label>
-                    <input type="text" name="cor" id="cor" class="form-control rounded-pill border-dark" placeholder="Cor do veículo" readonly required
-                        value="{{ $edit ? optional($visitante->veiculo)->cor : '' }}">
+                    <label for="cor" class="form-label fw-semibold">Cor</label>
+                    <input type="text" name="cor" id="cor" class="form-control rounded-pill border-dark" placeholder="Cor do veículo" readonly
+                        value="{{ $edit ? optional($morador->veiculo)->cor : '' }}">
                 </div>
             </div>
         </div>

@@ -2,79 +2,124 @@
 
 @section('page_dashboard')
 
-    <header class="mb-2 px-4 py-3 bg-white border rounded shadow-sm d-flex align-items-center justify-content-between">
-        <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3">
-            <span class="icon-container" style="width: 32px; height: 32px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-shield-lock-fill" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.8 11.8 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7 7 0 0 0 1.048-.625 11.8 11.8 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.54 1.54 0 0 0-1.044-1.263 63 63 0 0 0-2.887-.87C9.843.266 8.69 0 8 0m0 5a1.5 1.5 0 0 1 .5 2.915l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99A1.5 1.5 0 0 1 8 5"/>
-                  </svg>
-            </span>
-            Registros de Acessos
-        </h3>
-        <div class="d-flex align-items-center gap-3">
-            <!-- Formulário de busca com design melhorado -->
-            <form method="GET" action="{{ route('index.morador') }}" class="d-flex align-items-center" role="search">
-                <input type="text" name="search" class="form-control form-control-sm me-2 rounded-pill border-dark" placeholder="Buscar por nome, CPF..." value="{{ request('search') }}">
-                <button class="btn btn-outline-dark btn-sm rounded-pill" type="submit">
-                    <span class="d-none d-sm-inline">Buscar</span>
-                    <span class="d-inline d-sm-none">🔍</span> <!-- Ícone para mobile -->
-                </button>
-            </form>
+    <header class="mb-4 px-4 py-3 bg-white border rounded shadow-sm">
 
-            <!-- Botão 'Novo Registro' com efeito de hover -->
-            <a href="{{ route('create.registro') }}" class="btn btn-success btn-sm text-white rounded-pill transition-shadow">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3" style="font-size: 1.75rem;">
+                <span class="icon-container d-flex align-items-center justify-content-center"
+                    style="width: 36px; height: 36px; background: linear-gradient(135deg, #4e73df, #224abe); border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-shield-lock-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.8 11.8 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7 7 0 0 0 1.048-.625 11.8 11.8 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.54 1.54 0 0 0-1.044-1.263 63 63 0 0 0-2.887-.87C9.843.266 8.69 0 8 0m0 5a1.5 1.5 0 0 1 .5 2.915l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99A1.5 1.5 0 0 1 8 5"/>
+                    </svg>
+                </span>
+                Registros de Acessos
+            </h3>
+
+            <a href="{{ route('create.registro') }}" class="btn btn-primary btn-sm rounded-pill text-white">
                 Novo Registro
             </a>
         </div>
+
+        <form method="GET" action="{{ route('index.morador') }}" class="d-flex flex-wrap gap-3 align-items-end">
+
+            {{-- Data de Início --}}
+            <div class="d-flex flex-column" style="min-width: 120px;">
+                <label for="entrada_inicio" class="form-label mb-1 small text-secondary">De</label>
+                <input type="date" name="entrada_inicio" id="entrada_inicio" class="form-control form-control-sm rounded" value="{{ request('entrada_inicio') }}">
+            </div>
+
+            {{-- Data de Fim --}}
+            <div class="d-flex flex-column" style="min-width: 120px;">
+                <label for="entrada_fim" class="form-label mb-1 small text-secondary">Até</label>
+                <input type="date" name="entrada_fim" id="entrada_fim" class="form-control form-control-sm rounded" value="{{ request('entrada_fim') }}">
+            </div>
+
+            {{-- Visitante --}}
+            <div class="d-flex flex-column" style="min-width: 150px;">
+                <label for="visitante_id" class="form-label mb-1 small text-secondary">Visitante</label>
+                <select name="visitante_id" id="visitante_id" class="form-select form-select-sm rounded">
+                    <option value="">Todos</option>
+                    @foreach($visitantes as $visitante)
+                        <option value="{{ $visitante->id }}" {{ request('visitante_id') == $visitante->id ? 'selected' : '' }}>
+                            {{ $visitante->nome }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Tipo de Acesso --}}
+            <div class="d-flex flex-column" style="min-width: 130px;">
+                <label for="tipo" class="form-label mb-1 small text-secondary">Tipo de Acesso</label>
+                <select name="tipo" id="tipo" class="form-select form-select-sm rounded">
+                    <option value="">Todos</option>
+                    <option value="entrada" {{ request('tipo') == 'entrada' ? 'selected' : '' }}>Entrada</option>
+                    <option value="saida" {{ request('tipo') == 'saida' ? 'selected' : '' }}>Saída</option>
+                </select>
+            </div>
+
+            {{-- Campo de Busca --}}
+            <div class="d-flex flex-column flex-grow-1" style="min-width: 180px;">
+                <label for="search" class="form-label mb-1 small text-secondary">Buscar</label>
+                <input type="text" name="search" id="search" class="form-control form-control-sm rounded-pill border-dark" placeholder="Nome, CPF, Bloco, Apartamento..." value="{{ request('search') }}">
+            </div>
+
+            {{-- Botões --}}
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4">🔍 Filtrar</button>
+                <a href="{{ route('index.morador') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">❌ Limpar</a>
+            </div>
+
+        </form>
+
     </header>
 
-    <div class="row">
-        <div class="col-md-4 col-sm-6 col-12 mb-3">
-            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #4e73df, #224abe);">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                    <div>
-                        <div class="fs-6 fw-semibold mb-1">Total de Acessos</div>
-                        <div class="fs-3 fw-bold">{{ $totalAcessos }}</div>
-                    </div>
-                    <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                        <i class="bi bi-people-fill fs-3 text-white"></i>
-                    </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-3">
+    <div class="col">
+        <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #4e73df, #224abe);">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div>
+                    <div class="fs-6 fw-semibold mb-1">Total de Acessos</div>
+                    <div class="fs-3 fw-bold">{{ $totalAcessos }}</div>
                 </div>
-            </div>
-        </div>
-    
-        <div class="col-md-4 col-sm-6 col-12 mb-3">
-            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #1cc88a, #198754);">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                    <div>
-                        <div class="fs-6 fw-semibold mb-1">Entradas Hoje</div>
-                        <div class="fs-3 fw-bold">{{ $entradasHoje }}</div>
-                    </div>
-                    <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                        <i class="bi bi-door-open-fill fs-3 text-white"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="col-md-4 col-sm-6 col-12 mb-3">
-            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #e74a3b, #c0392b);">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                    <div>
-                        <div class="fs-6 fw-semibold mb-1">Saídas Hoje</div>
-                        <div class="fs-3 fw-bold">{{ $saidasHoje }}</div>
-                    </div>
-                    <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                        <i class="bi bi-door-closed-fill fs-3 text-white"></i>
-                    </div>
+                <div class="bg-white bg-opacity-25 rounded-circle p-3">
+                    <i class="bi bi-people-fill fs-3 text-white"></i>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="col">
+        <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #1cc88a, #198754);">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div>
+                    <div class="fs-6 fw-semibold mb-1">Entradas Hoje</div>
+                    <div class="fs-3 fw-bold">{{ $entradasHoje }}</div>
+                </div>
+                <div class="bg-white bg-opacity-25 rounded-circle p-3">
+                    <i class="bi bi-door-open-fill fs-3 text-white"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #e74a3b, #c0392b);">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div>
+                    <div class="fs-6 fw-semibold mb-1">Saídas Hoje</div>
+                    <div class="fs-3 fw-bold">{{ $saidasHoje }}</div>
+                </div>
+                <div class="bg-white bg-opacity-25 rounded-circle p-3">
+                    <i class="bi bi-door-closed-fill fs-3 text-white"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
     <div>
         @include('components.alerts', [
-            'success' => session()->get('success'), 
+            'success' => session()->get('success'),
             'message' => session()->get('message')
         ])
     </div>
@@ -82,7 +127,7 @@
     <div class="card shadow-sm border-0 rounded-4" style="min-height: 600px;">
         <div class="card-body d-flex flex-column">
             <h5 class="card-title mb-3 fw-semibold">Lista de Registros</h5>
-    
+
             <div class="table-responsive flex-grow-1">
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
@@ -171,7 +216,7 @@
                                     </div>
                                 </td>
                             </tr>
-    
+
                             {{-- Modal de Confirmação --}}
                             <div class="modal fade" id="confirmDeleteModal{{ $registro->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $registro->id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
@@ -204,10 +249,10 @@
             </div>
         </div>
     </div>
-    
+
     {{-- Paginação --}}
     <div class="mt-4 d-flex justify-content-center">
         {{ $registros->links('pagination::bootstrap-5') }}
     </div>
-    
+
     @endsection

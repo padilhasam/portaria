@@ -51,73 +51,86 @@
     </div>
 </header>
 
-<div class="card shadow-sm p-4">
-    <form action="{{ $edit ? route('update.apartamento', ['id' => $apartamento->id, 'from' => request()->query('from')]) : route('store.apartamento', ['from' => request()->query('from')]) }}" method="POST">
-        @csrf
-        @if ($edit)
-            @method('PUT')
-        @endif
+<div class="card shadow-sm mb-4">
+            <div class="card-header bg-light fw-bold">Dados do Apartamento</div>
+                <div class="card-body">
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="numero" class="form-label">Número Apartamento <span class="text-danger">*</span></label>
-                <input name="numero" type="text" class="form-control rounded-pill border-dark" id="numero" placeholder="Ex: 101" value="{{ old('numero', $edit ? $apartamento->numero : '') }}" placeholder="Apartamento" required autofocus>
-                @error('numero')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="col-md-6">
-                <label for="bloco" class="form-label">Bloco <span class="text-danger">*</span></label>
-                <input name="bloco" type="text" class="form-control rounded-pill border-dark" id="bloco" placeholder="Ex: A" value="{{ old('bloco', $edit ? $apartamento->bloco : '')}}" required>
-                 @error('bloco')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>
+                    <div class="card shadow-sm p-4">
+                        <form action="{{ $edit ? route('update.apartamento', ['id' => $apartamento->id, 'from' => request()->query('from')]) : route('store.apartamento', ['from' => request()->query('from')]) }}" method="POST" novalidate>
+                            @csrf
+                            @if ($edit)
+                                @method('PUT')
+                            @endif
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="vaga" class="form-label">Número da Vaga <span class="text-danger">*</span></label>
-                <input name="vaga" type="text" class="form-control rounded-pill border-dark" id="vaga" placeholder="Ex: 01 ou 01A" value="{{ old('vaga', $edit ? $apartamento->vaga : '' )}}" required>
-                 @error('vaga')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="col-md-6">
-                <label for="ramal" class="form-label">Ramal <span class="text-danger">*</span></label>
-                <input name="ramal" type="text" class="form-control rounded-pill border-dark" id="ramal" placeholder="Ex: 205" value="{{ old('ramal', $edit ? $apartamento->ramal : '')}}" required>
-                 @error('ramal')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="numero" class="form-label fw-semibold">Número Apartamento <span class="text-danger">*</span></label>
+                                    <input name="numero" type="text" class="form-control rounded-pill border-dark @error('numero') is-invalid @enderror" id="numero" placeholder="Ex: 101" value="{{ old('numero', $edit ? $apartamento->numero : '') }}" required autofocus>
+                                    @error('numero')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="status_vaga" class="form-label">Status da vaga <span class="text-danger">*</span></label>
-                <select class="form-select rounded-pill border-dark" name="status_vaga" id="status_vaga">
-                    <option value="">Selecione o status da vaga...</option>
-                    <option value="livre" {{ $edit && $apartamento->status_vaga == "livre" ? "selected" : "" }}>Livre</option>
-                    <option value="ocupada" {{ $edit && $apartamento->status_vaga == "ocupada" ? "selected" : "" }}>Ocupada</option>
-                    <option value="emprestada" {{ $edit && $apartamento->status_vaga == "emprestada" ? "selected" : "" }}>Emprestada</option>
-                    <option value="alugada" {{ $edit && $apartamento->status_vaga == "alugada" ? "selected" : "" }}>Alugada</option>
-                </select>
-                 @error('status_vaga')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-             <div class="col-md-6">
-                <label for="observacoes" class="form-label">Observações</label>
-                <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" style="resize: none">{{ old('observacoes', $edit ? $apartamento->observacoes : '') }}</textarea>
-            </div>
-        </div>
+                                <div class="col-md-6">
+                                    <label for="bloco" class="form-label fw-semibold">Bloco <span class="text-danger">*</span></label>
+                                    <input name="bloco" type="text" class="form-control rounded-pill border-dark @error('bloco') is-invalid @enderror" id="bloco" placeholder="Ex: A" value="{{ old('bloco', $edit ? $apartamento->bloco : '') }}" required>
+                                    @error('bloco')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-        <div class="col-12 d-flex gap-2 justify-content-end mt-3">
-            <button type="submit" class="btn btn-success rounded-pill">{{ $edit ? "Alterar Apartamento" : "Salvar" }}</button>
-            <button type="reset" class="btn btn-outline-danger rounded-pill">Limpar</button>
-            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Cancelar</a>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="vaga" class="form-label fw-semibold">Número da Vaga <span class="text-danger">*</span></label>
+                                    <input name="vaga" type="text" class="form-control rounded-pill border-dark @error('vaga') is-invalid @enderror" id="vaga" placeholder="Ex: 01 ou 01A" value="{{ old('vaga', $edit ? $apartamento->vaga : '') }}" required>
+                                    @error('vaga')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="ramal" class="form-label fw-semibold">Ramal <span class="text-danger">*</span></label>
+                                    <input name="ramal" type="text" class="form-control rounded-pill border-dark @error('ramal') is-invalid @enderror" id="ramal" placeholder="Ex: 205" value="{{ old('ramal', $edit ? $apartamento->ramal : '') }}" required>
+                                    @error('ramal')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="status_vaga" class="form-label fw-semibold">Status da Vaga <span class="text-danger">*</span></label>
+                                    <select class="form-select rounded-pill border-dark @error('status_vaga') is-invalid @enderror" name="status_vaga" id="status_vaga" required>
+                                        <option value="" disabled {{ old('status_vaga', $edit ? $apartamento->status_vaga : '') === null ? 'selected' : '' }}>Selecione o status da vaga...</option>
+                                        <option value="livre" {{ old('status_vaga', $edit ? $apartamento->status_vaga : '') == "livre" ? "selected" : "" }}>Livre</option>
+                                        <option value="ocupada" {{ old('status_vaga', $edit ? $apartamento->status_vaga : '') == "ocupada" ? "selected" : "" }}>Ocupada</option>
+                                        <option value="emprestada" {{ old('status_vaga', $edit ? $apartamento->status_vaga : '') == "emprestada" ? "selected" : "" }}>Emprestada</option>
+                                        <option value="alugada" {{ old('status_vaga', $edit ? $apartamento->status_vaga : '') == "alugada" ? "selected" : "" }}>Alugada</option>
+                                    </select>
+                                    @error('status_vaga')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="observacoes" class="form-label fw-semibold">Observações</label>
+                                    <textarea class="form-control rounded-4 border-dark @error('observacoes') is-invalid @enderror" name="observacoes" id="observacoes" rows="4" style="resize: none;">{{ old('observacoes', $edit ? $apartamento->observacoes : '') }}</textarea>
+                                    @error('observacoes')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2 mt-3">
+                                <button type="submit" class="btn btn-success rounded-pill px-4">{{ $edit ? "Alterar Apartamento" : "Salvar" }}</button>
+                                <button type="reset" class="btn btn-outline-danger rounded-pill px-4" onclick="return confirm('Tem certeza que deseja limpar o formulário?')">Limpar</button>
+                                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
         </div>
-    </form>
+    </div>
 </div>
 
 @endsection
