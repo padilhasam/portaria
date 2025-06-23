@@ -22,6 +22,12 @@
 
         <form method="GET" action="{{ route('index.morador') }}" class="d-flex flex-wrap gap-3 align-items-end">
 
+            {{-- Campo de Busca --}}
+            <div class="d-flex flex-column flex-grow-1" style="min-width: 180px;">
+                <label for="search" class="form-label mb-1 small text-secondary">Buscar</label>
+                <input type="text" name="search" id="search" class="form-control form-control-sm rounded-pill border-dark" placeholder="Nome, CPF, Bloco, Apartamento..." value="{{ request('search') }}">
+            </div>
+
             {{-- Data de Início --}}
             <div class="d-flex flex-column" style="min-width: 120px;">
                 <label for="entrada_inicio" class="form-label mb-1 small text-secondary">De</label>
@@ -36,17 +42,17 @@
 
             {{-- Visitante --}}
             <div class="d-flex flex-column" style="min-width: 150px;">
-                <label for="visitante_id" class="form-label mb-1 small text-secondary">Visitante</label>
-                <select name="visitante_id" id="visitante_id" class="form-select form-select-sm rounded">
-                    <option value="">Todos</option>
-                    @foreach($visitantes as $visitante)
-                        <option value="{{ $visitante->id }}" {{ request('visitante_id') == $visitante->id ? 'selected' : '' }}>
-                            {{ $visitante->nome }}
-                        </option>
+            <label for="visitante_id" class="form-label mb-1 small text-secondary">Visitante</label>
+            <select name="visitante_id" id="visitante_id" class="form-select form-select-sm rounded">
+                <option value="">Todos</option>
+                @foreach($visitantes as $visitante)
+                    <option value="{{ $visitante->id }}" {{ request('visitante_id') == $visitante->id ? 'selected' : '' }}>
+                        {{ $visitante->nome }}
+                    </option>
                     @endforeach
                 </select>
             </div>
-
+                
             {{-- Tipo de Acesso --}}
             <div class="d-flex flex-column" style="min-width: 130px;">
                 <label for="tipo" class="form-label mb-1 small text-secondary">Tipo de Acesso</label>
@@ -57,11 +63,6 @@
                 </select>
             </div>
 
-            {{-- Campo de Busca --}}
-            <div class="d-flex flex-column flex-grow-1" style="min-width: 180px;">
-                <label for="search" class="form-label mb-1 small text-secondary">Buscar</label>
-                <input type="text" name="search" id="search" class="form-control form-control-sm rounded-pill border-dark" placeholder="Nome, CPF, Bloco, Apartamento..." value="{{ request('search') }}">
-            </div>
 
             {{-- Botões --}}
             <div class="d-flex gap-2">

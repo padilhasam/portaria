@@ -4,16 +4,17 @@
 
 {{-- Cabeçalho --}}
 <header class="mb-4 px-4 py-3 bg-white border rounded shadow-sm">
-    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-3">
+    <div class="d-flex align-items-center justify-content-between mb-3">
         <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3" style="font-size: 1.75rem;">
             <span class="icon-container d-flex align-items-center justify-content-center"
-                  style="width: 36px; height: 36px; background: linear-gradient(135deg, #0d6efd, #0a58ca); border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-bell-fill" viewBox="0 0 16 16">
-                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.628-14.885A1.5 1.5 0 0 1 10.5 2h.5a1.5 1.5 0 0 1 1.5 1.5v.086c0 .11.009.219.026.327C13.127 6.25 14 7.5 14 9v1l.447.894a.5.5 0 0 1-.447.75H2a.5.5 0 0 1-.447-.75L2 10V9c0-1.5.873-2.75 1.474-5.087A1.5 1.5 0 0 1 5.5 2h.5a1.5 1.5 0 0 1 1.372-.885z"/>
+                style="width: 36px; height: 36px; background: linear-gradient(135deg, #0d6efd, #0a58ca); border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+                <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
                 </svg>
             </span>
-            Ocorrências
+            Cadastro de Ocorrências
         </h3>
+
         <a href="{{ route('create.notificacao') }}" class="btn btn-primary btn-sm rounded-pill text-white">
             Nova Ocorrência
         </a>

@@ -43,7 +43,7 @@ class Notificacao extends Model
      */
     public function criador()
     {
-        return $this->belongsTo(Notificacao::class, 'id_criador');
+        return $this->belongsTo(User::class, 'id_criador');
     }
 
     /**

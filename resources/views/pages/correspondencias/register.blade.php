@@ -13,14 +13,17 @@
         <form action="{{ route('store.correspondencia') }}" method="POST" id="form-correspondencia">
             @csrf
 
-            {{-- Morador --}}
+           {{-- Morador --}}
             <div class="mb-3">
                 <label for="id_morador" class="form-label">👤 Morador</label>
                 <select name="id_morador" class="form-select tom-select" required>
                     <option value="">Selecione um morador...</option>
                     @foreach($moradores as $morador)
                         <option value="{{ $morador->id }}">
-                            {{ $morador->nome }} (Ap {{ optional($morador->apartamento)->numero }}, Bl {{ optional($morador->apartamento)->bloco }})
+                            {{ $morador->nome }}
+                            @if($morador->apartamento)
+                                (Ap {{ $morador->apartamento->numero }}, Bl {{ $morador->apartamento->bloco }})
+                            @endif
                         </option>
                     @endforeach
                 </select>

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('correspondencias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_morador')->constrained()->onDelete('cascade');
-            $table->string('tipo'); // Ex: Carta, Encomenda, Pacote
-            $table->string('remetente')->nullable(); // Nome da transportadora ou pessoa
+            $table->foreignId('id_morador')->constrained('moradores')->onDelete('cascade');
+            $table->string('tipo');
+            $table->string('remetente')->nullable();
             $table->timestamp('recebida_em')->default(now());
             $table->timestamp('entregue_em')->nullable();
             $table->text('observacoes')->nullable();

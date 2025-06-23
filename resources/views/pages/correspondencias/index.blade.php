@@ -24,10 +24,10 @@
             <form method="GET" class="mb-3 d-flex flex-wrap gap-2 align-items-end">
                 <div>
                     <label class="form-label">Morador</label>
-                    <select name="morador_id" class="form-select form-select-sm">
+                    <select name="id_morador" class="form-select form-select-sm">
                         <option value="">Todos</option>
                         @foreach ($moradores as $morador)
-                            <option value="{{ $morador->id }}" @selected(request('morador_id') == $morador->id)>
+                            <option value="{{ $morador->id }}" @selected(request('id_morador') == $morador->id)>
                                 {{ $morador->nome }}
                             </option>
                         @endforeach
@@ -71,7 +71,15 @@
                 <tbody>
                     @forelse($correspondencias as $item)
                         <tr>
-                            <td><strong>{{ $item->morador->nome }}</strong></td>
+                            <td>
+                                <strong>
+                                    @if($item->morador)
+                                        {{ $item->morador->nome }}
+                                    @else
+                                        Morador não encontrado (id_morador = {{ $item->id_morador }})
+                                    @endif
+                                </strong>
+                            </td>
                             <td>{{ $item->tipo }}</td>
                             <td>{{ $item->remetente ?? '-' }}</td>
                             <td>

@@ -23,6 +23,7 @@ class Correspondencia extends Model
 
     public function morador()
     {
-        return $this->belongsTo(Morador::class);
+        return $this->belongsTo(Morador::class, 'id_morador');
     }
+    
 }

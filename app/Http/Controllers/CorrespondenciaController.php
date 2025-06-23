@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Correspondencia;
 use App\Models\Morador;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CorrespondenciaController extends Controller
 {
@@ -12,13 +13,12 @@ class CorrespondenciaController extends Controller
      */
     public function index(Request $request)
     {
-       $moradores = Morador::orderBy('nome')->get(); // <-- ADICIONE ESTA LINHA
+       $moradores = Morador::orderBy('nome')->get();
 
-        $query = Correspondencia::with('morador')
-            ->orderBy('recebida_em', 'desc');
+        $query = Correspondencia::with('morador')->orderBy('recebida_em', 'desc');
 
-        if ($request->filled('morador_id')) {
-            $query->where('id_morador', $request->morador_id);
+        if ($request->filled('id_morador')) {
+            $query->where('id_morador', $request->id_morador);
         }
 
         if ($request->filled('status')) {
@@ -47,7 +47,7 @@ class CorrespondenciaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_morador' => 'required|exists:morador,id',
+            'id_morador' => 'required|exists:moradores,id',
             'tipo' => 'required|string',
             'remetente' => 'nullable|string',
             'observacoes' => 'nullable|string',
@@ -55,7 +55,7 @@ class CorrespondenciaController extends Controller
 
         Correspondencia::create($request->all());
 
-        return redirect()->route('correspondencia.index')->with('success', 'Correspondência registrada com sucesso!');
+        return redirect()->route('index.correspondencia')->with('success', 'Correspondência registrada com sucesso!');
     }
 
     /**
@@ -97,6 +97,6 @@ class CorrespondenciaController extends Controller
         $correspondencia->entregue_em = Carbon::now();
         $correspondencia->save();
 
-        return redirect()->route('correspondencia.index')->with('success', 'Correspondência entregue com sucesso!');
+        return redirect()->route('index.correspondencia')->with('success', 'Correspondência entregue com sucesso!');
     }
 }
