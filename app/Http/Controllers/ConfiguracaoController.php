@@ -13,25 +13,24 @@ class ConfiguracaoController extends Controller
 {
     public function index()
     {
-        $config = Configuracao::first(); // Supondo que exista apenas uma linha de config
+         $config = Configuracao::first(); // ou outra lógica
         return view('pages.configuracoes.index', compact('config'));
     }
 
-    public function updatePerfil(Request $request)
+    public function updateConfiguracaoPerfil(Request $request)
     {
-        $user = Auth::user();
-
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:6|confirmed',
+        'name' => 'required|string|max:255',
+        'email' => 'required|email',
+        'password' => 'nullable|string|min:6',
         ]);
 
+        $user = auth()->user();
         $user->name = $request->name;
         $user->email = $request->email;
 
         if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
+            $user->password = bcrypt($request->password);
         }
 
         $user->save();
@@ -39,24 +38,26 @@ class ConfiguracaoController extends Controller
         return redirect()->route('index.configuracao')->with('success', 'Perfil atualizado com sucesso!');
     }
 
-    public function updateSistema(Request $request)
+    public function updateConfiguracaoSistema(Request $request)
     {
-        $dados = [
-            'nome_sistema' => $request->input('nome_sistema'),
-            'email_contato' => $request->input('email_contato'),
-            'notificacoes_email' => $request->has('notificacoes_email') ? '1' : '0',
-            'modo_manutencao' => $request->has('modo_manutencao') ? '1' : '0',
-        ];
+        $request->validate([
+        'nome_sistema' => 'required|string|max:255',
+        'email_contato' => 'nullable|email',
+        'logo' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
+        ]);
 
-        foreach ($dados as $chave => $valor) {
-            Configuracao::updateOrCreate(['chave' => $chave], ['valor' => $valor]);
-        }
+        $config = Configuracao::firstOrNew(); // ou outra lógica
 
-        // Upload do logo (opcional)
+        $config->nome_sistema = $request->nome_sistema;
+        $config->email_contato = $request->email_contato;
+        $config->notificacoes_email = $request->has('notificacoes_email');
+        $config->modo_manutencao = $request->has('modo_manutencao');
+
         if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('logos');
-            Configuracao::updateOrCreate(['chave' => 'logo'], ['valor' => $logoPath]);
+            $config->logo = $request->file('logo')->store('logos', 'public');
         }
+
+        $config->save();
 
         return redirect()->route('index.configuracao')->with('success', 'Configurações salvas!');
     }

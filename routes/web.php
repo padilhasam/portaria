@@ -28,14 +28,11 @@ Route::controller(LoginController::class)->group(function(){
     Route::post('/login', 'store')->name('login.store');
 });
 
-Route::controller(ConfiguracaoController::class)->group(function () {
+Route::controller(ConfiguracaoController::class)->group(function (){
     Route::get('/configuracao', 'index')->name('index.configuracao');
-    Route::post('/registro/{id}/saida', 'registrarSaida')->name('saida.registro');
-    Route::put('/configuracao/perfil', 'updatePerfil')->name('configuracao.update.perfil');
-    Route::put('/configuracao/sistema', 'updateSistema')
-        ->middleware('can:isAdmin')
-        ->name('configuracao.update.sistema');
-})->middleware(['auth', 'check.status'])->name('dashboard');
+    Route::put('/configuracao/perfil', 'updateConfiguracaoPerfil')->name('perfil.update.configuracao');
+    Route::put('/configuracao/sistema', 'updateConfiguracaoSistema')->name('sistema.update.configuracao');
+})->middleware(['auth', 'check.status']);
 
 Route::controller(UsuarioController::class)->group(function(){
     Route::get('/usuario', 'index')->name('index.usuario');
