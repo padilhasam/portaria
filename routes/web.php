@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'check.status'])->group(function () {
     Route::redirect('/dashboard', '/registro')->name('dashboard');
+    Route::get('/logs/gerar', [LogController::class, 'gerar'])->name('logs.gerar');
     // outras rotas
 });
 

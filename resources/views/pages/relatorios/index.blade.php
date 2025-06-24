@@ -16,9 +16,28 @@
         <a href="#" class="btn btn-outline-primary btn-sm rounded-pill d-flex align-items-center gap-2">
             Exportar CSV
         </a>
-        <a href="#" class="btn btn-success btn-sm rounded-pill d-flex align-items-center gap-2">
+        {{-- <a href="#" class="btn btn-success btn-sm rounded-pill d-flex align-items-center gap-2">
             Criar Novo Relatório
-        </a>
+        </a> --}}
+        <form method="GET" action="{{ route('logs.gerar') }}" class="d-flex gap-2">
+            <select name="tipo" class="form-select w-auto">
+                <option value="pdf">PDF</option>
+                <option value="txt">TXT</option>
+            </select>
+
+            <select name="nivel" class="form-select w-auto">
+                <option value="">Todos os níveis</option>
+                <option value="INFO">INFO</option>
+                <option value="ERRO">ERRO</option>
+                <option value="WARNING">WARNING</option>
+            </select>
+
+            <input type="date" name="data" class="form-control w-auto" />
+
+            <button type="submit" class="btn btn-primary">
+                📄 Gerar Logs
+            </button>
+        </form>
     </div>
 </header>
 
