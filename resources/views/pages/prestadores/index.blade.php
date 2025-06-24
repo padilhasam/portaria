@@ -9,9 +9,8 @@
         <h3 class="m-0 fw-bold text-dark d-flex align-items-center gap-3" style="font-size: 1.75rem;">
             <span class="icon-container d-flex align-items-center justify-content-center"
                   style="width: 36px; height: 36px; background: linear-gradient(135deg, #0d6efd, #0a58ca); border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                     class="bi bi-people-fill" viewBox="0 0 16 16">
-                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-tools" viewBox="0 0 16 16">
+                <path d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.27 3.27a.997.997 0 0 0 1.414 0l1.586-1.586a.997.997 0 0 0 0-1.414l-3.27-3.27a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3q0-.405-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814zm9.646 10.646a.5.5 0 0 1 .708 0l2.914 2.915a.5.5 0 0 1-.707.707l-2.915-2.914a.5.5 0 0 1 0-.708M3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z"/>
                 </svg>
             </span>
             Cadastro de Prestadores
@@ -82,11 +81,11 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Razão Social</th>
+                        <th>Empresa</th>
                         <th>CNPJ</th>
                         <th>Telefone</th>
                         <th>Email</th>
-                        <th>Prestador</th>
+                        <th>Responsável</th>
                         <th>CPF</th>
                         <th>Celular</th>
                         <th>Criado em</th>
@@ -97,11 +96,13 @@
                 <tbody>
                     @forelse ($prestadores as $prestador)
                     <tr>
-                        <td><span class="badge bg-primary text-white">{{ $prestador->empresa ?? '-' }}</td>
+                        {{-- <td><span class="badge bg-primary text-white">{{ $prestador->empresa ?? '-' }}</td> --}}
+                        <td><strong>{{ $prestador->empresa ?? '-' }}</strong></td>
                         <td>{{ $prestador->cnpj ?? '-' }}</td>
                         <td>{{ $prestador->tel_fixo ?? '-' }}</td>
                         <td>{{ $prestador->email ?? '-' }}</td>
-                        <td><span class="badge bg-primary text-white">{{ $prestador->prestador }}</td>
+                        {{-- <td><span class="badge bg-primary text-white">{{ $prestador->prestador }}</td> --}}
+                        <td>{{ $prestador->prestador }}</td>
                         <td>{{ $prestador->documento }}</td>
                         <td>{{ $prestador->celular }}</td>
                         <td>{{ $prestador->created_at->format('d/m/Y H:i') }}</td>

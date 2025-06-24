@@ -106,7 +106,7 @@
                 <tbody>
                     @forelse ($veiculos as $veiculo)
                     <tr>
-                        <td>
+                        {{-- <td>
                             @if ($veiculo->tipo === 'Carro')
                                 <span class="badge bg-primary text-white">Carro</span>
                             @elseif ($veiculo->tipo === 'Moto')
@@ -114,7 +114,8 @@
                             @elseif($veiculo->tipo === 'Caminhão')
                                 <span class="badge bg-primary text-white">Caminhão</span>
                             @endif
-                        </td>
+                        </td> --}}
+                        <td><strong>{{ $veiculo->tipo }}</strong></td>
                         <td>{{ $veiculo->marca }}</td>
                         <td>{{ $veiculo->modelo }}</td>
                         <td>{{ $veiculo->cor }}</td>

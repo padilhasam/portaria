@@ -105,7 +105,8 @@
                 <tbody>
                     @forelse ($apartamentos as $apartamento)
                         <tr>
-                            <td><span class="badge bg-primary text-white">{{ $apartamento->numero }}</span></td>
+                            {{-- <td><span class="badge bg-primary text-white">{{ $apartamento->numero }}</span></td> --}}
+                            <td><strong>{{ $apartamento->numero }}</strong></td>
                             <td>{{ $apartamento->bloco }}</td>
                             <td>{{ $apartamento->vaga }}</td>
                             <td>{{ $apartamento->ramal }}</td>

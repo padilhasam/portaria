@@ -95,7 +95,8 @@
                 <tbody>
                     @forelse ($visitantes as $visitante)
                         <tr>
-                            <td><span class="badge bg-primary text-white">{{ $visitante->nome }}</span></td>
+                            {{-- <td><span class="badge bg-primary text-white">{{ $visitante->nome }}</span></td> --}}
+                            <td><strong>{{ $visitante->nome }}</strong></td>
                             <td>{{ $visitante->documento ?? 'Não informado'}}</td>
                             <td>{{ $visitante->celular ?? 'Não informado'}}</td>
                             <td>{{$visitante->prestador->empresa ?? 'Não informado'}}</td>

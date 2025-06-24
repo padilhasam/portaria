@@ -9,16 +9,16 @@
                 <div class="vh-100 w-100 d-flex align-items-center justify-content-center">
                     <form action="{{ route('login.store') }}" method="POST" class="form col-12 col-sm-8 col-md-6 col-lg-4">
                         @csrf
-                        
+
                         <img src="{{ Vite::asset('resources/images/logo_black.png') }}" class="logo mx-auto d-block mb-3 w-75">
-                        
+
                         <h2 class="text-center mb-0 mt-4" id="saudacao"></h2>
                         <p class="text-black text-center mb-4">Para acessar, faça seu login.</p>
 
                         @error('error')
                             <p class="alert alert-secondary" role="alert">{{ $message }}</p>
                         @enderror
-                        
+
                         <div class="form-group">
                             <label class="text-black">Usuário</label>
                             <div class="input-group">
@@ -26,7 +26,7 @@
                                     {{ svg('hugeicons-mail-account-01') }}
                                 </span>
                                 <input type="email" class="form-control" placeholder="example@company.com" name="email" id="email" required>
-                            </div> 
+                            </div>
                             @error('email')
                                 <p class="alert alert-secondary" role="alert">{{ $message }}</p>
                             @enderror
@@ -44,7 +44,7 @@
                                 <p class="alert alert-secondary" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
-                        
+
                         <button type="submit" class="btn text-white btn-dark mt-4 w-100 p-2">Entrar</button>
                     </form>
                 </div>

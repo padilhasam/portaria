@@ -62,10 +62,12 @@
                         <a href="{{ route('index.relatorio') }}" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('relatorio*') ? 'active' : '' }}">
                             {{ svg('hugeicons-note-01') }} Relatórios de Acessos
                         </a>
-                        <a href="{{ route('index.usuario') }}" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('usuario*') ? 'active' : '' }}">
-                            {{ svg('hugeicons-user-shield-02') }} Usuários
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('configuracao*') ? 'active' : '' }}">
+                        @if(Auth::user()?->tipo === 'administrador')
+                            <a href="{{ route('index.usuario') }}" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('usuario*') ? 'active' : '' }}">
+                                {{ svg('hugeicons-user-shield-02') }} Usuários
+                            </a>
+                        @endif
+                        <a href="{{ route('index.configuracao') }}" class="list-group-item list-group-item-action py-2 rounded {{ request()->is('configuracao*') ? 'active' : '' }}">
                             {{ svg('hugeicons-settings-01') }} Configurações
                         </a>
                     @endif

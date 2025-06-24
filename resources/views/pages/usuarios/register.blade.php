@@ -137,20 +137,41 @@
                             </div>
 
                             <div class="col-lg-4 col-md-6">
-                                <label for="password" class="form-label fw-semibold">{{ $edit ? 'Nova Senha (opcional)' : 'Senha' }} <span class="text-danger">{{ $edit ? '' : '*' }}</span></label>
-                                <input name="password" type="password" id="password" {{ $edit ? '' : 'required' }}
+                                <label for="password" class="form-label fw-semibold">
+                                    {{ $edit ? 'Nova Senha (opcional)' : 'Senha' }}
+                                    @unless($edit)
+                                        <span class="text-danger">*</span>
+                                    @endunless
+                                </label>
+                                <input
+                                    name="password"
+                                    type="password"
+                                    id="password"
+                                    @unless($edit) required @endunless
                                     class="form-control rounded-pill @error('password') is-invalid @enderror"
                                     placeholder="Digite uma senha segura">
+                                @if($edit)
+                                    <small class="text-muted">Deixe em branco para manter a senha atual.</small>
+                                @endif
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="col-lg-4 col-md-6">
-                                <label for="password_confirmation" class="form-label fw-semibold">{{ $edit ? 'Confirmar Nova Senha' : 'Repetir Senha' }} <span class="text-danger">{{ $edit ? '' : '*' }}</span></label>
-                                <input name="password_confirmation" type="password" id="password_confirmation" {{ $edit ? '' : 'required' }}
+                                <label for="password_confirmation" class="form-label fw-semibold">
+                                    {{ $edit ? 'Confirmar Nova Senha' : 'Repetir Senha' }}
+                                    @unless($edit)
+                                        <span class="text-danger">*</span>
+                                    @endunless
+                                </label>
+                                <input
+                                    name="password_confirmation"
+                                    type="password"
+                                    id="password_confirmation"
+                                    @unless($edit) required @endunless
                                     class="form-control rounded-pill @error('password_confirmation') is-invalid @enderror"
-                                    placeholder="Repita a senha">
+                                    placeholder="Confirme a senha">
                                 @error('password_confirmation')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

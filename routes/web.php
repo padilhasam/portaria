@@ -13,6 +13,7 @@ use App\Http\Controllers\{
     RelatorioController,
     PrestadorController,
     CorrespondenciaController,
+    ConfiguracaoController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,15 @@ Route::controller(LoginController::class)->group(function(){
     Route::get('/logout', 'destroy')->name('login.destroy');
     Route::post('/login', 'store')->name('login.store');
 });
+
+Route::controller(ConfiguracaoController::class)->group(function () {
+    Route::get('/configuracao', 'index')->name('index.configuracao');
+    Route::post('/registro/{id}/saida', 'registrarSaida')->name('saida.registro');
+    Route::put('/configuracao/perfil', 'updatePerfil')->name('configuracao.update.perfil');
+    Route::put('/configuracao/sistema', 'updateSistema')
+        ->middleware('can:isAdmin')
+        ->name('configuracao.update.sistema');
+})->middleware(['auth', 'check.status'])->name('dashboard');
 
 Route::controller(UsuarioController::class)->group(function(){
     Route::get('/usuario', 'index')->name('index.usuario');
