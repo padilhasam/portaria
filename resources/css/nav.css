@@ -1,5 +1,7 @@
 body {
     background-color: #fbfbfb;
+    font-size: clamp(0.85rem, 1vw, 1rem); /* mínimo 0.85rem, máximo 1rem */
+    line-height: 1.5;
   }
   @media (min-width: 991.98px) {
     main {
@@ -176,4 +178,11 @@ body {
   top: 0;
   right: -10px;
   transform: translate(0, -50%);
+}
+
+#sidebarMenu .list-group-item {
+    padding: clamp(0.4rem, 0.8vw, 0.75rem) clamp(0.6rem, 1.2vw, 1rem);
+    font-size: clamp(0.75rem, 1vw, 1rem);
+    color: #333;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
 }

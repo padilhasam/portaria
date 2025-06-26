@@ -87,9 +87,9 @@
         </div>
     </div>
 </div>
+
 {{-- ======================== Filtros e Exportações ======================== --}}
-{{-- ======================== Filtros e Exportações ======================== --}}
-<div class="card shadow-sm border-0 rounded-4 mb-4">
+<div class="row mb-4">
     <div class="card-body">
         <div class="row gy-4">
 
