@@ -120,7 +120,7 @@ class RegistroController extends Controller
      */
     public function edit(string $id)
     {
-        $registro = Registro::findOrFail($id);
+        $registro = Registro::with('visitante.prestador')->findOrFail($id);
         return view('pages.registros.register', compact('registro'));
     }
 
@@ -179,7 +179,7 @@ class RegistroController extends Controller
         return response()->json([
             'nome' => $visitante->nome,
             'documento' => $visitante->documento,
-            'empresa' => $visitante->prestador->nome ?? '', // Corrigido para vir do relacionamento
+            'empresa' => $visitante->prestador->empresa ?? '', // Corrigido para vir do relacionamento
             'modelo' => $visitante->veiculo->modelo ?? '',
             'placa' => $visitante->veiculo->placa ?? '',
             'image' => $visitante->image ?? ''

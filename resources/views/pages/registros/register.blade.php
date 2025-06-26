@@ -95,7 +95,7 @@
                                         class="form-control rounded-pill border-dark bg-light"
                                         id="empresa"
                                         name="empresa"
-                                        value="{{ old('empresa', $edit && $registro->visitante ? $registro->visitante->prestador->nome : '') }}"
+                                        value="{{ old('empresa', $edit && $registro->visitante && $registro->visitante->prestador ? $registro->visitante->prestador->empresa : '') }}"
                                         placeholder="Empresa Prestadora"
                                         readonly
                                     >

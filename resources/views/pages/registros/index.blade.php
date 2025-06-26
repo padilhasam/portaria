@@ -52,7 +52,7 @@
                     @endforeach
                 </select>
             </div>
-                
+
             {{-- Tipo de Acesso --}}
             <div class="d-flex flex-column" style="min-width: 130px;">
                 <label for="tipo" class="form-label mb-1 small text-secondary">Tipo de Acesso</label>
