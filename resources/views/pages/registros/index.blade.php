@@ -74,49 +74,72 @@
 
     </header>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-3">
-    <div class="col">
-        <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #4e73df, #224abe);">
-            <div class="card-body d-flex align-items-center justify-content-between">
-                <div>
-                    <div class="fs-6 fw-semibold mb-1">Total de Acessos</div>
-                    <div class="fs-3 fw-bold">{{ $totalAcessos }}</div>
-                </div>
-                <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                    <i class="bi bi-people-fill fs-3 text-white"></i>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 mb-3">
 
-    <div class="col">
-        <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #1cc88a, #198754);">
-            <div class="card-body d-flex align-items-center justify-content-between">
-                <div>
-                    <div class="fs-6 fw-semibold mb-1">Entradas Hoje</div>
-                    <div class="fs-3 fw-bold">{{ $entradasHoje }}</div>
-                </div>
-                <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                    <i class="bi bi-door-open-fill fs-3 text-white"></i>
+        <div class="col">
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #4e73df, #224abe);">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="fs-6 fw-semibold mb-1">Total de Acessos</div>
+                        <div class="fs-3 fw-bold">{{ $totalAcessos }}</div>
+                    </div>
+                    <div class="bg-white bg-opacity-25 rounded-circle p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-people-fill" viewBox="0 0 16 16">
+                        <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col">
-        <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #e74a3b, #c0392b);">
-            <div class="card-body d-flex align-items-center justify-content-between">
-                <div>
-                    <div class="fs-6 fw-semibold mb-1">Saídas Hoje</div>
-                    <div class="fs-3 fw-bold">{{ $saidasHoje }}</div>
+        <div class="col">
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #1cc88a, #198754);">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="fs-6 fw-semibold mb-1">Entradas Hoje</div>
+                        <div class="fs-3 fw-bold">{{ $entradasHoje }}</div>
+                    </div>
+                    <div class="bg-white bg-opacity-25 rounded-circle p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                        <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15zM11 2h.5a.5.5 0 0 1 .5.5V15h-1zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"/>
+                        </svg>
+                    </div>
                 </div>
-                <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                    <i class="bi bi-door-closed-fill fs-3 text-white"></i>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #e74a3b, #c0392b);">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="fs-6 fw-semibold mb-1">Saídas Hoje</div>
+                        <div class="fs-3 fw-bold">{{ $saidasHoje }}</div>
+                    </div>
+                    <div class="bg-white bg-opacity-25 rounded-circle p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-door-closed-fill" viewBox="0 0 16 16">
+                        <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #f6c23e, #dda20a);">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="fs-6 fw-semibold mb-1">Acessos Bloqueados</div>
+                        <div class="fs-3 fw-bold">{{ $acessosBloqueados }}</div>
+                    </div>
+                    <div class="bg-white bg-opacity-25 rounded-circle p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-shield-fill-exclamation" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.8 11.8 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7 7 0 0 0 1.048-.625 11.8 11.8 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.54 1.54 0 0 0-1.044-1.263 63 63 0 0 0-2.887-.87C9.843.266 8.69 0 8 0m-.55 8.502L7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0M8.002 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
     <div>
         @include('components.alerts', [

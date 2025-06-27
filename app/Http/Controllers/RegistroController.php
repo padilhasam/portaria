@@ -58,11 +58,12 @@ class RegistroController extends Controller
         $totalAcessos = Registro::count();
         $entradasHoje = Registro::whereDate('entrada', Carbon::today())->count();
         $saidasHoje = Registro::whereDate('saida', Carbon::today())->count();
+        $acessosBloqueados = Registro::where('tipo_acesso', 'bloqueado')->count();
 
         // Visitantes para o filtro
         $visitantes = Visitante::orderBy('nome')->get();
 
-        return view('pages.registros.index', compact('registros', 'visitantes', 'totalAcessos', 'entradasHoje', 'saidasHoje'));
+        return view('pages.registros.index', compact('registros', 'visitantes', 'totalAcessos', 'entradasHoje', 'saidasHoje', 'acessosBloqueados'));
     }
 
     /**
