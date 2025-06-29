@@ -166,7 +166,8 @@ body {
 }
 
 .bg-gradient {
-  background: linear-gradient(to right, #051f3b, #05063b) !important;
+  background: linear-gradient(to right,#051f3b, #375a7f) !important; /* #05063b */
+  /* background: #375a7f !important; */
 }
 
 .navbar-brand .text-warning {

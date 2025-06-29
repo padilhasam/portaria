@@ -4,19 +4,18 @@
     @if (auth()->check())
         <script>window.location.href = "{{ route('create.registro') }}";</script>
     @else
-        <div class="container-fluid" style="background: url('{{ Vite::asset('resources/images/background_login.png') }}')">
+        <div class="container-fluid" style="background: url('{{ Vite::asset('resources/images/background_login_claro.png') }}')">
             <div class="container">
                 <div class="vh-100 w-100 d-flex align-items-center justify-content-center">
-                    <form action="{{ route('login.store') }}" method="POST" class="form col-12 col-sm-8 col-md-6 col-lg-4">
+                    <form action="{{ route('login.store') }}" method="POST" class="form col-12 col-sm-8 col-md-6 col-lg-4 bg-white">
                         @csrf
-
                         <img src="{{ Vite::asset('resources/images/logo_black.png') }}" class="logo mx-auto d-block mb-3 w-75">
 
                         <h2 class="text-center mb-0 mt-4" id="saudacao"></h2>
-                        <p class="text-black text-center mb-4">Para acessar, faça seu login.</p>
+                        <p class="text-center mb-4">Para acessar, faça seu login.</p>
 
                         @error('error')
-                            <p class="alert alert-secondary" role="alert">{{ $message }}</p>
+                            <p class="alert alert-danger fade-out-message" role="alert">{{ $message }}</p>
                         @enderror
 
                         <div class="form-group">
@@ -28,7 +27,7 @@
                                 <input type="email" class="form-control" placeholder="example@company.com" name="email" id="email" required>
                             </div>
                             @error('email')
-                                <p class="alert alert-secondary" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger fade-out-message" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -41,7 +40,7 @@
                                 <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
                             </div>
                             @error('password')
-                                <p class="alert alert-secondary" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger fade-out-message" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
 

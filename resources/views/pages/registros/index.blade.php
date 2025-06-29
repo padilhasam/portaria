@@ -77,7 +77,7 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 mb-3">
 
         <div class="col">
-            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #4e73df, #224abe);">
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background-color: #375a7f;">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <div class="fs-6 fw-semibold mb-1">Total de Acessos</div>
@@ -93,7 +93,7 @@
         </div>
 
         <div class="col">
-            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #1cc88a, #198754);">
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background-color: #375a7f;">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <div class="fs-6 fw-semibold mb-1">Entradas Hoje</div>
@@ -109,7 +109,7 @@
         </div>
 
         <div class="col">
-            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #e74a3b, #c0392b);">
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background-color: #375a7f;">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <div class="fs-6 fw-semibold mb-1">Saídas Hoje</div>
@@ -125,7 +125,7 @@
         </div>
 
         <div class="col">
-            <div class="card border-0 shadow-sm rounded-4 text-white" style="background: linear-gradient(135deg, #f6c23e, #dda20a);">
+            <div class="card border-0 shadow-sm rounded-4 text-white" style="background-color: #375a7f;">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <div class="fs-6 fw-semibold mb-1">Acessos Bloqueados</div>

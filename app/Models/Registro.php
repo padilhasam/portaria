@@ -13,6 +13,7 @@ class Registro extends Model
 
     protected $fillable = [
         'id_visitante',   // FK para visitante
+        'nome',
         'tipo_acesso',    // entrada, saida, etc
         'observacoes',
         'entrada',        // datetime
@@ -20,7 +21,7 @@ class Registro extends Model
         'veiculo',
         'placa',
         'empresa',
-        'img',
+        'documento',
         // outros campos que achar necessário
     ];
 

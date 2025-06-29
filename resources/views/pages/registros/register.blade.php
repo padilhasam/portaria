@@ -71,11 +71,11 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                     <label for="id_visitante" class="form-label">Nome</label>
-                                    <select class="form-select rounded-pill border-dark" id="id_visitante_registros" name="id_visitante">
+                                    <select {{ $edit ? 'disabled' : '' }} class="form-select rounded-pill border-dark" id="id_visitante_registros" name="id_visitante">
                                         <option value="">Selecione o visitante...</option>
                                         @foreach ($visitantes as $visitante)
                                             <option value="{{ $visitante->id }}"
-                                                {{ old('id_visitante', $edit ? $visitante->id_visitante : '') == $visitante->id ? 'selected' : '' }}>
+                                                {{ $edit && $visitante->id == $registro->id_visitante ? 'selected' : '' }} >
                                                 {{ $visitante->nome }}
                                             </option>
                                         @endforeach
@@ -138,7 +138,7 @@
                                     <path d="M12.318 3h2.015C15.253 3 16 3.746 16 4.667v6.666c0 .92-.746 1.667-1.667 1.667h-2.015A5.97 5.97 0 0 1 9 14a5.97 5.97 0 0 1-3.318-1H1.667C.747 13 0 12.254 0 11.333V4.667C0 3.747.746 3 1.667 3H2a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1h.682A5.97 5.97 0 0 1 9 2c1.227 0 2.367.368 3.318 1M2 4.5a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0M14 8A5 5 0 1 0 4 8a5 5 0 0 0 10 0"/>
                                 </svg></label>
                                 <div>
-                                    <img id="image" src="{{ Vite::asset('/resources/images/avatar2.png') }}" class="img-fluid rounded mb-3 border" alt="Foto">
+                                    <img id="image" src="{{ $edit ? asset('storage/visitantes/'.$visitantes[0]->image) : Vite::asset('/resources/images/avatar2.png') }}" class="img-fluid rounded mb-3 border" alt="Foto">
                                 </div>
                             </div>
                         </div>
@@ -149,9 +149,6 @@
                             <button type="reset" class="btn btn-outline-danger rounded-pill">Limpar</button>
                             <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Cancelar</a>
                         </div>
-
-        {{-- Modal da câmera --}}
-        @include('components.modal-camera')
     </form>
 </div>
 

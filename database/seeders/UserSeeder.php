@@ -23,7 +23,8 @@ class UserSeeder extends Seeder
             'email' => 'admin@admin.com.br',
             'password' => Hash::make('admin1234'),
             'status' =>'ativo',
-            'user_verified' => true
+            'user_verified' => true,
+            'tipo'=> 'administrador'
         ]);
 
         DB::table('users')->insert([

@@ -88,21 +88,20 @@ class RegistroController extends Controller
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:10',
             'tipo_acesso' => 'required|string|max:40',
-            'observacoes' => 'required|string|max:500',
-            'img' => 'nullable|image|max:2048'
+            'observacoes' => 'required|string|max:500'
         ]);
 
-
-        if ($request->hasFile('img')) {
-            $caminho = $request->file('img')->store('registros', 'public');
-            $data['img'] = Storage::url($caminho); // retorna o caminho acessível via URL
-        } elseif ($request->has('img') && is_string($request->input('img'))) {
-            $file = $request->file('img');
-            if ($file && $file->isValid()) {
-                $caminho = $file->store('registros', 'public');
-                $data['img'] = Storage::url($caminho);
-            }
-        }
+        //Upload da imagem
+        // if ($request->hasFile('img')) {
+        //     $caminho = $request->file('img')->store('registros', 'public');
+        //     $data['img'] = Storage::url($caminho); // retorna o caminho acessível via URL
+        // } elseif ($request->has('img') && is_string($request->input('img'))) {
+        //     $file = $request->file('img');
+        //     if ($file && $file->isValid()) {
+        //         $caminho = $file->store('registros', 'public');
+        //         $data['img'] = Storage::url($caminho);
+        //     }
+        // }
 
         // Define a entrada atual
         $data['entrada'] = now();
@@ -122,7 +121,8 @@ class RegistroController extends Controller
     public function edit(string $id)
     {
         $registro = Registro::with('visitante.prestador')->findOrFail($id);
-        return view('pages.registros.register', compact('registro'));
+        $visitantes = Visitante::select('*')->where(['id' => $registro->id_visitante])->get();
+        return view('pages.registros.register', compact('registro', 'visitantes'));
     }
 
     /**
@@ -141,13 +141,13 @@ class RegistroController extends Controller
             'placa' => 'nullable|string|max:10',
             'tipo_acesso' => 'required|string|max:40',
             'observacoes' => 'required|string|max:500',
-            'img' => 'nullable|image|max:2048'
+            // 'img' => 'nullable|image|max:2048'
         ]);
 
-        if ($request->hasFile('img')) {
-            $caminho = $request->file('img')->store('registros', 'public');
-            $data['img'] = Storage::url($caminho);
-        }
+        // if ($request->hasFile('img')) {
+        //     $caminho = $request->file('img')->store('registros', 'public');
+        //     $data['img'] = Storage::url($caminho);
+        // }
 
         $registro->update($data);
 
