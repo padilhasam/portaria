@@ -107,6 +107,17 @@
                                 <label for="observacoes" class="form-label fw-semibold">Observação</label>
                                 <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" style="resize: none">{{ old('observacoes', $edit ? $visitante->observacoes : '') }}</textarea>
                             </div>
+                            <div class="col-12 mb-3 d-flex justify-content-end">
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" id="status" name="status"
+                                        value="ativo" {{ old('status', $visitante->status ?? '') === 'ativo' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="status">
+                                        Status: <strong id="statusLabel" class="{{ old('status', $visitante->status ?? '') === 'bloqueado' ? 'text-danger' : '' }}">
+                                            {{ old('status', $visitante->status ?? '') === 'ativo' ? 'ativo' : 'bloqueado' }}
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

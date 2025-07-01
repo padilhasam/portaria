@@ -17,6 +17,7 @@ import 'bootstrap';
 // Seus scripts personalizados
 import 'egalink-toasty.js';
 import './alerts';
+import './button.js'
 import './calendar.js';
 import './exportarPDF';
 import './grafico-registros';
