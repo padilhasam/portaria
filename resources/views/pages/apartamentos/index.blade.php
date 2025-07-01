@@ -110,11 +110,7 @@
                             <td>{{ $apartamento->bloco }}</td>
                             <td>{{ $apartamento->vaga }}</td>
                             <td>{{ $apartamento->ramal }}</td>
-                            <td>
-                                <span class="badge bg-{{ $apartamento->situacao === 'ativo' ? 'success' : 'secondary' }}">
-                                    {{ ucfirst($apartamento->situacao) }}
-                                </span>
-                            </td>
+                            <td>{{ ucfirst($apartamento->situacao) }}</td>
                             <td>
                                 <span class="badge bg-{{ $apartamento->status_vaga === 'ocupada' ? 'danger' : 'primary' }}">
                                     {{ ucfirst($apartamento->status_vaga) }}

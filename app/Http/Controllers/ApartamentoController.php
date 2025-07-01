@@ -21,6 +21,7 @@ class ApartamentoController extends Controller
                 $q->where('numero', 'like', "%{$search}%")
                 ->orWhere('bloco', 'like', "%{$search}%")
                 ->orWhere('ramal', 'like', "%{$search}%")
+                ->orWhere('situacao', 'like', "%{$search}%")
                 ->orWhere('vaga', 'like', "%{$search}%")
                 ->orWhere('status_vaga', 'like', "%{$search}%");
             });
@@ -63,7 +64,7 @@ class ApartamentoController extends Controller
     public function store(Request $request)
     {
         $validated = $this->validateApartamento($request);
-        $validated['situacao'] = 'ativo'; // Define 'ativo' por padrão na criação
+        $validated['situacao'] = 'vazio'; // Define 'ativo' por padrão na criação
 
         $apartamento = Apartamento::create($validated);
 
@@ -133,7 +134,7 @@ class ApartamentoController extends Controller
             'bloco' => 'required|string|max:10',
             'vaga' => 'nullable|string|max:10',
             'ramal' => 'nullable|string|max:10',
-            'situacao' => 'nullable|string|max:50|in:ativo,inativo',
+            'situacao' => 'nullable|string|max:50|in:ocupado,vazio,alugado,vendido,reforma',
             'status_vaga' => 'required|in:livre,ocupada',
         ]);
     }

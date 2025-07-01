@@ -20,13 +20,9 @@ class Apartamento extends Model
         'numero',
         'bloco',
         'ramal',
+        'situacao',
         'vaga',
         'status_vaga'
     ];
-    
 
-    // public $rules = [
-    //     'bloco' => 'string|max:2',
-    //     'numero' => 'string|max:4'
-    // ];
 }

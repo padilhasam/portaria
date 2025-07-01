@@ -98,11 +98,26 @@
                                 </div>
                             </div>
 
+
                             <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="situacao" class="form-label fw-semibold">Situação<span class="text-danger">*</span></label>
+                                    <select class="form-select rounded-pill border-dark @error('situacao') is-invalid @enderror" name="situacao" id="situacao" required>
+                                        <option value=""{{ old('situacao', $edit ? $apartamento->situacao : '') === null ? 'selected' : '' }}>Selecione o status do apartamento...</option>
+                                        <option value="ocupado" {{ old('situacao', $edit ? $apartamento->situacao : '') == "ocupado" ? "selected" : "" }}>Ocupado</option>
+                                        <option value="vazio" {{ old('situacao', $edit ? $apartamento->situacao : '') == "vazio" ? "selected" : "" }}>Vazio</option>
+                                        <option value="alugado" {{ old('situacao', $edit ? $apartamento->situacao : '') == "alugado" ? "selected" : "" }}>Alugado</option>
+                                        <option value="vendido" {{ old('situacao', $edit ? $apartamento->situacao : '') == "vendido" ? "selected" : "" }}>Vendido</option>
+                                        <option value="reforma" {{ old('situacao', $edit ? $apartamento->situacao : '') == "reforma" ? "selected" : "" }}>Reforma</option>
+                                    </select>
+                                    @error('status_vaga')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                                 <div class="col-md-6">
                                     <label for="status_vaga" class="form-label fw-semibold">Status da Vaga <span class="text-danger">*</span></label>
                                     <select class="form-select rounded-pill border-dark @error('status_vaga') is-invalid @enderror" name="status_vaga" id="status_vaga" required>
-                                        <option value="" disabled {{ old('status_vaga', $edit ? $apartamento->status_vaga : '') === null ? 'selected' : '' }}>Selecione o status da vaga...</option>
+                                        <option value="" {{ old('status_vaga', $edit ? $apartamento->status_vaga : '') === null ? 'selected' : '' }}>Selecione o status da vaga...</option>
                                         <option value="livre" {{ old('status_vaga', $edit ? $apartamento->status_vaga : '') == "livre" ? "selected" : "" }}>Livre</option>
                                         <option value="ocupada" {{ old('status_vaga', $edit ? $apartamento->status_vaga : '') == "ocupada" ? "selected" : "" }}>Ocupada</option>
                                         <option value="emprestada" {{ old('status_vaga', $edit ? $apartamento->status_vaga : '') == "emprestada" ? "selected" : "" }}>Emprestada</option>
