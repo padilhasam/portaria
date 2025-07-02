@@ -89,7 +89,7 @@
                                         <option value="">Selecione a empresa prestadora...</option>
                                         @foreach ($prestadores as $prestador)
                                             <option value="{{ $prestador->id }}"
-                                                {{ old('id_prestador', $edit ? $prestador->id_prestador : '') == $prestador->id ? 'selected' : '' }}>
+                                                {{ old('id_prestador', $visitante->id_prestador ?? '') == $prestador->id ? 'selected' : '' }}>
                                                 {{ $prestador->empresa }}
                                             </option>
                                         @endforeach
@@ -110,10 +110,14 @@
                             <div class="col-12 mb-3 d-flex justify-content-end">
                                 <div class="form-check form-switch">
                                     <input type="checkbox" class="form-check-input" id="status" name="status"
-                                        value="ativo" {{ old('status', $visitante->status ?? '') === 'ativo' ? 'checked' : '' }}>
+                                        value="bloqueado" {{ old('status', $visitante->status ?? '') === 'bloqueado' ? 'checked' : '' }}>
+
                                     <label class="form-check-label" for="status">
-                                        Status: <strong id="statusLabel" class="{{ old('status', $visitante->status ?? '') === 'bloqueado' ? 'text-danger' : '' }}">
-                                            {{ old('status', $visitante->status ?? '') === 'ativo' ? 'ativo' : 'bloqueado' }}
+                                        Status:
+                                        <strong id="statusLabel"
+                                            style="display: inline-block; min-width: 90px;"
+                                            class="{{ old('status', $visitante->status ?? '') === 'bloqueado' ? 'text-danger' : '' }}">
+                                            {{ old('status', $visitante->status ?? '') === 'bloqueado' ? 'Bloqueado' : 'Ativo' }}
                                         </strong>
                                     </label>
                                 </div>

@@ -89,6 +89,7 @@
                         <th>Placa</th>
                         <th>Criado em</th>
                         <th>Atualizado em</th>
+                        <th>Status</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -118,7 +119,14 @@
                             </td>
                             <td>{{ $visitante->created_at->format('d/m/Y H:i') }}</td>
                             <td>{{ $visitante->updated_at->format('d/m/Y H:i') }}</td>
-                            {{--<td>{{ $visitante->veiculo->placa ?? '-' }}</td>--}}
+                            <td>{{ ucfirst($visitante->status) ?? 'Não informado'}}</td>
+                            {{-- <td>
+                                @if($registro->status == 'bloqueado')
+                                    <span class="badge bg-danger">Bloqueado</span>
+                                @else
+                                    <span class="badge bg-success">Liberado</span>
+                                @endif
+                            </td> --}}
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 32px; height: 32px;">

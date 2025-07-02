@@ -15,6 +15,7 @@ class Registro extends Model
         'id_visitante',   // FK para visitante
         'nome',
         'tipo_acesso',    // entrada, saida, etc
+        'status',
         'observacoes',
         'entrada',        // datetime
         'saida',          // datetime

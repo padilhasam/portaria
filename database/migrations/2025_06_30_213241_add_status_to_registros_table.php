@@ -9,20 +9,17 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::table('registros', function (Blueprint $table) {
-            //
+            $table->string('status')->nullable()->after('tipo_acesso');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::table('registros', function (Blueprint $table) {
-            //
+            $table->dropColumn('status');
         });
     }
 };

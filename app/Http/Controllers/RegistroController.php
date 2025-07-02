@@ -88,7 +88,8 @@ class RegistroController extends Controller
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:10',
             'tipo_acesso' => 'required|string|max:40',
-            'observacoes' => 'required|string|max:500'
+            'observacoes' => 'required|string|max:500',
+            'status' => 'nullable|string|in:bloqueado,ativo'
         ]);
 
         //Upload da imagem
@@ -106,6 +107,25 @@ class RegistroController extends Controller
         // Define a entrada atual
         $data['entrada'] = now();
 
+        // Verifica se o visitante está cadastrado
+        if ($request->filled('id_visitante')) {
+            $visitante = Visitante::find($request->id_visitante);
+
+            if (!$visitante) {
+                return redirect()->back()->with('error', 'Visitante não encontrado.');
+            }
+
+            if ($visitante->status === 'bloqueado') {
+                return redirect()->back()->with('error', 'Este visitante está bloqueado e não pode acessar o condomínio.');
+            }
+
+            $data['status'] = 'ativo'; // visitante liberado
+        } else {
+            // Se não veio visitante vinculado, usa o status informado ou padrão
+            $data['status'] = $request->input('status') ?? 'ativo';
+        }
+
+        // Cria o registro
         $registro = Registro::create($data);
 
         if ($registro) {
@@ -114,7 +134,6 @@ class RegistroController extends Controller
             return redirect(route('index.registro'))->with('error', 'Erro ao registrar entrada!');
         }
     }
-
     /**
      * Show the form for editing the specified resource.
      */
