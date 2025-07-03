@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Prestador;
 use App\Models\Veiculo;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Rules\CpfValido;
 
 class PrestadorController extends Controller
 {
@@ -91,11 +93,11 @@ class PrestadorController extends Controller
     {
         $request->validate([
             'empresa' => 'required|string|max:255',
-            'cnpj' => 'required|string|max:18',
+            'cnpj' => 'required|string|max:18|unique:prestadores,cnpj' . ($request->method() === 'PUT' ? ',' . $request->route('id') : ''),
             'tel_fixo' => 'required|string|max:20',
             'email' => 'required|email|max:255',
             'prestador' => 'required|string|max:255',
-            'documento' => 'required|string|max:14',
+            'documento' => ['required','string','max:14', Rule::unique('prestadores', 'documento')->ignore($request->route('id')), new CpfValido,],
             'celular' => 'required|string|max:20',
             'acompanhante' => 'required|string|max:255',
             'observacoes' => 'nullable|string',

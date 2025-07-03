@@ -2,12 +2,14 @@ import Inputmask from 'inputmask';
 
 document.addEventListener('DOMContentLoaded', () => {
     const cpfInput = document.getElementById('documento');
+    const cnpjInput = document.getElementById('cnpj');
     const dataNascimentoInput = document.getElementById('nascimento');
     const telFixoInput = document.getElementById('tel_fixo');
     const celularInput = document.getElementById('celular');
     const placaInput = document.getElementById('placa'); // ID do campo da placa
 
     if (cpfInput) Inputmask('999.999.999-99').mask(cpfInput);
+    if (cnpjInput) Inputmask('99.999.999/9999-99').mask(cnpjInput);
     if (dataNascimentoInput) Inputmask('99/99/9999').mask(dataNascimentoInput);
     if (telFixoInput) Inputmask('(99) 9999-9999').mask(telFixoInput);
     if (celularInput) Inputmask('(99) 99999-9999').mask(celularInput);

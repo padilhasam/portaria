@@ -47,7 +47,12 @@
                 {{-- CNPJ --}}
                 <div class="col-md-3">
                     <label for="cnpj" class="form-label fw-semibold">CNPJ<span class="text-danger">*</span></label>
-                    <input type="text" name="cnpj" class="form-control rounded-pill border-dark" value="{{ old('cnpj', $edit ? $prestador->cnpj : '') }}" placeholder="CNPJ" required>
+                    <input type="text" id="cnpj" name="cnpj" class="form-control rounded-pill border-dark @error('cnpj') is-invalid @enderror" value="{{ old('cnpj', $edit ? $prestador->cnpj : '') }}" placeholder="CNPJ" required>
+                     @error('cnpj')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="col-md-3">
@@ -72,11 +77,19 @@
                 {{-- Nome da Pessoa que Prestará o Serviço --}}
                 <div class="col-md-3">
                     <label for="documento" class="form-label fw-semibold">CPF<span class="text-danger">*</span></label>
-                    <input name="documento" type="text" class="form-control rounded-pill border-dark" id="documento" placeholder="CPF" required
-                        value="{{ old('documento', $edit ? $prestador->documento : '') }}"
-                        >
+                    <input name="documento" type="text" class="form-control rounded-pill border-dark @error('documento') is-invalid @enderror" id="documento" placeholder="CPF" required
+                        value="{{ old('documento', $edit ? $prestador->documento : '') }}">
+
+                    {{-- Erro do Laravel --}}
+                    @error('documento')
+                        <div class="invalid-feedback d-block">
+                            {{ $message }}
+                        </div>
+                    @enderror
+
+                    {{-- Erro do JS --}}
                     <div id="cpf-error" class="invalid-feedback d-none">CPF inválido</div>
-            </div>
+                </div>
 
 
             <div class="col-md-3">
