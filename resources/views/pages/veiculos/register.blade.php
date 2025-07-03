@@ -38,10 +38,28 @@
                     @endif
 
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="placa" class="form-label fw-semibold">Placa<span class="text-danger">*</span></label>
-                            <input name="placa" type="text" class="form-control rounded-pill border-dark" id="placa" placeholder="Placa do veículo" value="{{ $edit ? $veiculo->placa : '' }}" required>
+
+                        <div class="col-md-3">
+                            <label for="placa" class="form-label fw-semibold">Placa do Veículo<span class="text-danger">*</span></label>
+                            
+                            <!-- Campo para a placa -->
+                            <input type="text" id="placa" name="placa" class="form-control rounded-pill border-dark" placeholder="Placa do Veículo" value="{{ $edit ? $veiculo->placa : '' }}" required>
                         </div>
+                        <!-- Ícone que indica o tipo da placa -->
+                        <div class="col-md-3">
+                            <!-- Checkbox para alternar entre as placas -->
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="mercosulCheckbox">
+                                <label class="form-check-label" for="mercosulCheckbox">
+                                    Modelo Mercosul
+                                </label>
+                            </div>
+                            <div id="placa-icon" class="mt-2">
+                                <img src="{{ Vite::asset('/resources/images/comum-icon.png') }}" alt="Modelo Comum" class="d-none" id="comum-icon">
+                                <img src="{{ Vite::asset('/resources/images/mercosul-icon.png') }}" alt="Modelo Mercosul" class="d-none" id="mercosul-icon">
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <label for="tipo" class="form-label fw-semibold">Tipo do Veículo<span class="text-danger">*</span></label>
                             <select class="form-control rounded-pill border-dark" name="tipo" id="tipo" required>
