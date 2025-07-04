@@ -23,6 +23,7 @@ class Veiculo extends Model
         'marca',
         'modelo',
         'cor',
-        'observacoes'
+        'observacoes',
+        'tipo_placa',
     ];
 }

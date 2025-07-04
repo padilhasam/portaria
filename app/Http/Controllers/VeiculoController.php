@@ -53,6 +53,11 @@ class VeiculoController extends Controller
      */
     public function store(Request $request)
     {
+        // Define o valor padrão de tipo_placa se não estiver presente na requisição
+        $request->merge([
+            'tipo_placa' => $request->has('tipo_placa') ? 'mercosul' : 'comum',
+        ]);
+
         $validated = $this->validateVeiculo($request); // Usando o método de validação
 
         $veiculo = Veiculo::create($validated);
@@ -89,6 +94,11 @@ class VeiculoController extends Controller
     public function update(Request $request, string $id)
     {
         $veiculo = Veiculo::findOrFail($id);
+
+        // Define o valor padrão de tipo_placa se não estiver presente na requisição
+        $request->merge([
+            'tipo_placa' => $request->has('tipo_placa') ? 'mercosul' : 'comum',
+        ]);
 
         $validated = $this->validateVeiculo($request, $veiculo->id); // Usando o método de validação
 
@@ -135,6 +145,7 @@ class VeiculoController extends Controller
             'cor' => 'required|string|max:20',
             'vaga' => 'nullable|string|max:20', // Se a vaga for opcional
             'observacoes' => 'nullable|string|max:255', // Observações com limite maior
+            'tipo_placa' => 'required|in:comum,mercosul',  // Validando os tipos de placa
         ], [
             'placa.required' => 'A placa do veículo é obrigatória.',
             'placa.unique' => 'A placa informada já está cadastrada.',
@@ -144,6 +155,7 @@ class VeiculoController extends Controller
             'cor.required' => 'A cor do veículo é obrigatória.',
             'vaga.max' => 'A vaga pode ter no máximo 10 caracteres.',
             'observacoes.max' => 'A observação pode ter no máximo 255 caracteres.',
+            'tipo_placa' => 'required|in:comum,mercosul',  // Validando os tipos de placa
         ]);
     }
 }
