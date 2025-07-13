@@ -39,42 +39,43 @@
 
                     <div class="row mb-3">
 
-                    <div class="col-md-2">
-                        <label for="placa" class="form-label fw-semibold">Placa do Veículo<span class="text-danger">*</span></label>
-                        <input type="text" id="placa" name="placa" class="form-control rounded-pill border-dark" placeholder="Placa do Veículo" value="{{ $edit ? $veiculo->placa : '' }}" required>
-                    </div>
-
-                    <div class="col-md-2">
-                        @php
-                            $tipoPlaca = old('tipo_placa') ?? ($edit ? $veiculo->tipo_placa : 'comum');
-                        @endphp
-
-                        <label class="form-label fw-semibold d-block">Tipo da Placa<span class="text-danger">*</span></label>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo_placa" id="tipoComum" value="comum"
-                                {{ $tipoPlaca === 'comum' ? 'checked' : '' }}>
-                            <label class="form-check-label" for="tipoComum">
-                                Comum
-                            </label>
+                        <div class="col-md-2">
+                            <label for="placa" class="form-label fw-semibold">Placa do Veículo<span class="text-danger">*</span></label>
+                            <input type="text" id="placa" name="placa" class="form-control rounded-pill border-dark" placeholder="Placa do Veículo" value="{{ $edit ? $veiculo->placa : '' }}" required>
                         </div>
 
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="tipo_placa" id="tipoMercosul" value="mercosul"
-                                {{ $tipoPlaca === 'mercosul' ? 'checked' : '' }}>
-                            <label class="form-check-label" for="tipoMercosul">
-                                Mercosul
-                            </label>
-                        </div>
-                    </div>
+                        <div class="col-md-2 d-flex flex-column align-items-center justify-content-center text-center">
+                            @php
+                                $tipoPlaca = old('tipo_placa') ?? ($edit ? $veiculo->tipo_placa : 'comum');
+                            @endphp
 
-                     <div class="col-md-2">
-                        <label class="form-label fw-semibold d-block">Modelo</label>
-                        <div id="placa-icon" class="mt-2">
-                            <img src="{{ Vite::asset('/resources/images/comum-icon.png') }}" alt="Modelo Comum" class="d-none" id="comum-icon">
-                            <img src="{{ Vite::asset('/resources/images/mercosul-icon.png') }}" alt="Modelo Mercosul" class="d-none" id="mercosul-icon">
+                            <label class="form-label fw-semibold mb-2">Tipo da Placa <span class="text-danger">*</span></label>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input" type="radio" name="tipo_placa" id="tipoComum" value="comum"
+                                    {{ (string)$tipoPlaca === 'comum' ? 'checked' : '' }}>
+                                <label class="form-check-label ms-1" for="tipoComum">
+                                    Comum
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_placa" id="tipoMercosul" value="mercosul"
+                                    {{ (string)$tipoPlaca === 'mercosul' ? 'checked' : '' }}>
+                                <label class="form-check-label ms-1" for="tipoMercosul">
+                                    Mercosul
+                                </label>
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label fw-semibold d-block">Modelo</label>
+                            <div id="placa-icon" class="mt-2">
+                                <img src="{{ Vite::asset('/resources/images/comum-icon.png') }}" alt="Modelo Comum" class="d-none" id="comum-icon">
+                                <img src="{{ Vite::asset('/resources/images/mercosul-icon.png') }}" alt="Modelo Mercosul" class="d-none" id="mercosul-icon">
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <label for="tipo" class="form-label fw-semibold">Tipo do Veículo<span class="text-danger">*</span></label>
                             <select class="form-control rounded-pill border-dark" name="tipo" id="tipo" required>
@@ -84,6 +85,7 @@
                                 <option value="Caminhão" {{ $edit && $veiculo->tipo == "Caminhão" ? "selected" : "" }}>Caminhão</option>
                             </select>
                         </div>
+
                     </div>
 
                     <div class="row mb-3">
