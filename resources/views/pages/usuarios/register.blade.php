@@ -65,6 +65,7 @@
                                     class="form-control rounded-pill @error('documento') is-invalid @enderror"
                                     placeholder="CPF"
                                     value="{{ old('documento', $edit ? $usuario->documento : '') }}">
+                                    <div id="cpf-error" class="invalid-feedback d-none">CPF inválido</div>
                                 @error('documento')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

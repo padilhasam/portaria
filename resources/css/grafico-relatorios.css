@@ -1,0 +1,30 @@
+#grafico-acessos,
+#grafico-usuarios,
+#grafico-entradas {
+  max-width: 300px;  /* largura máxima */
+  max-height: 200px; /* altura máxima */
+  width: 100%;       /* para responsividade */
+  height: auto;
+}
+
+/* #grafico-acessos {
+  width: 300px !important;
+  height: 200px !important;
+}
+
+#grafico-usuarios {
+  width: 300px !important;
+  height: 200px !important;
+}
+
+#grafico-entradas {
+  width: 300px !important;
+  height: 200px !important;
+} */
+
+canvas.grafico {
+    max-width: 260px;
+    max-height: 180px;
+    width: 100%;
+    height: auto;
+}

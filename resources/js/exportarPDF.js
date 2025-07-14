@@ -1,18 +1,43 @@
-import jsPDF from "jspdf";
+document.addEventListener('DOMContentLoaded', function() {
+    const exportarPdfBtn = document.getElementById('btn-exportar-pdf');
+    const loader = document.getElementById('page-loader');
 
-document.addEventListener("DOMContentLoaded", function () {
-    const exportarBtn = document.getElementById('exportar-pdf');
-    if (exportarBtn) {
-        exportarBtn.addEventListener('click', function () {
-            const doc = new jsPDF();
+    if (!exportarPdfBtn) return;
 
-            doc.setFontSize(18);
-            doc.text("Relatório de Atividades", 10, 10);
+    exportarPdfBtn.addEventListener('click', function() {
+        if (loader) loader.style.display = 'flex';
 
-            doc.setFontSize(12);
-            doc.text("Este é um relatório gerado com base nos dados selecionados pelo usuário.", 10, 20);
+        // Construir a URL do PDF com os filtros atuais da página
+        const params = new URLSearchParams(window.location.search);
+        const url = `/relatorios/exportar-pdf?${params.toString()}`;
 
-            doc.save("relatorio.pdf");
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/pdf',
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erro ao gerar PDF');
+            return response.blob();
+        })
+        .then(blob => {
+            // Criar link temporário para download
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = 'relatorio-acessos.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(downloadUrl);
+        })
+        .catch(error => {
+            alert('Erro ao gerar o PDF: ' + error.message);
+        })
+        .finally(() => {
+            if (loader) loader.style.display = 'none';
         });
-    }
+    });
 });

@@ -145,7 +145,8 @@ Route::controller(PrestadorController::class)->group(function () {
     Route::delete('/prestador/{id}', 'destroy')->name('destroy.prestador');
 })->middleware(['auth', 'check.status'])->name('dashboard');
 
-Route::controller(RelatorioController::class)->group(function () {
-    Route::get('/relatorios', [RelatorioController::class, 'index'])->name('index.relatorio');
-    Route::get('/relatorios/export', [RelatorioController::class, 'export'])->name('export.relatorio');
-})->middleware(['auth', 'check.status'])->name('dashboard');
+Route::middleware(['auth', 'check.status'])->controller(RelatorioController::class)->group(function () {
+    Route::get('/relatorios', 'index')->name('index.relatorio');
+    Route::get('/relatorios/exportar-csv', 'export')->name('relatorio.exportar.csv');
+    Route::get('/relatorios/exportar-pdf', 'exportPdf')->name('relatorio.exportar.pdf');
+});

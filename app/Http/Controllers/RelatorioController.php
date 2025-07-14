@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Registro;
 
@@ -101,5 +102,14 @@ class RelatorioController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $registros = $this->filtrarRegistros($request);
+
+        $pdf = Pdf::loadView('pages.relatorios.pdf', compact('registros'));
+
+        return $pdf->download('relatorio-acessos.pdf');
     }
 }
