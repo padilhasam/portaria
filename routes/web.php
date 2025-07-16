@@ -14,6 +14,8 @@ use App\Http\Controllers\{
     PrestadorController,
     CorrespondenciaController,
     ConfiguracaoController,
+    LogController,
+
 };
 use Illuminate\Support\Facades\Route;
 
@@ -149,4 +151,11 @@ Route::middleware(['auth', 'check.status'])->controller(RelatorioController::cla
     Route::get('/relatorios', 'index')->name('index.relatorio');
     Route::get('/relatorios/exportar-csv', 'export')->name('relatorio.exportar.csv');
     Route::get('/relatorios/exportar-pdf', 'exportPdf')->name('relatorio.exportar.pdf');
+});
+
+Route::middleware(['auth', 'check.status'])->controller(LogController::class)->group(function () {
+    Route::get('/logs/gerar', 'gerar')->name('logs.gerar');
+    Route::get('/logs', 'index')->name('logs.index');
+    Route::get('/logs/exportar-pdf', 'exportarPdf')->name('logs.exportar.pdf');
+    Route::get('/logs/exportar-csv', 'exportarCsv')->name('logs.exportar.csv');
 });

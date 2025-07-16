@@ -35,8 +35,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Loader para submits de formulários (cadastrar, editar, deletar)
     document.querySelectorAll('form').forEach(function(form) {
-        form.addEventListener('submit', function() {
+        form.addEventListener('submit', function () {
             loader.style.display = 'flex';
+
+            // Evita que o loader trave caso o form apenas inicie um download
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 3000); // Oculta após 3 segundos (ajuste se quiser)
         });
     });
 

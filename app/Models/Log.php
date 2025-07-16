@@ -9,16 +9,23 @@ class Log extends Model
 {
     use HasFactory;
 
-    // Caso a tabela não seja "logs", defina aqui
-    // protected $table = 'nome_da_tabela_de_logs';
+    protected $table = 'logs';
+
+    public $timestamps = false; // usamos 'criado_em'
 
     protected $fillable = [
-        'nivel',    // Exemplo: INFO, ERRO, WARNING
-        'mensagem', // Texto do log
+        'id_user',
+        'acao',
+        'tabela_afetada',
+        'registro_id',
+        'descricao',
+        'erro',
+        'criado_em',
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
+    public function user()
+    {
+        // Especificamos explicitamente que a FK é 'id_user'
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
 }

@@ -77,7 +77,9 @@
                     <td>{{ $registro->id }}</td>
                     <td>{{ ucfirst($registro->tipo_acesso) }}</td>
                     <td>{{ $registro->created_at->format('d/m/Y H:i') }}</td>
-                    <td>{{ $registro->visitante->morador->apartamento->numero ?? '—' }}</td>
+                    <td>
+                        {{ $registro->apartamento ? 'Bloco ' . $registro->apartamento->bloco . ' - Apto. ' . $registro->apartamento->numero : '—' }}
+                    </td>
                     <td>{{ ucfirst($registro->status ?? '—') }}</td>
                 </tr>
             @empty

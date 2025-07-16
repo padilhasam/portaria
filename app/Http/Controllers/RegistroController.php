@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Registro;
 use App\Models\Visitante;
+use App\Models\Apartamento;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -72,7 +73,8 @@ class RegistroController extends Controller
     public function create(Request $request)
     {
         $visitantes = Visitante::all();
-        return view("pages.registros.register", compact('visitantes'));
+        $apartamentos = Apartamento::all(); // ✅ Busca todos os apartamentos
+        return view("pages.registros.register", compact('visitantes', 'apartamentos'));
     }
 
     /**
@@ -82,6 +84,7 @@ class RegistroController extends Controller
     {
         $data = $request->validate([
             'id_visitante' => 'nullable|integer',
+            'id_apartamento' => 'nullable|integer|exists:apartamentos,id',
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:15',
             'empresa' => 'nullable|string|max:50',
@@ -141,7 +144,8 @@ class RegistroController extends Controller
     {
         $registro = Registro::with('visitante.prestador')->findOrFail($id);
         $visitantes = Visitante::select('*')->where(['id' => $registro->id_visitante])->get();
-        return view('pages.registros.register', compact('registro', 'visitantes'));
+        $apartamentos = Apartamento::all(); // ✅ Também no edit
+        return view('pages.registros.register', compact('registro', 'visitantes', 'apartamentos'));
     }
 
     /**
@@ -153,6 +157,7 @@ class RegistroController extends Controller
 
         $data = $request->validate([
             'id_visitante' => 'nullable|integer',
+            'id_apartamento' => 'nullable|integer|exists:apartamentos,id',
             'nome' => 'required|string|max:255',
             'documento' => 'required|string|min:11|max:15',
             'empresa' => 'nullable|string|max:50',

@@ -161,6 +161,7 @@
                             <th>Empresa</th>
                             <th>Veículo</th>
                             <th>Placa</th>
+                            <th>Apartamento</th>
                             <th>Tipo Acesso</th>
                             <th>Observações</th>
                             <th>Data</td>
@@ -177,6 +178,9 @@
                                 <td>{{ $registro->empresa ?? '—' }}</td>
                                 <td>{{ $registro->veiculo ?? '—' }}</td>
                                 <td>{{ $registro->placa ?? '—' }}</td>
+                                <td>
+                                    {{ $registro->apartamento ? 'Bloco ' . $registro->apartamento->bloco . ' - Apto. ' . $registro->apartamento->numero : '—' }}
+                                </td>
                                 <td>
                                     <span class="badge bg-info text-white">
                                         {{ ucfirst($registro->tipo_acesso) }}

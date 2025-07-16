@@ -38,12 +38,14 @@ class RelatorioController extends Controller
         $registros = $query->latest()->get();
 
         // KPIs
-        $total = $registros->count();
-        $entradas = $registros->where('tipo_acesso', 'entrada')->count();
-        $saidas = $registros->where('tipo_acesso', 'saida')->count();
-        $negados = $registros->where('status', 'negado')->count(); // Se existir
+        $total    = $registros->count();
+        $entradas = $registros->whereNotNull('entrada')->count();
+        $saidas   = $registros->whereNotNull('saida')->count();
+        $negados  = $registros->where('status', 'negado')->count();
 
-        return view('pages.relatorios.index', compact('registros', 'total', 'entradas', 'saidas', 'negados'));
+        $tiposAcesso = Registro::select('tipo_acesso')->distinct()->orderBy('tipo_acesso')->pluck('tipo_acesso');
+
+        return view('pages.relatorios.index', compact('registros', 'total', 'entradas', 'saidas', 'negados', 'tiposAcesso'));
     }
 
     private function filtrarRegistros(Request $request)

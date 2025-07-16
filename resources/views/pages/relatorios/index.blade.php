@@ -19,17 +19,6 @@
             Relatório de Atividades
         </h3>
 
-        {{-- Botões de exportação --}}
-        <div class="d-flex flex-wrap gap-2">
-            <a id="btn-exportar-csv" class="btn btn-outline-success btn-sm rounded-pill px-4 d-flex align-items-center gap-2">
-                <i class="bi bi-file-earmark-excel-fill"></i> Exportar CSV
-            </a>
-
-            <a id="btn-exportar-pdf" class="btn btn-outline-dark btn-sm rounded-pill px-4 d-flex align-items-center gap-2">
-                <i class="bi bi-file-pdf-fill"></i> Exportar PDF
-            </a>
-        </div>
-
     </div>
 </header>
 
@@ -69,39 +58,66 @@
             <h5 class="fw-semibold mb-4">📄 Gerar Relatório de Acessos</h5>
 
             <form method="GET" action="{{ route('index.relatorio') }}" class="row g-3">
+                {{-- Data de Início --}}
                 <div class="col-6">
                     <label for="data_inicio" class="form-label fw-semibold">Data Início</label>
-                    <input type="date" name="data_inicio" id="data_inicio" class="form-control form-control-sm rounded-pill"
-                           value="{{ old('data_inicio', request('data_inicio')) }}">
+                    <input type="date" name="data_inicio" id="data_inicio"
+                        class="form-control form-control-sm rounded-pill"
+                        value="{{ request('data_inicio') }}">
                 </div>
 
+                {{-- Data de Fim --}}
                 <div class="col-6">
                     <label for="data_fim" class="form-label fw-semibold">Data Fim</label>
-                    <input type="date" name="data_fim" id="data_fim" class="form-control form-control-sm rounded-pill"
-                           value="{{ old('data_fim', request('data_fim')) }}">
+                    <input type="date" name="data_fim" id="data_fim"
+                        class="form-control form-control-sm rounded-pill"
+                        value="{{ request('data_fim') }}">
                 </div>
 
+                {{-- Tipo de Acesso --}}
                 <div class="col-6">
-                    <label for="tipo" class="form-label fw-semibold">Tipo de Acesso</label>
-                    <select name="tipo" id="tipo" class="form-select form-select-sm rounded-pill">
+                    <label for="tipo_acesso" class="form-label fw-semibold">Tipo de Acesso</label>
+                    <select name="tipo_acesso" id="tipo_acesso" class="form-select form-select-sm rounded-pill">
                         <option value="">Todos</option>
-                        <option value="entrada" {{ request('tipo') == 'entrada' ? 'selected' : '' }}>Entrada</option>
-                        <option value="saida" {{ request('tipo') == 'saida' ? 'selected' : '' }}>Saída</option>
-                        <option value="visitante" {{ request('tipo') == 'visitante' ? 'selected' : '' }}>Visitante</option>
-                        <option value="prestador" {{ request('tipo') == 'prestador' ? 'selected' : '' }}>Prestador</option>
+                        @foreach ($tiposAcesso as $tipo)
+                            <option value="{{ $tipo }}" {{ request('tipo_acesso') == $tipo ? 'selected' : '' }}>
+                                {{ ucfirst($tipo) }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
 
+                {{-- Apartamento --}}
                 <div class="col-6">
                     <label for="apartamento" class="form-label fw-semibold">Apartamento</label>
-                    <input type="text" name="apartamento" id="apartamento" class="form-control form-control-sm rounded-pill"
-                           value="{{ request('apartamento') }}">
+                    <input type="text" name="apartamento" id="apartamento"
+                        class="form-control form-control-sm rounded-pill"
+                        value="{{ request('apartamento') }}">
                 </div>
 
-                <div class="col-12 text-end">
-                    <button type="submit" class="btn btn-primary btn-sm rounded-pill px-5 shadow-sm">
-                        🔍 Gerar Relatório
-                    </button>
+                {{-- Botões --}}
+                <div class="col-12 d-flex justify-content-between align-items-center">
+
+                    {{-- Botões de exportação --}}
+                    <div class="d-flex flex-wrap gap-2">
+                        <a id="btn-exportar-csv" class="btn btn-outline-success btn-sm rounded-pill px-4 d-flex align-items-center gap-2">
+                            <i class="bi bi-file-earmark-excel-fill"></i> Exportar CSV
+                        </a>
+
+                        <a id="btn-exportar-pdf" class="btn btn-outline-dark btn-sm rounded-pill px-4 d-flex align-items-center gap-2">
+                            <i class="bi bi-file-pdf-fill"></i> Exportar PDF
+                        </a>
+                         {{-- Botão de buscar --}}
+                        <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm" title="Aplicar filtros">
+                            🔍 Filtrar
+                        </button>
+                    </div>
+
+                    {{-- Botão de limpar filtros --}}
+                    <a href="{{ route('index.relatorio') }}" class="btn btn-outline-danger btn-sm rounded-pill px-4 shadow-sm">
+                        Limpar Filtros
+                    </a>
+
                 </div>
             </form>
         </div>
@@ -113,14 +129,17 @@
             <h5 class="fw-semibold mb-4">📝 Gerar Logs do Sistema</h5>
 
             <form method="GET" action="{{ route('logs.gerar') }}" class="row g-3">
+                {{-- Formato --}}
                 <div class="col-6 col-md-4">
                     <label for="tipo_log" class="form-label fw-semibold">Formato</label>
                     <select name="tipo" id="tipo_log" class="form-select form-select-sm rounded-pill">
                         <option value="pdf">PDF</option>
                         <option value="txt">TXT</option>
+                        <option value="csv">CSV</option>
                     </select>
                 </div>
 
+                {{-- Nível --}}
                 <div class="col-6 col-md-4">
                     <label for="nivel_log" class="form-label fw-semibold">Nível</label>
                     <select name="nivel" id="nivel_log" class="form-select form-select-sm rounded-pill">
@@ -131,9 +150,26 @@
                     </select>
                 </div>
 
+                {{-- Data Única --}}
                 <div class="col-md-4">
                     <label for="data_log" class="form-label fw-semibold">Data</label>
                     <input type="date" name="data" id="data_log" class="form-control form-control-sm rounded-pill">
+                </div>
+
+                {{-- Filtros Avançados --}}
+                <div class="col-md-6">
+                    <label for="usuario_log" class="form-label fw-semibold">Usuário</label>
+                    <input type="text" name="usuario" id="usuario_log" class="form-control form-control-sm rounded-pill" placeholder="Digite o nome do usuário">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="data_inicio" class="form-label fw-semibold">De</label>
+                    <input type="date" name="data_inicio" id="data_inicio" class="form-control form-control-sm rounded-pill">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="data_fim" class="form-label fw-semibold">Até</label>
+                    <input type="date" name="data_fim" id="data_fim" class="form-control form-control-sm rounded-pill">
                 </div>
 
                 <div class="col-12 text-end">

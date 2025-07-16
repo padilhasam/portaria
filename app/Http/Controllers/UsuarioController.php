@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Exception;
 
 class UsuarioController extends Controller
 {
@@ -12,7 +14,6 @@ class UsuarioController extends Controller
     {
         $query = User::query();
 
-        // Filtro por nome, email, CPF, usuário, status, tipo
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -25,14 +26,12 @@ class UsuarioController extends Controller
             });
         }
 
-        // Filtro por status
         if ($request->filled('status')) {
-            $query->where('status', strtolower($request->input('status'))); // banco em minúsculo
+            $query->where('status', strtolower($request->input('status')));
         }
 
-        // Filtro por tipo
         if ($request->filled('tipo')) {
-            $query->where('tipo', strtolower($request->input('tipo'))); // banco em minúsculo
+            $query->where('tipo', strtolower($request->input('tipo')));
         }
 
         $usuarios = $query->orderBy('nome')->paginate(10);
@@ -59,23 +58,46 @@ class UsuarioController extends Controller
             'tipo'      => 'required|in:administrador,padrao',
         ]);
 
-        $user = User::create([
-            'nome'          => $validated['nome'],
-            'documento'     => $validated['documento'],
-            'nascimento'    => $validated['nascimento'],
-            'celular'       => $validated['celular'],
-            'user'          => $validated['user'],
-            'email'         => $validated['email'],
-            'password'      => Hash::make($validated['password']),
-            'status'        => $validated['status'],
-            'tipo'          => $validated['tipo'],
-            'user_verified' => false, // caso exista essa coluna
-        ]);
+        try {
+            $user = User::create([
+                'nome'          => $validated['nome'],
+                'documento'     => $validated['documento'],
+                'nascimento'    => $validated['nascimento'],
+                'celular'       => $validated['celular'],
+                'user'          => $validated['user'],
+                'email'         => $validated['email'],
+                'password'      => Hash::make($validated['password']),
+                'status'        => $validated['status'],
+                'tipo'          => $validated['tipo'],
+                'user_verified' => false,
+            ]);
 
-        return redirect()->route('index.usuario')->with(
-            $user ? 'success' : 'error',
-            $user ? 'Usuário registrado com sucesso!' : 'Erro ao registrar usuário!'
-        );
+            // ✅ REGISTRA O LOG
+            Log::create([
+                'id_user'        => auth()->id(),
+                'acao'           => 'CREATE',
+                'tabela_afetada' => 'users',
+                'registro_id'    => $user->id,
+                'descricao'      => "Usuário {$user->nome} criado com sucesso.",
+                'erro'           => null,
+                'criado_em'      => now(),
+            ]);
+
+            return redirect()->route('index.usuario')->with('success', 'Usuário registrado com sucesso!');
+        } catch (Exception $e) {
+            // ✅ REGISTRA LOG DE ERRO
+            Log::create([
+                'id_user'        => auth()->id(),
+                'acao'           => 'CREATE',
+                'tabela_afetada' => 'users',
+                'registro_id'    => null,
+                'descricao'      => 'Erro ao criar usuário',
+                'erro'           => $e->getMessage(),
+                'criado_em'      => now(),
+            ]);
+
+            return back()->with('error', 'Erro ao registrar usuário!');
+        }
     }
 
     public function edit(string $id)
@@ -100,28 +122,77 @@ class UsuarioController extends Controller
             'tipo'      => 'required|in:administrador,padrao',
         ]);
 
-        // Preenchendo os campos
-        $usuario->nome       = $validated['nome'];
-        $usuario->documento  = $validated['documento'];
-        $usuario->nascimento = $validated['nascimento'];
-        $usuario->celular    = $validated['celular'];
-        $usuario->user       = $validated['user'];
-        $usuario->email      = $validated['email'];
-        $usuario->status     = $validated['status'];
-        $usuario->tipo       = $validated['tipo']; // <== ESSA LINHA FALTAVA
+        try {
+            $usuario->update([
+                'nome'       => $validated['nome'],
+                'documento'  => $validated['documento'],
+                'nascimento' => $validated['nascimento'],
+                'celular'    => $validated['celular'],
+                'user'       => $validated['user'],
+                'email'      => $validated['email'],
+                'status'     => $validated['status'],
+                'tipo'       => $validated['tipo'],
+                'password'   => !empty($validated['password']) ? Hash::make($validated['password']) : $usuario->password,
+            ]);
 
-        if (!empty($validated['password'])) {
-            $usuario->password = Hash::make($validated['password']);
+            // ✅ LOG DE ATUALIZAÇÃO
+            Log::create([
+                'id_user'        => auth()->id(),
+                'acao'           => 'UPDATE',
+                'tabela_afetada' => 'users',
+                'registro_id'    => $usuario->id,
+                'descricao'      => "Usuário {$usuario->nome} atualizado.",
+                'erro'           => null,
+                'criado_em'      => now(),
+            ]);
+
+            return redirect()->route('index.usuario')->with('success', 'Usuário atualizado com sucesso!');
+        } catch (Exception $e) {
+            Log::create([
+                'id_user'        => auth()->id(),
+                'acao'           => 'UPDATE',
+                'tabela_afetada' => 'users',
+                'registro_id'    => $usuario->id,
+                'descricao'      => 'Erro ao atualizar usuário',
+                'erro'           => $e->getMessage(),
+                'criado_em'      => now(),
+            ]);
+
+            return back()->with('error', 'Erro ao atualizar usuário!');
         }
-
-        $usuario->save();
-
-        return redirect()->route('index.usuario')->with('success', 'Usuário atualizado com sucesso!');
     }
 
     public function destroy(string $id)
     {
-        User::findOrFail($id)->delete();
-        return redirect()->route('index.usuario')->with('success', 'Usuário excluído com sucesso!');
+        $usuario = User::findOrFail($id);
+
+        try {
+            $usuario->delete();
+
+            // ✅ LOG DE EXCLUSÃO
+            Log::create([
+                'id_user'        => auth()->id(),
+                'acao'           => 'DELETE',
+                'tabela_afetada' => 'users',
+                'registro_id'    => $id,
+                'descricao'      => "Usuário {$usuario->nome} excluído.",
+                'erro'           => null,
+                'criado_em'      => now(),
+            ]);
+
+            return redirect()->route('index.usuario')->with('success', 'Usuário excluído com sucesso!');
+        } catch (Exception $e) {
+            Log::create([
+                'id_user'        => auth()->id(),
+                'acao'           => 'DELETE',
+                'tabela_afetada' => 'users',
+                'registro_id'    => $id,
+                'descricao'      => 'Erro ao excluir usuário',
+                'erro'           => $e->getMessage(),
+                'criado_em'      => now(),
+            ]);
+
+            return back()->with('error', 'Erro ao excluir usuário!');
+        }
     }
 }

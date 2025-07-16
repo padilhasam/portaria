@@ -13,6 +13,7 @@ class Registro extends Model
 
     protected $fillable = [
         'id_visitante',   // FK para visitante
+        'id_apartamento',   // FK para apartamento
         'nome',
         'tipo_acesso',    // entrada, saida, etc
         'status',
@@ -34,5 +35,10 @@ class Registro extends Model
     public function visitante()
     {
         return $this->belongsTo(Visitante::class, 'id_visitante');
+    }
+
+    public function apartamento()
+    {
+        return $this->belongsTo(Apartamento::class, 'id_apartamento');
     }
 }

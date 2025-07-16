@@ -100,6 +100,19 @@
                                     </select>
                                 </div>
 
+                                <div class="col-md-6">
+                                <label for="id_apartamento" class="form-label">Apartamento</label>
+                                <select class="form-select rounded-pill border-dark" name="id_apartamento" id="id_apartamento">
+                                    <option value="">Selecione o apartamento...</option>
+                                    @foreach ($apartamentos as $apartamento)
+                                        <option value="{{ $apartamento->id }}"
+                                            {{ old('id_apartamento', $edit ? $registro->id_apartamento : '') == $apartamento->id ? 'selected' : '' }}>
+                                            {{ $apartamento->bloco }} - {{ $apartamento->numero }} {{-- Exemplo de exibição: Bloco A - 101 --}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                                 <div class="col-12">
                                     <label for="observacoes" class="form-label">Observação</label>
                                     <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" style="resize: none">{{ old('observacoes', $edit ? $registro->observacoes : '') }}</textarea>
