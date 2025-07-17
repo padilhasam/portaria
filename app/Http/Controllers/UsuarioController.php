@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Exception;
+use App\Traits\Loggable; // ✅ Importa o Trait
 
 class UsuarioController extends Controller
 {
+    use Loggable; // ✅ Habilita o Trait
+
     public function index(Request $request)
     {
         $query = User::query();
@@ -72,29 +74,12 @@ class UsuarioController extends Controller
                 'user_verified' => false,
             ]);
 
-            // ✅ REGISTRA O LOG
-            Log::create([
-                'id_user'        => auth()->id(),
-                'acao'           => 'CREATE',
-                'tabela_afetada' => 'users',
-                'registro_id'    => $user->id,
-                'descricao'      => "Usuário {$user->nome} criado com sucesso.",
-                'erro'           => null,
-                'criado_em'      => now(),
-            ]);
+            // ✅ Usa o Trait para registrar o log
+            $this->registrarLog('CREATE', 'users', $user->id, "Usuário {$user->nome} criado com sucesso.");
 
             return redirect()->route('index.usuario')->with('success', 'Usuário registrado com sucesso!');
         } catch (Exception $e) {
-            // ✅ REGISTRA LOG DE ERRO
-            Log::create([
-                'id_user'        => auth()->id(),
-                'acao'           => 'CREATE',
-                'tabela_afetada' => 'users',
-                'registro_id'    => null,
-                'descricao'      => 'Erro ao criar usuário',
-                'erro'           => $e->getMessage(),
-                'criado_em'      => now(),
-            ]);
+            $this->registrarLog('CREATE', 'users', null, 'Erro ao criar usuário', $e->getMessage());
 
             return back()->with('error', 'Erro ao registrar usuário!');
         }
@@ -135,28 +120,11 @@ class UsuarioController extends Controller
                 'password'   => !empty($validated['password']) ? Hash::make($validated['password']) : $usuario->password,
             ]);
 
-            // ✅ LOG DE ATUALIZAÇÃO
-            Log::create([
-                'id_user'        => auth()->id(),
-                'acao'           => 'UPDATE',
-                'tabela_afetada' => 'users',
-                'registro_id'    => $usuario->id,
-                'descricao'      => "Usuário {$usuario->nome} atualizado.",
-                'erro'           => null,
-                'criado_em'      => now(),
-            ]);
+            $this->registrarLog('UPDATE', 'users', $usuario->id, "Usuário {$usuario->nome} atualizado.");
 
             return redirect()->route('index.usuario')->with('success', 'Usuário atualizado com sucesso!');
         } catch (Exception $e) {
-            Log::create([
-                'id_user'        => auth()->id(),
-                'acao'           => 'UPDATE',
-                'tabela_afetada' => 'users',
-                'registro_id'    => $usuario->id,
-                'descricao'      => 'Erro ao atualizar usuário',
-                'erro'           => $e->getMessage(),
-                'criado_em'      => now(),
-            ]);
+            $this->registrarLog('UPDATE', 'users', $usuario->id, 'Erro ao atualizar usuário', $e->getMessage());
 
             return back()->with('error', 'Erro ao atualizar usuário!');
         }
@@ -169,28 +137,11 @@ class UsuarioController extends Controller
         try {
             $usuario->delete();
 
-            // ✅ LOG DE EXCLUSÃO
-            Log::create([
-                'id_user'        => auth()->id(),
-                'acao'           => 'DELETE',
-                'tabela_afetada' => 'users',
-                'registro_id'    => $id,
-                'descricao'      => "Usuário {$usuario->nome} excluído.",
-                'erro'           => null,
-                'criado_em'      => now(),
-            ]);
+            $this->registrarLog('DELETE', 'users', $id, "Usuário {$usuario->nome} excluído.");
 
             return redirect()->route('index.usuario')->with('success', 'Usuário excluído com sucesso!');
         } catch (Exception $e) {
-            Log::create([
-                'id_user'        => auth()->id(),
-                'acao'           => 'DELETE',
-                'tabela_afetada' => 'users',
-                'registro_id'    => $id,
-                'descricao'      => 'Erro ao excluir usuário',
-                'erro'           => $e->getMessage(),
-                'criado_em'      => now(),
-            ]);
+            $this->registrarLog('DELETE', 'users', $id, 'Erro ao excluir usuário', $e->getMessage());
 
             return back()->with('error', 'Erro ao excluir usuário!');
         }

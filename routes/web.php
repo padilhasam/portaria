@@ -151,6 +151,7 @@ Route::middleware(['auth', 'check.status'])->controller(RelatorioController::cla
     Route::get('/relatorios', 'index')->name('index.relatorio');
     Route::get('/relatorios/exportar-csv', 'export')->name('relatorio.exportar.csv');
     Route::get('/relatorios/exportar-pdf', 'exportPdf')->name('relatorio.exportar.pdf');
+    Route::get('/api/graficos', 'dadosGraficos')->name('api.graficos');
 });
 
 Route::middleware(['auth', 'check.status'])->controller(LogController::class)->group(function () {

@@ -18,9 +18,10 @@
             <a href="{{ route('create.registro') }}" class="btn btn-primary btn-sm rounded-pill text-white">
                 Novo Registro
             </a>
+
         </div>
 
-        <form method="GET" action="{{ route('index.morador') }}" class="d-flex flex-wrap gap-3 align-items-end">
+        <form method="GET" action="{{ route('index.registro') }}" class="d-flex flex-wrap gap-3 align-items-end">
 
             {{-- Campo de Busca --}}
             <div class="d-flex flex-column flex-grow-1" style="min-width: 180px;">
@@ -67,7 +68,7 @@
             {{-- Botões --}}
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4">🔍 Filtrar</button>
-                <a href="{{ route('index.morador') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">❌ Limpar</a>
+                <a href="{{ route('index.registro') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">❌ Limpar</a>
             </div>
 
         </form>

@@ -135,7 +135,6 @@
                     <select name="tipo" id="tipo_log" class="form-select form-select-sm rounded-pill">
                         <option value="pdf">PDF</option>
                         <option value="txt">TXT</option>
-                        <option value="csv">CSV</option>
                     </select>
                 </div>
 
@@ -185,22 +184,28 @@
 
 {{-- ======================== Gráficos ======================== --}}
 <div class="row mb-4">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="bg-white p-4 shadow rounded-4 h-100">
             <h6 class="text-center text-primary fw-semibold">Acessos por Mês</h6>
-            <canvas id="grafico-acessos" class="grafico mx-auto d-block"></canvas>
+            <canvas id="grafico-acessos"></canvas>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="bg-white p-4 shadow rounded-4 h-100">
             <h6 class="text-center text-success fw-semibold">Usuários Ativos</h6>
-            <canvas id="grafico-usuarios" class="grafico mx-auto d-block"></canvas>
+            <canvas id="grafico-usuarios"></canvas>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="bg-white p-4 shadow rounded-4 h-100">
-            <h6 class="text-center text-warning fw-semibold">Entradas por Local</h6>
-            <canvas id="grafico-entradas" class="grafico mx-auto d-block"></canvas>
+            <h6 class="text-center text-warning fw-semibold">Entradas por Tipo</h6>
+            <canvas id="grafico-entradas"></canvas>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="bg-white p-4 shadow rounded-4 h-100">
+            <h6 class="text-center text-danger fw-semibold">Entradas x Saídas</h6>
+            <canvas id="grafico-entrada-saida"></canvas>
         </div>
     </div>
 </div>

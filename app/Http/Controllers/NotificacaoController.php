@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Notificacao;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Traits\Loggable; // ✅ Trait para logs
+use Exception;
 
 class NotificacaoController extends Controller
 {
+    use Loggable;
+
     public function index(Request $request)
     {
         $user = auth()->user();
@@ -20,26 +24,17 @@ class NotificacaoController extends Controller
                         ->orWhere('message', 'like', '%' . $request->search . '%');
                 });
             })
-            ->when($request->filled('data_inicio'), function ($q) use ($request) {
-                $q->whereDate('notificacoes.created_at', '>=', $request->data_inicio);
-            })
-            ->when($request->filled('data_fim'), function ($q) use ($request) {
-                $q->whereDate('notificacoes.created_at', '<=', $request->data_fim);
-            })
-            ->when($request->filled('criador'), function ($q) use ($request) {
-                $q->where('notificacoes.id_criador', $request->criador);
-            })
+            ->when($request->filled('data_inicio'), fn($q) => $q->whereDate('notificacoes.created_at', '>=', $request->data_inicio))
+            ->when($request->filled('data_fim'), fn($q) => $q->whereDate('notificacoes.created_at', '<=', $request->data_fim))
+            ->when($request->filled('criador'), fn($q) => $q->where('notificacoes.id_criador', $request->criador))
             ->when($request->filled('status'), function ($q) use ($request) {
-                if ($request->status === 'lida') {
-                    $q->wherePivot('read', true);
-                } elseif ($request->status === 'nao_lida') {
-                    $q->wherePivot('read', false);
-                }
+                $request->status === 'lida'
+                    ? $q->wherePivot('read', true)
+                    : ($request->status === 'nao_lida' ? $q->wherePivot('read', false) : null);
             })
             ->orderByDesc('notificacoes.created_at');
 
         $notificacoes = $query->paginate(10)->withQueryString();
-
         $usuariosCriadores = User::whereIn('id', function ($q) {
             $q->select('id_criador')->from('notificacoes')->distinct();
         })->get();
@@ -52,8 +47,9 @@ class NotificacaoController extends Controller
         $user = auth()->user();
         $notificacao = $user->notificacoesRecebidas()->findOrFail($id);
 
-        $user->notificacoesRecebidas()
-            ->updateExistingPivot($notificacao->id, ['read' => true]);
+        $user->notificacoesRecebidas()->updateExistingPivot($notificacao->id, ['read' => true]);
+
+        $this->registrarLog('UPDATE', 'notificacoes', $notificacao->id, "Notificação marcada como lida pelo usuário {$user->name}");
 
         return redirect()->route('index.notificacao')->with('success', 'Notificação marcada como lida.');
     }
@@ -71,28 +67,30 @@ class NotificacaoController extends Controller
             'arquivo' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png,zip|max:5120',
         ]);
 
-        $data = $request->only(['title', 'message']);
-        $data['id_criador'] = auth()->id();
+        try {
+            $data = $request->only(['title', 'message']);
+            $data['id_criador'] = auth()->id();
 
-        if ($request->hasFile('arquivo')) {
-            $nomeArquivo = $request->file('arquivo')->hashName();
-            $request->file('arquivo')->storeAs('notificacoes', $nomeArquivo, 'public');
-            $data['arquivo'] = $nomeArquivo;
+            if ($request->hasFile('arquivo')) {
+                $data['arquivo'] = $request->file('arquivo')->store('notificacoes', 'public');
+            }
+
+            $notificacao = Notificacao::create($data);
+
+            $usuarios = User::where('id', '!=', auth()->id())->get();
+            $attachData = [];
+            foreach ($usuarios as $usuario) {
+                $attachData[$usuario->id] = ['read' => false];
+            }
+            $notificacao->destinatarios()->attach($attachData);
+
+            $this->registrarLog('CREATE', 'notificacoes', $notificacao->id, "Notificação '{$notificacao->title}' criada e enviada para todos os usuários.");
+
+            return redirect()->route('index.notificacao')->with('success', 'Notificação enviada com sucesso!');
+        } catch (Exception $e) {
+            $this->registrarLog('CREATE', 'notificacoes', null, "Erro ao criar notificação", $e->getMessage());
+            return back()->with('error', 'Erro ao enviar notificação.');
         }
-
-        $notificacao = Notificacao::create($data);
-
-        $usuarios = User::where('id', '!=', auth()->id())->get();
-
-        $attachData = [];
-        foreach ($usuarios as $usuario) {
-            $attachData[$usuario->id] = ['read' => false];
-        }
-
-        $notificacao->destinatarios()->attach($attachData);
-
-        return redirect()->route('index.notificacao')
-            ->with('success', 'Notificação enviada para todos os usuários, exceto você.');
     }
 
     public function edit(string $id)
@@ -111,12 +109,19 @@ class NotificacaoController extends Controller
 
         $notificacao = Notificacao::findOrFail($id);
 
-        $notificacao->update([
-            'title' => $request->title,
-            'message' => $request->message,
-        ]);
+        try {
+            $notificacao->update([
+                'title' => $request->title,
+                'message' => $request->message,
+            ]);
 
-        return redirect()->route('index.notificacao')->with('success', 'Notificação atualizada com sucesso!');
+            $this->registrarLog('UPDATE', 'notificacoes', $notificacao->id, "Notificação '{$notificacao->title}' atualizada.");
+
+            return redirect()->route('index.notificacao')->with('success', 'Notificação atualizada com sucesso!');
+        } catch (Exception $e) {
+            $this->registrarLog('UPDATE', 'notificacoes', $notificacao->id, "Erro ao atualizar notificação", $e->getMessage());
+            return back()->with('error', 'Erro ao atualizar notificação.');
+        }
     }
 
     public function destroy(string $id)
@@ -127,16 +132,24 @@ class NotificacaoController extends Controller
             abort(403, 'Você não tem permissão para excluir essa notificação.');
         }
 
-        $notificacao->delete();
+        try {
+            $titulo = $notificacao->title;
+            $notificacao->delete();
 
-        return redirect()->route('index.notificacao')->with('success', 'Notificação excluída.');
+            $this->registrarLog('DELETE', 'notificacoes', $id, "Notificação '{$titulo}' removida com sucesso.");
+
+            return redirect()->route('index.notificacao')->with('success', 'Notificação excluída.');
+        } catch (Exception $e) {
+            $this->registrarLog('DELETE', 'notificacoes', $id, "Erro ao excluir notificação", $e->getMessage());
+            return back()->with('error', 'Erro ao excluir notificação.');
+        }
     }
 
     public function marcarComoLida($notificacaoId)
     {
-        auth()->user()
-            ->notificacoesRecebidas()
-            ->updateExistingPivot($notificacaoId, ['read' => true]);
+        auth()->user()->notificacoesRecebidas()->updateExistingPivot($notificacaoId, ['read' => true]);
+
+        $this->registrarLog('UPDATE', 'notificacoes', $notificacaoId, "Notificação marcada como lida.");
 
         return back()->with('success', 'Notificação marcada como lida.');
     }
@@ -144,10 +157,7 @@ class NotificacaoController extends Controller
     public function marcarTodasComoLidas()
     {
         $user = auth()->user();
-
-        $ids = $user->notificacoesRecebidas()
-            ->wherePivot('read', false)
-            ->pluck('notificacoes.id');
+        $ids = $user->notificacoesRecebidas()->wherePivot('read', false)->pluck('notificacoes.id');
 
         if ($ids->isEmpty()) {
             return back()->with('info', 'Nenhuma notificação para marcar como lida.');
@@ -155,6 +165,7 @@ class NotificacaoController extends Controller
 
         foreach ($ids as $id) {
             $user->notificacoesRecebidas()->updateExistingPivot($id, ['read' => true]);
+            $this->registrarLog('UPDATE', 'notificacoes', $id, "Notificação marcada como lida em ação em massa.");
         }
 
         return back()->with('success', 'Todas as notificações foram marcadas como lidas.');
@@ -166,22 +177,27 @@ class NotificacaoController extends Controller
             'resposta' => 'required|string|max:1000',
         ]);
 
-        $notificacao = Notificacao::findOrFail($id);
-        $destinatario = $notificacao->criador;
-        $remetente = auth()->user();
+        try {
+            $notificacao = Notificacao::findOrFail($id);
+            $destinatario = $notificacao->criador;
+            $remetente = auth()->user();
 
-        $resposta = Notificacao::create([
-            'title' => 'Resposta à sua notificação: ' . $notificacao->title,
-            'message' => "Resposta de {$remetente->name}:\n\n" . $request->resposta,
-            'id_criador' => $remetente->id,
-            'id_resposta_de' => $notificacao->id,
-        ]);
+            $resposta = Notificacao::create([
+                'title' => 'Resposta à sua notificação: ' . $notificacao->title,
+                'message' => "Resposta de {$remetente->name}:\n\n" . $request->resposta,
+                'id_criador' => $remetente->id,
+                'id_resposta_de' => $notificacao->id,
+            ]);
 
-        $resposta->destinatarios()->attach([
-            $destinatario->id => ['read' => false],
-        ]);
+            $resposta->destinatarios()->attach([$destinatario->id => ['read' => false]]);
 
-        return redirect()->back()->with('success', 'Sua resposta foi enviada com sucesso!');
+            $this->registrarLog('CREATE', 'notificacoes', $resposta->id, "Resposta enviada para a notificação '{$notificacao->title}'.");
+
+            return back()->with('success', 'Sua resposta foi enviada com sucesso!');
+        } catch (Exception $e) {
+            $this->registrarLog('CREATE', 'notificacoes', null, "Erro ao responder notificação", $e->getMessage());
+            return back()->with('error', 'Erro ao enviar resposta.');
+        }
     }
 
     public function verRespostas($id)

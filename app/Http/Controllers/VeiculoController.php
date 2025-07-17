@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Veiculo;
 use Illuminate\Http\Request;
+use Exception;
+use App\Traits\Loggable; // ✅ Importa o Trait
 
 class VeiculoController extends Controller
 {
+    use Loggable; // ✅ Usa o Trait para registrar logs
+
     /**
      * Exibe a lista de veículos com paginação.
      */
@@ -15,112 +18,105 @@ class VeiculoController extends Controller
     {
         $query = Veiculo::query();
 
-        // Filtro de busca: placa, marca ou modelo (contém)
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('placa', 'like', "%{$search}%")
-                ->orWhere('marca', 'like', "%{$search}%")
-                ->orWhere('modelo', 'like', "%{$search}%");
+                  ->orWhere('marca', 'like', "%{$search}%")
+                  ->orWhere('modelo', 'like', "%{$search}%");
             });
         }
 
-        // Filtro por cor (exato ou parcial, ajusta se quiser)
         if ($cor = $request->input('cor')) {
             $query->where('cor', 'like', "%{$cor}%");
         }
 
-        // Filtro por tipo (exato)
         if ($tipo = $request->input('tipo')) {
             $query->where('tipo', $tipo);
         }
 
-        // Ordena por último criado e pagina
         $veiculos = $query->latest()->paginate(10)->withQueryString();
 
         return view('pages.veiculos.index', compact('veiculos'));
     }
 
-    /**
-     * Exibe o formulário para criar um novo veículo.
-     */
     public function create()
     {
         return view("pages.veiculos.register");
     }
 
-    /**
-     * Armazena um novo veículo no banco de dados.
-     */
     public function store(Request $request)
     {
-        // Define o valor padrão de tipo_placa se não estiver presente na requisição
         $request->merge([
             'tipo_placa' => $request->has('tipo_placa') ? 'mercosul' : 'comum',
         ]);
 
-        $validated = $this->validateVeiculo($request); // Usando o método de validação
+        $validated = $this->validateVeiculo($request);
 
-        $veiculo = Veiculo::create($validated);
+        try {
+            $veiculo = Veiculo::create($validated);
 
-        // Verifica se o redirecionamento vem da página do morador
-        if ($veiculo) {
+            $this->registrarLog('CREATE', 'veiculos', $veiculo->id, "Veículo {$veiculo->placa} registrado com sucesso.");
+
             return redirect()->route('index.veiculo')->with('success', 'Veículo registrado com sucesso!');
-        } else {
+        } catch (Exception $e) {
+            $this->registrarLog('CREATE', 'veiculos', null, 'Erro ao registrar veículo', $e->getMessage());
+
             return redirect()->route('index.veiculo')->with('error', 'Erro ao registrar veículo!');
         }
     }
 
-    /**
-     * Exibe as informações detalhadas de um veículo.
-     */
     public function show(string $id)
     {
-        $veiculo = Veiculo::findOrFail($id); // Usando findOrFail para garantir que o veículo existe
-        return view('pages.veiculos.show', compact('veiculo')); // Crie uma view 'show' se necessário
+        $veiculo = Veiculo::findOrFail($id);
+        return view('pages.veiculos.show', compact('veiculo'));
     }
 
-    /**
-     * Exibe o formulário para editar as informações de um veículo.
-     */
     public function edit(string $id)
     {
         $veiculo = Veiculo::findOrFail($id);
         return view('pages.veiculos.register', compact('veiculo'));
     }
 
-    /**
-     * Atualiza as informações de um veículo existente.
-     */
     public function update(Request $request, string $id)
     {
         $veiculo = Veiculo::findOrFail($id);
 
-        // Define o valor padrão de tipo_placa se não estiver presente na requisição
         $request->merge([
             'tipo_placa' => $request->has('tipo_placa') ? 'mercosul' : 'comum',
         ]);
 
-        $validated = $this->validateVeiculo($request, $veiculo->id); // Usando o método de validação
+        $validated = $this->validateVeiculo($request, $veiculo->id);
 
-        $veiculo->update($validated);
+        try {
+            $veiculo->update($validated);
 
-        return redirect()->route('index.veiculo')->with('success', 'Veículo atualizado com sucesso!');
+            $this->registrarLog('UPDATE', 'veiculos', $veiculo->id, "Veículo {$veiculo->placa} atualizado com sucesso.");
+
+            return redirect()->route('index.veiculo')->with('success', 'Veículo atualizado com sucesso!');
+        } catch (Exception $e) {
+            $this->registrarLog('UPDATE', 'veiculos', $veiculo->id, 'Erro ao atualizar veículo', $e->getMessage());
+
+            return redirect()->route('index.veiculo')->with('error', 'Erro ao atualizar veículo!');
+        }
     }
 
-    /**
-     * Remove um veículo do banco de dados.
-     */
     public function destroy(string $id)
     {
         $veiculo = Veiculo::findOrFail($id);
-        $veiculo->delete();
 
-        return redirect()->route('index.veiculo')->with('success', 'Veículo removido com sucesso!');
+        try {
+            $veiculo->delete();
+
+            $this->registrarLog('DELETE', 'veiculos', $id, "Veículo {$veiculo->placa} removido com sucesso.");
+
+            return redirect()->route('index.veiculo')->with('success', 'Veículo removido com sucesso!');
+        } catch (Exception $e) {
+            $this->registrarLog('DELETE', 'veiculos', $id, 'Erro ao remover veículo', $e->getMessage());
+
+            return redirect()->route('index.veiculo')->with('error', 'Erro ao remover veículo!');
+        }
     }
 
-    /**
-     * Retorna os detalhes do veículo em formato JSON para uso em formulários.
-     */
     public function getDetails($id)
     {
         $veiculo = Veiculo::findOrFail($id);
@@ -132,30 +128,26 @@ class VeiculoController extends Controller
         ]);
     }
 
-    /**
-     * Valida os dados de um veículo.
-     */
     private function validateVeiculo(Request $request, $veiculo_id = null)
     {
         return $request->validate([
-            'placa' => 'required|string|max:10|unique:veiculos,placa,' . $veiculo_id, // Validando a placa com a exceção para o próprio registro
-            'tipo' => 'required|string|max:30',
-            'marca' => 'required|string|max:50',
-            'modelo' => 'required|string|max:50',
-            'cor' => 'required|string|max:20',
-            'vaga' => 'nullable|string|max:20', // Se a vaga for opcional
-            'observacoes' => 'nullable|string|max:255', // Observações com limite maior
-            'tipo_placa' => 'required|in:comum,mercosul',  // Validando os tipos de placa
+            'placa'        => 'required|string|max:10|unique:veiculos,placa,' . $veiculo_id,
+            'tipo'         => 'required|string|max:30',
+            'marca'        => 'required|string|max:50',
+            'modelo'       => 'required|string|max:50',
+            'cor'          => 'required|string|max:20',
+            'vaga'         => 'nullable|string|max:20',
+            'observacoes'  => 'nullable|string|max:255',
+            'tipo_placa'   => 'required|in:comum,mercosul',
         ], [
             'placa.required' => 'A placa do veículo é obrigatória.',
-            'placa.unique' => 'A placa informada já está cadastrada.',
-            'tipo.required' => 'O tipo de veículo é obrigatório.',
+            'placa.unique'   => 'A placa informada já está cadastrada.',
+            'tipo.required'  => 'O tipo de veículo é obrigatório.',
             'marca.required' => 'A marca do veículo é obrigatória.',
-            'modelo.required' => 'O modelo do veículo é obrigatório.',
-            'cor.required' => 'A cor do veículo é obrigatória.',
-            'vaga.max' => 'A vaga pode ter no máximo 10 caracteres.',
-            'observacoes.max' => 'A observação pode ter no máximo 255 caracteres.',
-            'tipo_placa' => 'required|in:comum,mercosul',  // Validando os tipos de placa
+            'modelo.required'=> 'O modelo do veículo é obrigatório.',
+            'cor.required'   => 'A cor do veículo é obrigatória.',
+            'vaga.max'       => 'A vaga pode ter no máximo 10 caracteres.',
+            'observacoes.max'=> 'A observação pode ter no máximo 255 caracteres.',
         ]);
     }
 }

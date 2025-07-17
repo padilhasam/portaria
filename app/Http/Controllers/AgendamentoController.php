@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Agendamento;
 use App\Models\Morador;
 use Illuminate\Http\Request;
+use Exception;
+use App\Traits\Loggable; // ✅ Importa o Trait
 
 class AgendamentoController extends Controller
 {
-    // Listar agendamentos e exibir a view do calendário
+    use Loggable; // ✅ Usa o Trait
+
     public function index(Request $request)
     {
         $search = $request->query('search');
@@ -17,7 +20,7 @@ class AgendamentoController extends Controller
 
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->whereHas('morador', fn ($q2) => $q2->where('nome', 'like', "%{$search}%"))
+                $q->whereHas('morador', fn($q2) => $q2->where('nome', 'like', "%{$search}%"))
                   ->orWhere('nome_area', 'like', "%{$search}%");
             });
         }
@@ -28,21 +31,18 @@ class AgendamentoController extends Controller
         return view('pages.agendamentos.index', compact('agendamentos', 'eventos'));
     }
 
-    // API: Retornar apenas eventos em formato JSON (para o FullCalendar via AJAX)
     public function eventos()
     {
         $agendamentos = Agendamento::with('morador')->latest()->get();
         return response()->json($this->formatarEventos($agendamentos));
     }
 
-    // Mostrar formulário de criação
     public function create()
     {
         $moradores = Morador::all();
         return view('pages.agendamentos.register', compact('moradores'));
     }
 
-    // Salvar novo agendamento
     public function store(Request $request)
     {
         $validated = $this->validarDados($request);
@@ -51,20 +51,26 @@ class AgendamentoController extends Controller
             return back()->withErrors(['Conflito de agendamento: já existe um agendamento para essa área nesse horário.'])->withInput();
         }
 
-        Agendamento::create([
-            'id_usuario' => auth()->id(),
-            'id_morador' => $validated['id_morador'] ?? null,
-            'nome_area' => $validated['nome_area'],
-            'data_agendamento' => $validated['data_agendamento'],
-            'horario_inicio' => $validated['horario_inicio'],
-            'horario_fim' => $validated['horario_fim'],
-            'observacoes' => $validated['observacoes'] ?? '',
-        ]);
+        try {
+            $agendamento = Agendamento::create([
+                'id_usuario'       => auth()->id(),
+                'id_morador'       => $validated['id_morador'] ?? null,
+                'nome_area'        => $validated['nome_area'],
+                'data_agendamento' => $validated['data_agendamento'],
+                'horario_inicio'   => $validated['horario_inicio'],
+                'horario_fim'      => $validated['horario_fim'],
+                'observacoes'      => $validated['observacoes'] ?? '',
+            ]);
 
-        return redirect()->route('index.agendamento')->with('success', 'Agendamento realizado com sucesso!');
+            $this->registrarLog('CREATE', 'agendamentos', $agendamento->id, "Agendamento na área {$agendamento->nome_area} criado com sucesso.");
+
+            return redirect()->route('index.agendamento')->with('success', 'Agendamento realizado com sucesso!');
+        } catch (Exception $e) {
+            $this->registrarLog('CREATE', 'agendamentos', null, 'Erro ao criar agendamento', $e->getMessage());
+            return redirect()->route('index.agendamento')->with('error', 'Erro ao criar agendamento!');
+        }
     }
 
-    // Mostrar formulário de edição
     public function edit($id)
     {
         $agendamento = Agendamento::findOrFail($id);
@@ -72,7 +78,6 @@ class AgendamentoController extends Controller
         return view('pages.agendamentos.register', compact('agendamento', 'moradores'));
     }
 
-    // Atualizar agendamento
     public function update(Request $request, $id)
     {
         $agendamento = Agendamento::findOrFail($id);
@@ -82,51 +87,64 @@ class AgendamentoController extends Controller
             return back()->withErrors(['Conflito de agendamento: já existe um agendamento para essa área nesse horário.'])->withInput();
         }
 
-        $agendamento->update($validated);
+        try {
+            $agendamento->update($validated);
 
-        return redirect()->route('index.agendamento')->with('success', 'Agendamento realizado com sucesso!');
+            $this->registrarLog('UPDATE', 'agendamentos', $agendamento->id, "Agendamento na área {$agendamento->nome_area} atualizado com sucesso.");
+
+            return redirect()->route('index.agendamento')->with('success', 'Agendamento atualizado com sucesso!');
+        } catch (Exception $e) {
+            $this->registrarLog('UPDATE', 'agendamentos', $agendamento->id, 'Erro ao atualizar agendamento', $e->getMessage());
+            return redirect()->route('index.agendamento')->with('error', 'Erro ao atualizar agendamento!');
+        }
     }
 
-    // Deletar agendamento
     public function destroy($id)
     {
-        Agendamento::findOrFail($id)->delete();
-        return redirect()->route('index.agendamento')->with('success', 'Agendamento removido com sucesso!');
+        $agendamento = Agendamento::findOrFail($id);
+
+        try {
+            $agendamento->delete();
+
+            $this->registrarLog('DELETE', 'agendamentos', $id, "Agendamento na área {$agendamento->nome_area} removido com sucesso.");
+
+            return redirect()->route('index.agendamento')->with('success', 'Agendamento removido com sucesso!');
+        } catch (Exception $e) {
+            $this->registrarLog('DELETE', 'agendamentos', $id, 'Erro ao remover agendamento', $e->getMessage());
+            return redirect()->route('index.agendamento')->with('error', 'Erro ao remover agendamento!');
+        }
     }
 
     // ---------- MÉTODOS PRIVADOS ----------
 
-    // Validação reutilizável
     private function validarDados(Request $request): array
     {
         return $request->validate([
-            'id_morador' => 'nullable|integer|exists:moradores,id',
-            'nome_area' => 'required|string|max:255',
-            'data_agendamento' => 'required|date',
-            'horario_inicio' => 'required',
-            'horario_fim' => 'required|after:horario_inicio',
-            'observacoes' => 'nullable|string|max:500',
+            'id_morador'        => 'nullable|integer|exists:moradores,id',
+            'nome_area'         => 'required|string|max:255',
+            'data_agendamento'  => 'required|date',
+            'horario_inicio'    => 'required',
+            'horario_fim'       => 'required|after:horario_inicio',
+            'observacoes'       => 'nullable|string|max:500',
         ]);
     }
 
-    // Verificar conflito de horário
     private function existeConflito($idAtual, array $dados): bool
     {
         return Agendamento::where('nome_area', $dados['nome_area'])
             ->where('data_agendamento', $dados['data_agendamento'])
-            ->when($idAtual, fn ($query) => $query->where('id', '!=', $idAtual))
+            ->when($idAtual, fn($query) => $query->where('id', '!=', $idAtual))
             ->where(function ($query) use ($dados) {
                 $query->whereBetween('horario_inicio', [$dados['horario_inicio'], $dados['horario_fim']])
-                    ->orWhereBetween('horario_fim', [$dados['horario_inicio'], $dados['horario_fim']])
-                    ->orWhere(function ($q) use ($dados) {
-                        $q->where('horario_inicio', '<=', $dados['horario_inicio'])
-                          ->where('horario_fim', '>=', $dados['horario_fim']);
-                    });
+                      ->orWhereBetween('horario_fim', [$dados['horario_inicio'], $dados['horario_fim']])
+                      ->orWhere(function ($q) use ($dados) {
+                          $q->where('horario_inicio', '<=', $dados['horario_inicio'])
+                            ->where('horario_fim', '>=', $dados['horario_fim']);
+                      });
             })
             ->exists();
     }
 
-    // Formatador de eventos para o FullCalendar
     private function formatarEventos($agendamentos)
     {
         return $agendamentos->map(function ($agendamento) {

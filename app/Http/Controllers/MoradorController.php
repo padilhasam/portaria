@@ -8,59 +8,49 @@ use App\Models\Veiculo;
 use App\Models\Morador;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Traits\Loggable; // ✅ Importando o Trait
+use Exception;
 
 class MoradorController extends Controller
 {
+    use Loggable; // ✅ Habilita logs
 
-
-
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-       $search = $request->input('search');
+        $search = $request->input('search');
         $tipo = $request->input('tipo_morador');
 
         $moradores = Morador::query()
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('nome', 'like', "%{$search}%")
-                    ->orWhere('documento', 'like', "%{$search}%")
-                    ->orWhereHas('apartamento', function ($q2) use ($search) {
-                        $q2->where('bloco', 'like', "%{$search}%")
-                            ->orWhere('numero', 'like', "%{$search}%");
-                    });
+                      ->orWhere('documento', 'like', "%{$search}%")
+                      ->orWhereHas('apartamento', function ($q2) use ($search) {
+                          $q2->where('bloco', 'like', "%{$search}%")
+                             ->orWhere('numero', 'like', "%{$search}%");
+                      });
                 });
             })
-            ->when($tipo, function ($query, $tipo) {
-                return $query->where('tipo_morador', $tipo);
-            })
-            ->with(['apartamento', 'veiculo']) // Eager load
+            ->when($tipo, fn($query, $tipo) => $query->where('tipo_morador', $tipo))
+            ->with(['apartamento', 'veiculo'])
             ->latest()
             ->paginate(10);
 
         return view('pages.moradores.index', compact('moradores', 'search', 'tipo'));
     }
 
-    /**
-     * Método para busca de moradores para preenchimento automático.
-     */
     public function search(Request $request)
     {
         $search = $request->input('search');
         $moradores = Morador::query()
             ->where('nome', 'like', "%{$search}%")
             ->orWhere('documento', 'like', "%{$search}%")
-            ->limit(10) // Limita os resultados a 10
-            ->get(['id', 'nome', 'documento']); // Selecionando apenas o necessário
+            ->limit(10)
+            ->get(['id', 'nome', 'documento']);
 
         return response()->json($moradores);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $apartamentos = Apartamento::orderBy('numero')->get();
@@ -68,61 +58,65 @@ class MoradorController extends Controller
         return view("pages.moradores.register", compact('apartamentos', 'veiculos'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $this->validateMorador($request);
-        $morador = Morador::create($validated);
 
-        if ($morador) {
+        try {
+            $morador = Morador::create($validated);
+
+            $this->registrarLog('CREATE', 'moradores', $morador->id, "Morador {$morador->nome} registrado no apartamento ID {$morador->id_apartamento}.");
+
             return redirect()->route('index.morador')->with('success', 'Morador registrado com sucesso!');
-        } else {
-            return redirect()->route('index.morador')->with('error', 'Erro ao registrar Morador!');
+        } catch (Exception $e) {
+            $this->registrarLog('CREATE', 'moradores', null, 'Erro ao registrar morador.', $e->getMessage());
+            return redirect()->route('index.morador')->with('error', 'Erro ao registrar morador!');
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        $morador = Morador::with(['apartamento', 'veiculo'])->findOrFail($id); // Eager load relationships
-
+        $morador = Morador::with(['apartamento', 'veiculo'])->findOrFail($id);
         $apartamentos = Apartamento::orderBy('numero')->get();
         $veiculos = Veiculo::orderBy('placa')->get();
 
         return view('pages.moradores.register', compact('morador', 'apartamentos', 'veiculos'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $morador = Morador::findOrFail($id);
         $validated = $this->validateMorador($request);
 
-        $morador->update($validated);
+        try {
+            $morador->update($validated);
 
-        return redirect()->route('index.morador')->with('success', 'Morador atualizado com sucesso!');
+            $this->registrarLog('UPDATE', 'moradores', $morador->id, "Morador {$morador->nome} atualizado com sucesso.");
+
+            return redirect()->route('index.morador')->with('success', 'Morador atualizado com sucesso!');
+        } catch (Exception $e) {
+            $this->registrarLog('UPDATE', 'moradores', $morador->id, "Erro ao atualizar morador {$morador->nome}.", $e->getMessage());
+            return redirect()->route('index.morador')->with('error', 'Erro ao atualizar morador!');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $morador = Morador::findOrFail($id);
-        $morador->delete();
 
-        return redirect()->route('index.morador')->with('success', 'Morador removido com sucesso!');
+        try {
+            $nome = $morador->nome;
+            $morador->delete();
+
+            $this->registrarLog('DELETE', 'moradores', $id, "Morador {$nome} removido com sucesso.");
+
+            return redirect()->route('index.morador')->with('success', 'Morador removido com sucesso!');
+        } catch (Exception $e) {
+            $this->registrarLog('DELETE', 'moradores', $id, "Erro ao remover morador {$morador->nome}.", $e->getMessage());
+            return redirect()->route('index.morador')->with('error', 'Erro ao remover morador!');
+        }
     }
 
-    /**
-     * Valida os dados do morador.
-     */
     private function validateMorador(Request $request)
     {
         return $request->validate([
