@@ -21,35 +21,38 @@
 
         </div>
 
-        <form method="GET" action="{{ route('index.registro') }}" class="d-flex flex-wrap gap-3 align-items-end">
+       <form method="GET" action="{{ route('index.registro') }}" class="d-flex flex-wrap gap-3 align-items-end">
 
             {{-- Campo de Busca --}}
             <div class="d-flex flex-column flex-grow-1" style="min-width: 180px;">
                 <label for="search" class="form-label mb-1 small text-secondary">Buscar</label>
-                <input type="text" name="search" id="search" class="form-control form-control-sm rounded-pill border-dark" placeholder="Nome, CPF, Bloco, Apartamento..." value="{{ request('search') }}">
+                <input type="text" name="search" id="search" class="form-control form-control-sm rounded-pill border-dark"
+                    placeholder="Nome, CPF, Bloco, Apartamento..." value="{{ request('search') }}">
             </div>
 
             {{-- Data de Início --}}
             <div class="d-flex flex-column" style="min-width: 120px;">
                 <label for="entrada_inicio" class="form-label mb-1 small text-secondary">De</label>
-                <input type="date" name="entrada_inicio" id="entrada_inicio" class="form-control form-control-sm rounded" value="{{ request('entrada_inicio') }}">
+                <input type="date" name="entrada_inicio" id="entrada_inicio" class="form-control form-control-sm rounded"
+                    value="{{ request('entrada_inicio') }}">
             </div>
 
             {{-- Data de Fim --}}
             <div class="d-flex flex-column" style="min-width: 120px;">
                 <label for="entrada_fim" class="form-label mb-1 small text-secondary">Até</label>
-                <input type="date" name="entrada_fim" id="entrada_fim" class="form-control form-control-sm rounded" value="{{ request('entrada_fim') }}">
+                <input type="date" name="entrada_fim" id="entrada_fim" class="form-control form-control-sm rounded"
+                    value="{{ request('entrada_fim') }}">
             </div>
 
             {{-- Visitante --}}
             <div class="d-flex flex-column" style="min-width: 150px;">
-            <label for="visitante_id" class="form-label mb-1 small text-secondary">Visitante</label>
-            <select name="visitante_id" id="visitante_id" class="form-select form-select-sm rounded">
-                <option value="">Todos</option>
-                @foreach($visitantes as $visitante)
-                    <option value="{{ $visitante->id }}" {{ request('visitante_id') == $visitante->id ? 'selected' : '' }}>
-                        {{ $visitante->nome }}
-                    </option>
+                <label for="visitante_id" class="form-label mb-1 small text-secondary">Visitante</label>
+                <select name="visitante_id" id="visitante_id" class="form-select form-select-sm rounded">
+                    <option value="">Todos</option>
+                    @foreach($visitantes as $visitante)
+                        <option value="{{ $visitante->id }}" {{ request('visitante_id') == $visitante->id ? 'selected' : '' }}>
+                            {{ $visitante->nome }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -64,13 +67,21 @@
                 </select>
             </div>
 
+            {{-- Status --}}
+            <div class="d-flex flex-column" style="min-width: 130px;">
+                <label for="status" class="form-label mb-1 small text-secondary">Status</label>
+                <select name="status" id="status" class="form-select form-select-sm rounded">
+                    <option value="">Todos</option>
+                    <option value="liberado" {{ request('status') == 'liberado' ? 'selected' : '' }}>Liberado</option>
+                    <option value="bloqueado" {{ request('status') == 'bloqueado' ? 'selected' : '' }}>Bloqueado</option>
+                </select>
+            </div>
 
             {{-- Botões --}}
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4">🔍 Filtrar</button>
                 <a href="{{ route('index.registro') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">❌ Limpar</a>
             </div>
-
         </form>
 
     </header>
@@ -164,6 +175,7 @@
                             <th>Placa</th>
                             <th>Apartamento</th>
                             <th>Tipo Acesso</th>
+                            <th>Status</th>
                             <th>Observações</th>
                             <th>Data</td>
                             <th>Entrada</th>
@@ -174,7 +186,7 @@
                     <tbody>
                         @forelse ($registros as $registro)
                             <tr>
-                                <td><span class="badge bg-primary text-white">{{ $registro->nome ?? '—' }}</span></td>
+                                <td><strong>{{ $registro->nome ?? '—' }}</strong></span></td><!--<span class="badge bg-primary text-white">-->
                                 <td>{{ $registro->documento ?? '—' }}</td>
                                 <td>{{ $registro->empresa ?? '—' }}</td>
                                 <td>{{ $registro->veiculo ?? '—' }}</td>
@@ -186,6 +198,13 @@
                                     <span class="badge bg-info text-white">
                                         {{ ucfirst($registro->tipo_acesso) }}
                                     </span>
+                                </td>
+                                <td>
+                                    @if($registro->status == 'liberado')
+                                        <span class="badge bg-success rounded-pill">Liberado</span>
+                                    @else
+                                        <span class="badge bg-danger rounded-pill">Bloqueado</span>
+                                    @endif
                                 </td>
                                 <td>{{ $registro->observacoes }}</td>
                                 <td>{{ $registro->created_at->format('d/m/Y') }}</td>
@@ -211,14 +230,6 @@
                                             </svg>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end show-on-top">
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('edit.registro', $registro->id) }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd" viewBox="0 0 16 16">
-                                                        <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-4 1.5a.5.5 0 0 1-.65-.65l1.5-4a.5.5 0 0 1 .11-.168l10-10zM11.207 2L13 3.793 14.293 2.5 12.5.707 11.207 2zM12 4.207 11.793 4 3 12.793 3.207 13 12 4.207zM2.5 13.5 4 13l-.5-.5-1.5.5.5 1.5z"/>
-                                                    </svg>
-                                                    Editar
-                                                </a>
-                                            </li>
                                             <li>
                                                 <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $registro->id }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">

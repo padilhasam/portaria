@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Registro;
 use App\Models\Visitante;
 use App\Models\Apartamento;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Traits\Loggable;
@@ -17,7 +16,19 @@ class RegistroController extends Controller
 
     public function index(Request $request)
     {
-        $query = Registro::with('visitante')->orderBy('entrada', 'desc');
+        // $query = Registro::with('visitante')->orderBy('entrada', 'desc');
+        // $query = Registro::with('visitante')->orderBy('created_at', 'desc');
+
+        $query = Registro::with('visitante')
+        ->orderByRaw("
+            CASE
+                WHEN status = 'liberado' AND saida IS NULL THEN 1  -- Ativos primeiro
+                WHEN status = 'liberado' AND saida IS NOT NULL THEN 2 -- Finalizados depois
+                WHEN status = 'bloqueado' THEN 3 -- Bloqueados por último
+                ELSE 4 -- Caso apareça algum status diferente
+            END
+        ")
+        ->orderBy('created_at', 'desc'); // Dentro de cada grupo, mais recentes primeiro
 
         if ($request->filled('entrada_inicio')) {
             $query->whereDate('entrada', '>=', $request->entrada_inicio);
@@ -32,9 +43,9 @@ class RegistroController extends Controller
         }
 
         if ($request->filled('tipo')) {
-            if ($request->tipo == 'entrada') {
+            if ($request->tipo === 'entrada') {
                 $query->whereNotNull('entrada')->whereNull('saida');
-            } elseif ($request->tipo == 'saida') {
+            } elseif ($request->tipo === 'saida') {
                 $query->whereNotNull('saida');
             }
         }
@@ -43,11 +54,15 @@ class RegistroController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('nome', 'like', "%{$search}%")
-                    ->orWhere('documento', 'like', "%{$search}%")
-                    ->orWhere('empresa', 'like', "%{$search}%")
-                    ->orWhere('placa', 'like', "%{$search}%")
-                    ->orWhere('veiculo', 'like', "%{$search}%");
+                  ->orWhere('documento', 'like', "%{$search}%")
+                  ->orWhere('empresa', 'like', "%{$search}%")
+                  ->orWhere('placa', 'like', "%{$search}%")
+                  ->orWhere('veiculo', 'like', "%{$search}%");
             });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
         }
 
         $registros = $query->paginate(10);
@@ -55,11 +70,18 @@ class RegistroController extends Controller
         $totalAcessos = Registro::count();
         $entradasHoje = Registro::whereDate('entrada', Carbon::today())->count();
         $saidasHoje = Registro::whereDate('saida', Carbon::today())->count();
-        $acessosBloqueados = Registro::where('tipo_acesso', 'bloqueado')->count();
+        $acessosBloqueados = Registro::where('status', 'bloqueado')->count();
 
         $visitantes = Visitante::orderBy('nome')->get();
 
-        return view('pages.registros.index', compact('registros', 'visitantes', 'totalAcessos', 'entradasHoje', 'saidasHoje', 'acessosBloqueados'));
+        return view('pages.registros.index', compact(
+            'registros',
+            'visitantes',
+            'totalAcessos',
+            'entradasHoje',
+            'saidasHoje',
+            'acessosBloqueados'
+        ));
     }
 
     public function create(Request $request)
@@ -71,7 +93,7 @@ class RegistroController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+         $data = $request->validate([
             'id_visitante' => 'nullable|integer',
             'id_apartamento' => 'nullable|integer|exists:apartamentos,id',
             'nome' => 'required|string|max:255',
@@ -80,11 +102,22 @@ class RegistroController extends Controller
             'veiculo' => 'nullable|string|max:30',
             'placa' => 'nullable|string|max:10',
             'tipo_acesso' => 'required|string|max:40',
+            'status' => 'nullable|in:liberado,bloqueado',
             'observacoes' => 'required|string|max:500',
-            'status' => 'nullable|string|in:bloqueado,ativo'
         ]);
 
-        $data['entrada'] = now();
+        // Recebe o status, padrão 'liberado'
+        $status = $request->input('status', 'liberado');
+        $data['status'] = $status;
+
+        // Se status for liberado, registra a entrada, caso contrário não registra data de entrada
+        if ($status === 'liberado') {
+            $data['entrada'] = now();
+        } else {
+            // status bloqueado, não registra data de entrada nem saída
+            $data['entrada'] = null;
+            $data['saida'] = null;
+        }
 
         try {
             if ($request->filled('id_visitante')) {
@@ -94,18 +127,20 @@ class RegistroController extends Controller
                     return redirect()->back()->with('error', 'Visitante não encontrado.');
                 }
 
-                if ($visitante->status === 'bloqueado') {
-                    return redirect()->back()->with('error', 'Este visitante está bloqueado e não pode acessar o condomínio.');
+                // Opcional: Impede liberar acesso a visitante bloqueado (mas permite registrar tentativa)
+                if ($visitante->status === 'bloqueado' && $status === 'liberado') {
+                    return redirect()->back()->with('error', 'Este visitante está bloqueado e não pode ter status liberado.');
                 }
-
-                $data['status'] = 'ativo';
-            } else {
-                $data['status'] = $request->input('status') ?? 'ativo';
             }
 
             $registro = Registro::create($data);
 
-            $this->registrarLog('CREATE', 'registros', $registro->id, "Registro de entrada criado para {$data['nome']}.");
+            $this->registrarLog(
+                'CREATE',
+                'registros',
+                $registro->id,
+                "Registro de acesso criado para {$data['nome']} com status {$status}."
+            );
 
             return redirect(route('index.registro'))->with('success', 'Entrada registrada com sucesso!');
         } catch (Exception $e) {
@@ -114,40 +149,19 @@ class RegistroController extends Controller
         }
     }
 
+    /**
+     * Bloqueia edição de registros
+     */
     public function edit(string $id)
     {
-        $registro = Registro::with('visitante.prestador')->findOrFail($id);
-        $visitantes = Visitante::where('id', $registro->id_visitante)->get();
-        $apartamentos = Apartamento::all();
-        return view('pages.registros.register', compact('registro', 'visitantes', 'apartamentos'));
+        return redirect()->route('index.registro')
+            ->with('error', 'Edição de registros de acesso não é permitida.');
     }
 
     public function update(Request $request, string $id)
     {
-        $registro = Registro::findOrFail($id);
-
-        $data = $request->validate([
-            'id_visitante' => 'nullable|integer',
-            'id_apartamento' => 'nullable|integer|exists:apartamentos,id',
-            'nome' => 'required|string|max:255',
-            'documento' => 'required|string|min:11|max:15',
-            'empresa' => 'nullable|string|max:50',
-            'veiculo' => 'nullable|string|max:30',
-            'placa' => 'nullable|string|max:10',
-            'tipo_acesso' => 'required|string|max:40',
-            'observacoes' => 'required|string|max:500',
-        ]);
-
-        try {
-            $registro->update($data);
-
-            $this->registrarLog('UPDATE', 'registros', $registro->id, "Registro atualizado para {$data['nome']}.");
-
-            return redirect()->route('index.registro')->with('success', 'Registro atualizado com sucesso!');
-        } catch (Exception $e) {
-            $this->registrarLog('ERROR', 'registros', $registro->id, "Erro ao atualizar registro", $e->getMessage());
-            return redirect()->back()->with('error', 'Erro ao atualizar registro: ' . $e->getMessage());
-        }
+        return redirect()->route('index.registro')
+            ->with('error', 'Edição de registros de acesso não é permitida.');
     }
 
     public function destroy(string $id)
@@ -189,12 +203,23 @@ class RegistroController extends Controller
         try {
             $registro = Registro::findOrFail($id);
 
-            if (!$registro->saida) {
-                $registro->saida = now();
-                $registro->save();
-
-                $this->registrarLog('UPDATE', 'registros', $registro->id, "Saída registrada para {$registro->nome}.");
+            if ($registro->status === 'bloqueado') {
+                return redirect()->back()->with('error', 'Não é possível registrar saída de um acesso bloqueado.');
             }
+
+            if ($registro->saida) {
+                return redirect()->back()->with('warning', 'A saída já foi registrada anteriormente.');
+            }
+
+            $registro->saida = now();
+            $registro->save();
+
+            $this->registrarLog(
+                'UPDATE',
+                'registros',
+                $registro->id,
+                "Saída registrada para {$registro->nome}."
+            );
 
             return redirect(route('index.registro'))->with('success', 'Saída registrada com sucesso!');
         } catch (Exception $e) {

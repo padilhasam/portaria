@@ -7,9 +7,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-/**
- * @method \Illuminate\Database\Eloquent\Relations\BelongsToMany notificacoesRecebidas()
- */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -27,6 +24,10 @@ class User extends Authenticatable
         'status',
         'tipo',
         'user_verified',
+        'foto',
+        'tema_escuro',
+        'notificacoes',
+        'idioma',
     ];
 
     protected $hidden = [
@@ -36,6 +37,8 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'tema_escuro' => 'boolean',
+        'notificacoes' => 'boolean',
     ];
 
     public function notificacoesRecebidas()
@@ -50,11 +53,11 @@ class User extends Authenticatable
         return $this->hasMany(Notificacao::class, 'id_criador');
     }
 
-    // Métodos auxiliares para status
     public function isAdmin()
     {
         return $this->tipo === 'administrador';
     }
+
     public function isAtivo()
     {
         return $this->status === 'ativo';
@@ -68,5 +71,12 @@ class User extends Authenticatable
     public function estaDeFerias()
     {
         return $this->status === 'férias';
+    }
+
+    public function getFotoUrlAttribute()
+    {
+        return $this->foto
+            ? asset('storage/' . $this->foto)
+            : 'https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg';
     }
 }

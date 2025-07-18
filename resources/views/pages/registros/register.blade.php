@@ -100,7 +100,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-6">
+                            <div class="col-md-6">
                                 <label for="id_apartamento" class="form-label">Apartamento</label>
                                 <select class="form-select rounded-pill border-dark" name="id_apartamento" id="id_apartamento">
                                     <option value="">Selecione o apartamento...</option>
@@ -112,7 +112,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
                                 <div class="col-12">
                                     <label for="observacoes" class="form-label">Observação</label>
                                     <textarea class="form-control rounded-4 border-dark" name="observacoes" id="observacoes" rows="4" style="resize: none">{{ old('observacoes', $edit ? $registro->observacoes : '') }}</textarea>
@@ -133,13 +132,51 @@
                             </div>
                         </div>
 
-                        {{-- Botões --}}
+                        {{-- ======================== BOTÕES ======================== --}}
                         <div class="col-12 d-flex gap-2 justify-content-end mt-3">
-                            <button type="submit" class="btn btn-success rounded-pill">{{ $edit ? "Alterar" : "Salvar" }}</button>
+                            {{-- Botão que abre o modal --}}
+                            <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                {{ $edit ? "Alterar" : "Salvar" }}
+                            </button>
                             <button type="reset" class="btn btn-outline-danger rounded-pill">Limpar</button>
                             <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Cancelar</a>
                         </div>
     </form>
 </div>
+
+{{-- ======================== MODAL ======================== --}}
+<div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusModalLabel">Confirmar Status do Acesso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <div class="modal-body">
+                <p class="fw-bold">Deseja liberar ou bloquear este acesso?</p>
+
+                <div class="d-flex gap-2 mb-3">
+                    <button type="button" class="btn btn-success w-50" id="btnLiberar">Liberar</button>
+                    <button type="button" class="btn btn-danger w-50" id="btnBloquear">Bloquear</button>
+                </div>
+
+                <div id="motivoBloqueioContainer" class="d-none">
+                    <label for="motivo_bloqueio" class="form-label">Motivo do bloqueio:</label>
+                    <textarea class="form-control border-danger rounded-3" id="motivo_bloqueio" rows="3"
+                        placeholder="Informe o motivo do bloqueio..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnConfirmarStatus">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Campo oculto de status --}}
+<input type="hidden" name="status" id="status" value="liberado">
 
 @endsection

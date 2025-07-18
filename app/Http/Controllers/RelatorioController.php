@@ -46,7 +46,7 @@ class RelatorioController extends Controller
             $total    = $registros->count();
             $entradas = $registros->whereNotNull('entrada')->count();
             $saidas   = $registros->whereNotNull('saida')->count();
-            $negados  = $registros->where('status', 'negado')->count();
+            $negados  = $registros->where('status', 'bloqueado')->count();
 
             $tiposAcesso = Registro::select('tipo_acesso')->distinct()->orderBy('tipo_acesso')->pluck('tipo_acesso');
 
